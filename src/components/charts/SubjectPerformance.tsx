@@ -8,18 +8,18 @@ import {
 } from '@/components/ui/chart';
 
 const data = [
-  { name: 'Writing', value: 25, color: '#4263EB' },
-  { name: 'Abstract Reasoning', value: 35, color: '#38C172' },
-  { name: 'Reading Comprehension', value: 40, color: '#F59E0B' },
-  { name: 'Quantitative Reasoning', value: 50, color: '#EF4444' },
+  { name: 'Writing', value: 67, color: '#F59E0B' },
+  { name: 'Abstract Reasoning', value: 40, color: '#EF4444' },
+  { name: 'Reading Comprehension', value: 75, color: '#38C172' },
+  { name: 'Quantitative Reasoning', value: 77, color: '#38C172' },
 ];
 
 // Define chart configuration for colors
 const chartConfig = {
-  writing: { color: '#4263EB' },
-  abstract: { color: '#38C172' },
-  reading: { color: '#F59E0B' },
-  quantitative: { color: '#EF4444' }
+  writing: { color: '#F59E0B' },
+  abstract: { color: '#EF4444' },
+  reading: { color: '#38C172' },
+  quantitative: { color: '#38C172' }
 };
 
 const SubjectPerformance = () => {
