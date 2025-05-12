@@ -22,19 +22,19 @@ const Index = () => {
             <p className="text-gray-500">Track your GATE exam preparation progress</p>
           </header>
           
-          {/* Welcome Banner */}
-          <section className="mb-6">
-            <WelcomeBanner />
-          </section>
-          
-          {/* Video Tutorial and Tier Summary side by side */}
+          {/* Welcome Banner and Video Tutorial side by side */}
           <section className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            <div className="lg:col-span-3">
+              <WelcomeBanner />
+            </div>
             <div className="lg:col-span-1">
               <VideoTutorialCard />
             </div>
-            <div className="lg:col-span-3">
-              <TierSummary />
-            </div>
+          </section>
+          
+          {/* Tier Summary */}
+          <section className="mb-6">
+            <TierSummary />
           </section>
           
           {/* Recent Activity & Smart Recommendations */}

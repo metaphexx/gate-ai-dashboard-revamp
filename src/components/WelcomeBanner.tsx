@@ -14,7 +14,7 @@ const WelcomeBanner = () => {
       <div className="p-4 flex flex-col md:flex-row md:items-center justify-between">
         <div className="flex-1">
           <h2 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, {userName}!</h2>
-          <p className="text-base opacity-90 mb-4">
+          <p className="text-base opacity-90 mb-3">
             Your next GATE exam is in {daysRemaining} days. Ready to continue your preparation?
           </p>
           <div className="flex gap-3">
@@ -30,9 +30,9 @@ const WelcomeBanner = () => {
         </div>
         
         <div className="md:w-1/3 mt-4 md:mt-0">
-          <div className="bg-white/10 backdrop-blur rounded-lg p-4 w-full">
-            <h3 className="text-sm font-semibold uppercase mb-2">WEEKLY TIP</h3>
-            <p className="text-base">{weeklyTip}</p>
+          <div className="bg-white/10 backdrop-blur rounded-lg p-3 w-full">
+            <h3 className="text-sm font-semibold uppercase mb-1">WEEKLY TIP</h3>
+            <p className="text-sm">{weeklyTip}</p>
           </div>
         </div>
       </div>
