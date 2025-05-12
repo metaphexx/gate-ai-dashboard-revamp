@@ -10,8 +10,8 @@ const WelcomeBanner = () => {
   const weeklyTip = "Focus on Abstract Reasoning this week - your scores show room for improvement";
   
   return (
-    <div className="bg-gradient-to-r from-[#0080ff] to-[#33a9ff] text-white rounded-xl overflow-hidden shadow-md">
-      <div className="p-4 flex flex-col md:flex-row md:items-center justify-between">
+    <div className="bg-gradient-to-r from-[#0080ff] to-[#33a9ff] text-white rounded-xl overflow-hidden shadow-md h-full">
+      <div className="p-4 flex flex-col md:flex-row md:items-center justify-between h-full">
         <div className="flex-1">
           <h2 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, {userName}!</h2>
           <p className="text-base opacity-90 mb-3">
