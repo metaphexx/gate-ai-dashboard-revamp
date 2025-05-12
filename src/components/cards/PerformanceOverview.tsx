@@ -35,6 +35,18 @@ const PerformanceOverview = () => {
   
   const chartData = data[timeRange];
   
+  // Custom tooltip style with the new color
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 border border-gray-100 shadow-md rounded-md">
+          <p className="text-[#009dff] font-medium">{`${label}: ${payload[0].value}%`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+  
   return (
     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
       <div className="flex items-center justify-between mb-4">
@@ -70,10 +82,9 @@ const PerformanceOverview = () => {
             <XAxis dataKey="subject" fontSize={12} tickMargin={5} />
             <YAxis tickFormatter={(value) => `${value}%`} fontSize={12} />
             <Tooltip 
-              formatter={(value) => [`${value}%`, 'Accuracy']}
-              contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+              content={<CustomTooltip />}
             />
-            <Bar dataKey="accuracy" fill="#4263EB" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="accuracy" fill="#009dff" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>

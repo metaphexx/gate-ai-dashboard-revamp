@@ -1,12 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Check, 
   AlertTriangle, 
-  Clock, 
-  ChevronDown, 
-  ChevronUp,
+  Clock,
   ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -74,10 +72,6 @@ const getActionData = (accuracy: number) => {
 };
 
 const QuestionBankStatus = () => {
-  const [expanded, setExpanded] = useState(false);
-  
-  // Only show 2 subjects when collapsed
-  const displayedQuestions = expanded ? questions : questions.slice(0, 2);
   const totalQuestions = questions.reduce((sum, q) => sum + q.total, 0);
   
   return (
@@ -105,7 +99,7 @@ const QuestionBankStatus = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {displayedQuestions.map((q, idx) => {
+              {questions.map((q, idx) => {
                 const actionData = getActionData(q.accuracy);
                 return (
                   <tr key={idx} className="hover:bg-gray-50">
@@ -151,23 +145,6 @@ const QuestionBankStatus = () => {
             </tbody>
           </table>
         </div>
-      
-        {questions.length > 2 && (
-          <div className="py-3 text-center border-t">
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              onClick={() => setExpanded(!expanded)}
-              className="text-xs"
-            >
-              {expanded ? (
-                <>Show Less <ChevronUp size={14} className="ml-1" /></>
-              ) : (
-                <>Show All Subjects <ChevronDown size={14} className="ml-1" /></>
-              )}
-            </Button>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
