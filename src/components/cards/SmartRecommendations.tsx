@@ -9,7 +9,7 @@ interface Recommendation {
   description: string;
   icon: React.ReactNode;
   action: string;
-  actionType: 'primary' | 'outline' | 'secondary';
+  actionType: 'default' | 'outline' | 'secondary';
 }
 
 const SmartRecommendations = () => {
@@ -20,7 +20,7 @@ const SmartRecommendations = () => {
       description: "Your accuracy is 35% - lower than average",
       icon: <Target className="text-destructive" size={18} />,
       action: "Review Concepts",
-      actionType: 'primary'
+      actionType: 'default'
     },
     {
       id: 2,
