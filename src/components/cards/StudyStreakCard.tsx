@@ -35,7 +35,7 @@ const StudyStreakCard = () => {
             <TrendingUp size={18} />
           </div>
           <div className="flex-1">
-            <p className="font-medium text-sm">Daily Sessions</p>
+            <p className="font-medium text-sm">Daily Goal</p>
             <div className="mt-1.5 flex items-center">
               <div className="w-full bg-gray-200 rounded-full h-2 mr-2">
                 <div 
@@ -43,7 +43,7 @@ const StudyStreakCard = () => {
                   style={{ width: `${(completedSessions / dailyGoal) * 100}%` }}
                 ></div>
               </div>
-              <span className="text-xs text-gray-500">{completedSessions}/{dailyGoal}</span>
+              <span className="text-xs text-gray-500">{completedSessions}/{dailyGoal} questions</span>
             </div>
           </div>
         </div>

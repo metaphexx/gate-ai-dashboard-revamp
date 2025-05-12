@@ -81,12 +81,12 @@ const QuestionBankStatus = () => {
   const totalQuestions = questions.reduce((sum, q) => sum + q.total, 0);
   
   return (
-    <Card className="border-0 shadow-sm bg-white">
-      <div className="px-6 py-5 flex items-center justify-between border-b">
+    <Card className="border border-gray-100 shadow-sm bg-white">
+      <div className="px-6 py-5 flex items-center justify-between border-b bg-white">
         <h3 className="text-lg font-semibold">Question Bank Status</h3>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">{totalQuestions} total questions</span>
-          <Button size="sm" variant="link" className="text-primary p-0 flex items-center">
+          <Button size="sm" variant="link" className="text-[#009dff] p-0 flex items-center">
             View All <ChevronRight size={16} />
           </Button>
         </div>
@@ -119,7 +119,7 @@ const QuestionBankStatus = () => {
                       <div className="flex items-center gap-2">
                         <div className="w-24 bg-gray-200 rounded-full h-2">
                           <div 
-                            className="bg-blue-500 h-2 rounded-full" 
+                            className="bg-[#009dff] h-2 rounded-full" 
                             style={{ width: `${(q.attempted / q.total) * 100}%` }}
                           ></div>
                         </div>

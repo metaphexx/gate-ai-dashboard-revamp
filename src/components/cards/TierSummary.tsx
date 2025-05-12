@@ -29,7 +29,7 @@ const TierSummary = () => {
         <div className="md:w-3/5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Your Progress</h3>
-            <Badge variant="outline" className="bg-primary-light text-primary px-3 py-1">Free Tier</Badge>
+            <Badge variant="outline" className="bg-[#009dff]/10 text-[#009dff] px-3 py-1">Free Tier</Badge>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -106,7 +106,7 @@ const TierSummary = () => {
           </div>
           
           <div className="mt-4">
-            <Button size="sm" className="w-full gap-1 bg-primary hover:bg-primary/90">
+            <Button size="sm" className="w-full gap-1 bg-[#009dff] hover:bg-[#009dff]/90">
               <Crown size={14} />
               <span>Unlock {stats.premiumQuestions}+ Questions</span>
             </Button>
