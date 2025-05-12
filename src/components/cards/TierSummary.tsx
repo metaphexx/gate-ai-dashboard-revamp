@@ -3,7 +3,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Crown, Check, X, Circle, Unlock } from 'lucide-react';
+import { Crown, Check, X, Circle, Unlock, FileQuestion, Clock, BarChart } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const TierSummary = () => {
   const stats = {
@@ -87,9 +88,29 @@ const TierSummary = () => {
                 style={{ width: `${unattemptedPercentage}%` }}
               ></div>
               <div 
-                className="bg-[#9b87f5]" // Changed from amber-300 to purple
+                className="bg-[#4361EE]" // Changed to Royal Blue (#4361EE)
                 style={{ width: `${lockedPercentage}%` }}
               ></div>
+            </div>
+            
+            {/* Progress bar legend */}
+            <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-accent rounded-full"></div>
+                <span>Correct</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-destructive rounded-full"></div>
+                <span>Incorrect</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                <span>Unattempted</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-[#4361EE] rounded-full"></div>
+                <span>2000+ Locked</span>
+              </div>
             </div>
             
             <div className="text-sm flex justify-between">
@@ -97,8 +118,8 @@ const TierSummary = () => {
                 <span className="font-medium">Free Access:</span> {stats.freeQuestions} questions
               </div>
               <div className="flex items-center gap-1">
-                <Unlock size={14} className="text-[#9b87f5]" /> {/* Changed color to match progress bar */}
-                <span className="text-[#9b87f5] font-medium"> {/* Changed color to match */}
+                <Unlock size={14} className="text-[#4361EE]" />
+                <span className="text-[#4361EE] font-medium">
                   {stats.premiumQuestions}+ locked
                 </span>
               </div>
@@ -106,10 +127,37 @@ const TierSummary = () => {
           </div>
           
           <div className="mt-4">
-            <Button size="sm" className="w-full gap-1 bg-[#009dff] hover:bg-[#009dff]/90">
-              <Crown size={14} />
-              <span>Unlock {stats.premiumQuestions}+ Questions</span>
-            </Button>
+            <TooltipProvider>
+              <Tooltip delayDuration={300}>
+                <TooltipTrigger asChild>
+                  <Button size="sm" className="w-full gap-1 bg-[#009dff] hover:bg-[#009dff]/90">
+                    <Crown size={14} />
+                    <span>Unlock {stats.premiumQuestions}+ Questions</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>Premium users unlock 2,000+ GATE-style questions across all sections.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            {/* Feature preview icons under CTA */}
+            <div className="flex items-center justify-center mt-2 text-xs text-gray-500 gap-2">
+              <div className="flex items-center gap-1">
+                <FileQuestion size={12} />
+                <span>Full-length mocks</span>
+              </div>
+              <span className="text-gray-300">•</span>
+              <div className="flex items-center gap-1">
+                <Clock size={12} />
+                <span>Timed exams</span>
+              </div>
+              <span className="text-gray-300">•</span>
+              <div className="flex items-center gap-1">
+                <BarChart size={12} />
+                <span>2000+ Qs</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
