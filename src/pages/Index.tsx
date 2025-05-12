@@ -8,6 +8,7 @@ import SmartRecommendations from '@/components/cards/SmartRecommendations';
 import PerformanceOverview from '@/components/cards/PerformanceOverview';
 import StudyStreakCard from '@/components/cards/StudyStreakCard';
 import QuestionBankStatus from '@/components/cards/QuestionBankStatus';
+import VideoTutorialCard from '@/components/cards/VideoTutorialCard';
 
 const Index = () => {
   return (
@@ -26,9 +27,14 @@ const Index = () => {
             <WelcomeBanner />
           </section>
           
-          {/* Tier Summary */}
-          <section className="mb-6">
-            <TierSummary />
+          {/* Video Tutorial and Tier Summary side by side */}
+          <section className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            <div className="lg:col-span-1">
+              <VideoTutorialCard />
+            </div>
+            <div className="lg:col-span-3">
+              <TierSummary />
+            </div>
           </section>
           
           {/* Recent Activity & Smart Recommendations */}
