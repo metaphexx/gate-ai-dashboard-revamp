@@ -87,7 +87,7 @@ const TierSummary = () => {
                 style={{ width: `${unattemptedPercentage}%` }}
               ></div>
               <div 
-                className="bg-amber-300"
+                className="bg-[#9b87f5]" // Changed from amber-300 to purple
                 style={{ width: `${lockedPercentage}%` }}
               ></div>
             </div>
@@ -97,8 +97,8 @@ const TierSummary = () => {
                 <span className="font-medium">Free Access:</span> {stats.freeQuestions} questions
               </div>
               <div className="flex items-center gap-1">
-                <Unlock size={14} className="text-amber-600" />
-                <span className="text-amber-600 font-medium">
+                <Unlock size={14} className="text-[#9b87f5]" /> {/* Changed color to match progress bar */}
+                <span className="text-[#9b87f5] font-medium"> {/* Changed color to match */}
                   {stats.premiumQuestions}+ locked
                 </span>
               </div>
