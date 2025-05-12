@@ -9,6 +9,14 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 
 interface QuestionType {
   type: string;
@@ -75,7 +83,7 @@ const QuestionBankStatus = () => {
   const totalQuestions = questions.reduce((sum, q) => sum + q.total, 0);
   
   return (
-    <Card className="border border-gray-100 shadow-sm bg-white">
+    <Card className="border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-6 py-5 flex items-center justify-between border-b bg-white">
         <h3 className="text-lg font-semibold">Question Bank Status</h3>
         <div className="flex items-center gap-2">
@@ -87,64 +95,62 @@ const QuestionBankStatus = () => {
       </div>
       
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-gray-50 text-gray-500 uppercase text-xs">
-                <th className="py-3 px-6 text-left font-medium">Subject Area</th>
-                <th className="py-3 px-6 text-left font-medium">Attempted</th>
-                <th className="py-3 px-6 text-left font-medium">Accuracy</th>
-                <th className="py-3 px-6 text-left font-medium">Avg. Time</th>
-                <th className="py-3 px-6 text-left font-medium">Suggested Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {questions.map((q, idx) => {
-                const actionData = getActionData(q.accuracy);
-                return (
-                  <tr key={idx} className="hover:bg-gray-50">
-                    <td className="py-4 px-6">
-                      <div>
-                        <div className="font-medium">{q.type}</div>
-                        <div className="text-xs text-gray-500">{q.total} questions</div>
+        <Table>
+          <TableHeader className="bg-gray-50">
+            <TableRow className="border-b">
+              <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Subject Area</TableHead>
+              <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Attempted</TableHead>
+              <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Accuracy</TableHead>
+              <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Avg. Time</TableHead>
+              <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Suggested Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-gray-100">
+            {questions.map((q, idx) => {
+              const actionData = getActionData(q.accuracy);
+              return (
+                <TableRow key={idx} className="hover:bg-gray-50">
+                  <TableCell className="py-4 px-6">
+                    <div>
+                      <div className="font-medium">{q.type}</div>
+                      <div className="text-xs text-gray-500">{q.total} questions</div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-4 px-6">
+                    <div className="flex items-center gap-2">
+                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-[#009dff] h-2 rounded-full" 
+                          style={{ width: `${(q.attempted / q.total) * 100}%` }}
+                        ></div>
                       </div>
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        <div className="w-24 bg-gray-200 rounded-full h-2">
-                          <div 
-                            className="bg-[#009dff] h-2 rounded-full" 
-                            style={{ width: `${(q.attempted / q.total) * 100}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-xs text-gray-500">{q.attempted}/{q.total}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className={cn(
-                        "px-3 py-1 rounded-full text-xs font-medium",
-                        q.accuracy >= 70 ? "bg-green-100 text-green-800" : 
-                        q.accuracy >= 60 ? "bg-yellow-100 text-yellow-800" : 
-                        "bg-red-100 text-red-800"
-                      )}>
-                        {q.accuracy}%
+                      <span className="text-xs text-gray-500">{q.attempted}/{q.total}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-4 px-6">
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-xs font-medium",
+                      q.accuracy >= 70 ? "bg-green-100 text-green-800" : 
+                      q.accuracy >= 60 ? "bg-yellow-100 text-yellow-800" : 
+                      "bg-red-100 text-red-800"
+                    )}>
+                      {q.accuracy}%
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-4 px-6 text-gray-600">{q.avgTime}</TableCell>
+                  <TableCell className="py-4 px-6">
+                    <div className="flex items-center gap-1">
+                      {actionData.icon}
+                      <span className={actionData.color}>
+                        {actionData.text}
                       </span>
-                    </td>
-                    <td className="py-4 px-6 text-gray-600">{q.avgTime}</td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-1">
-                        {actionData.icon}
-                        <span className={actionData.color}>
-                          {actionData.text}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );
