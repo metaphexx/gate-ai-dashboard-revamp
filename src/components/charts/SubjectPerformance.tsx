@@ -1,20 +1,31 @@
 
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { 
+  ChartContainer, 
+  ChartTooltipContent, 
+  ChartLegendContent 
+} from '@/components/ui/chart';
 
 const data = [
-  { name: 'Writing', value: 25 },
-  { name: 'Abstract Reasoning', value: 35 },
-  { name: 'Reading Comprehension', value: 40 },
-  { name: 'Quantitative Reasoning', value: 50 },
+  { name: 'Writing', value: 25, color: '#4263EB' },
+  { name: 'Abstract Reasoning', value: 35, color: '#38C172' },
+  { name: 'Reading Comprehension', value: 40, color: '#F59E0B' },
+  { name: 'Quantitative Reasoning', value: 50, color: '#EF4444' },
 ];
 
-const COLORS = ['#4263EB', '#38C172', '#F59E0B', '#EF4444'];
+// Define chart configuration for colors
+const chartConfig = {
+  writing: { color: '#4263EB' },
+  abstract: { color: '#38C172' },
+  reading: { color: '#F59E0B' },
+  quantitative: { color: '#EF4444' }
+};
 
 const SubjectPerformance = () => {
   return (
     <div className="h-64">
-      <ResponsiveContainer width="100%" height="100%">
+      <ChartContainer config={chartConfig}>
         <PieChart>
           <Pie
             data={data}
@@ -27,13 +38,18 @@ const SubjectPerformance = () => {
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip formatter={(value) => `${value}%`} />
-          <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+          <Tooltip content={<ChartTooltipContent formatter={(value) => `${value}%`} />} />
+          <Legend
+            content={<ChartLegendContent />}
+            layout="horizontal" 
+            verticalAlign="bottom" 
+            align="center"
+          />
         </PieChart>
-      </ResponsiveContainer>
+      </ChartContainer>
     </div>
   );
 };
