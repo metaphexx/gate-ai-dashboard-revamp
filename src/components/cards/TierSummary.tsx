@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Crown, Check, X, Circle, Unlock, FileQuestion, Clock, BarChart } from 'lucide-react';
+import { Crown, Unlock, FileQuestion, Clock, BarChart, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const TierSummary = () => {
@@ -41,7 +40,7 @@ const TierSummary = () => {
             
             <div className="flex flex-col">
               <div className="flex items-center gap-1">
-                <Check size={16} className="text-accent" />
+                <div className="w-3 h-3 bg-accent rounded-full"></div>
                 <span className="text-gray-500 text-sm">Correct</span>
               </div>
               <span className="text-2xl font-bold text-accent">{stats.correct}</span>
@@ -49,7 +48,7 @@ const TierSummary = () => {
             
             <div className="flex flex-col">
               <div className="flex items-center gap-1">
-                <X size={16} className="text-destructive" />
+                <div className="w-3 h-3 bg-destructive rounded-full"></div>
                 <span className="text-gray-500 text-sm">Incorrect</span>
               </div>
               <span className="text-2xl font-bold text-destructive">{stats.incorrect}</span>
@@ -57,7 +56,7 @@ const TierSummary = () => {
             
             <div className="flex flex-col">
               <div className="flex items-center gap-1">
-                <Circle size={16} className="text-gray-400" />
+                <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
                 <span className="text-gray-500 text-sm">Unattempted</span>
               </div>
               <span className="text-2xl font-bold text-gray-400">{stats.unattempted}</span>
@@ -68,13 +67,43 @@ const TierSummary = () => {
         {/* Right Section - Progress + Upsell (40% width) */}
         <div className="md:w-2/5 flex flex-col justify-between">
           <div className="space-y-3">
-            <div className="flex justify-between text-xs mb-1">
-              <span>Progress</span>
+            <div className="flex justify-between items-center text-sm mb-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-medium">Progress</span>
+                <TooltipProvider>
+                  <Tooltip delayDuration={200}>
+                    <TooltipTrigger asChild>
+                      <Info size={14} className="text-gray-400 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="p-2 space-y-1.5 w-56">
+                      <div className="text-xs font-medium">Progress Legend:</div>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs">
+                        <div className="flex items-center gap-1">
+                          <div className="w-3 h-3 bg-accent rounded-full"></div>
+                          <span>Correct</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-3 h-3 bg-destructive rounded-full"></div>
+                          <span>Incorrect</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                          <span>Unattempted</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-3 h-3 bg-[#4361EE] rounded-full"></div>
+                          <span>Locked Questions</span>
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
               <span>{correctPercentage}%</span>
             </div>
             
             {/* Multi-color segmented progress bar */}
-            <div className="h-4 w-full flex rounded-full overflow-hidden">
+            <div className="h-3 w-full flex rounded-full overflow-hidden">
               <div 
                 className="bg-accent"
                 style={{ width: `${correctPercentage}%` }}
@@ -88,50 +117,31 @@ const TierSummary = () => {
                 style={{ width: `${unattemptedPercentage}%` }}
               ></div>
               <div 
-                className="bg-[#4361EE]" // Changed to Royal Blue (#4361EE)
+                className="bg-[#4361EE]" 
                 style={{ width: `${lockedPercentage}%` }}
               ></div>
             </div>
             
-            {/* Progress bar legend */}
-            <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-accent rounded-full"></div>
-                <span>Correct</span>
+            <div className="flex items-center justify-between text-sm pt-1">
+              <div className="text-gray-500">
+                Free access: {stats.freeQuestions} questions
               </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-destructive rounded-full"></div>
-                <span>Incorrect</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-                <span>Unattempted</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-[#4361EE] rounded-full"></div>
-                <span>2000+ Locked</span>
-              </div>
-            </div>
-            
-            <div className="text-sm flex justify-between">
-              <div>
-                <span className="font-medium">Free Access:</span> {stats.freeQuestions} questions
-              </div>
-              <div className="flex items-center gap-1">
-                <Unlock size={14} className="text-[#4361EE]" />
-                <span className="text-[#4361EE] font-medium">
-                  {stats.premiumQuestions}+ locked
-                </span>
+              <div className="flex items-center gap-1 text-[#4361EE] font-medium">
+                <Unlock size={14} />
+                <span>{stats.premiumQuestions}+ locked</span>
               </div>
             </div>
           </div>
           
           <div className="mt-4">
             <TooltipProvider>
-              <Tooltip delayDuration={300}>
+              <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size="sm" className="w-full gap-1 bg-[#009dff] hover:bg-[#009dff]/90">
-                    <Crown size={14} />
+                  <Button 
+                    size="sm" 
+                    className="w-full gap-1.5 bg-[#009dff] hover:bg-[#009dff]/90 shadow-[0_0_10px_rgba(0,157,255,0.3)] hover:shadow-[0_0_15px_rgba(0,157,255,0.4)] transition-all"
+                  >
+                    <Crown size={15} />
                     <span>Unlock {stats.premiumQuestions}+ Questions</span>
                   </Button>
                 </TooltipTrigger>
@@ -140,6 +150,10 @@ const TierSummary = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+            
+            <div className="flex justify-center mt-1">
+              <span className="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full">Most students upgrade within a week</span>
+            </div>
             
             {/* Feature preview icons under CTA */}
             <div className="flex items-center justify-center mt-2 text-xs text-gray-500 gap-2">
