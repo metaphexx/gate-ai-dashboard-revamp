@@ -9,7 +9,8 @@ import {
   Clock, 
   Settings, 
   HelpCircle,
-  User
+  User,
+  Video
 } from 'lucide-react';
 
 const DashboardSidebar = () => {
@@ -23,7 +24,8 @@ const DashboardSidebar = () => {
         { name: "Mini Mock Exam", icon: <FileCheck size={20} />, path: "/mini-mock" },
         { name: "Mock Exam", icon: <FileCheck size={20} />, path: "/mock" },
         { name: "Exam in Progress", icon: <Clock size={20} />, path: "/progress" },
-        { name: "Exam History", icon: <Clock size={20} />, path: "/history" }
+        { name: "Exam History", icon: <Clock size={20} />, path: "/history" },
+        { name: "Video Tutorials", icon: <Video size={20} />, path: "/video-tutorials" }
       ]
     },
     {
@@ -54,7 +56,7 @@ const DashboardSidebar = () => {
                   to={item.path}
                   className="flex items-center px-5 py-2 text-gray-700 hover:bg-primary-light hover:text-primary transition-colors group"
                 >
-                  <span className="text-gray-500 group-hover:text-primary mr-3">
+                  <span className="text-gray-500 group-hover:text-[#009dff] mr-3">
                     {item.icon}
                   </span>
                   <span>{item.name}</span>
@@ -75,7 +77,7 @@ const DashboardSidebar = () => {
             <p className="text-xs text-gray-500">Free Plan</p>
           </div>
         </div>
-        <button className="w-full mt-3 px-4 py-2 text-sm text-center text-primary-foreground bg-primary rounded-md hover:bg-primary/90 transition-colors">
+        <button className="w-full mt-3 px-4 py-2 text-sm text-center text-primary-foreground bg-[#009dff] rounded-md hover:bg-[#009dff]/90 transition-colors">
           Upgrade Account
         </button>
       </div>

@@ -13,6 +13,7 @@ import ExamInProgress from "./pages/ExamInProgress";
 import ExamHistory from "./pages/ExamHistory";
 import Settings from "./pages/Settings";
 import Support from "./pages/Support";
+import VideoTutorials from "./pages/VideoTutorials";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/history" element={<ExamHistory />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/video-tutorials" element={<VideoTutorials />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

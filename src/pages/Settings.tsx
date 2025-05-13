@@ -77,6 +77,7 @@ const Settings = () => {
                       id="studentName"
                       type="text" 
                       defaultValue="Hari" 
+                      className="focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]"
                     />
                   </div>
                   <div>
@@ -85,7 +86,8 @@ const Settings = () => {
                     </label>
                     <Input 
                       id="parentName" 
-                      type="text" 
+                      type="text"
+                      className="focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]"
                     />
                   </div>
                 </div>
@@ -98,7 +100,8 @@ const Settings = () => {
                     <Input 
                       id="email" 
                       type="email" 
-                      defaultValue="harisyam2004@gmail.com" 
+                      defaultValue="harisyam2004@gmail.com"
+                      className="focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]" 
                     />
                   </div>
                   <div>
@@ -108,7 +111,8 @@ const Settings = () => {
                     <Input 
                       id="phone" 
                       type="tel" 
-                      defaultValue="404604673" 
+                      defaultValue="404604673"
+                      className="focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]" 
                     />
                   </div>
                 </div>
@@ -120,7 +124,8 @@ const Settings = () => {
                     </label>
                     <Input 
                       id="referral" 
-                      type="text" 
+                      type="text"
+                      className="focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]"
                     />
                   </div>
                   <div>
@@ -129,7 +134,7 @@ const Settings = () => {
                     </label>
                     <select 
                       id="state"
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary h-10"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] h-10"
                       defaultValue="Western Australia"
                     >
                       <option value="Western Australia">Western Australia</option>
@@ -147,13 +152,12 @@ const Settings = () => {
                     </label>
                     <select 
                       id="yearGroup"
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary h-10"
-                      defaultValue="5 year"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] h-10"
+                      defaultValue="Year 5"
                     >
-                      <option value="5 year">5 year</option>
-                      <option value="6 year">6 year</option>
-                      <option value="7 year">7 year</option>
-                      <option value="8 year">8 year</option>
+                      <option value="Year 4">Year 4</option>
+                      <option value="Year 5">Year 5</option>
+                      <option value="Year 6">Year 6</option>
                     </select>
                   </div>
                   <div>
@@ -162,7 +166,7 @@ const Settings = () => {
                     </label>
                     <select 
                       id="status"
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary h-10"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] h-10"
                       defaultValue="Active"
                     >
                       <option value="Active">Active</option>
@@ -172,7 +176,7 @@ const Settings = () => {
                 </div>
                 
                 <div className="pt-2">
-                  <Button onClick={handleSaveChanges}>
+                  <Button className="bg-[#009dff] hover:bg-[#009dff]/90" onClick={handleSaveChanges}>
                     Save Changes
                   </Button>
                 </div>
@@ -203,7 +207,8 @@ const Settings = () => {
                   </label>
                   <Input 
                     id="sectionName" 
-                    type="text" 
+                    type="text"
+                    className="focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]"
                   />
                 </div>
                 
@@ -215,12 +220,12 @@ const Settings = () => {
                     id="feedback" 
                     rows={4} 
                     placeholder="Enter your feedback..." 
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] resize-none"
                   />
                 </div>
                 
                 <div className="pt-2">
-                  <Button onClick={handleSubmitFeedback}>
+                  <Button className="bg-[#009dff] hover:bg-[#009dff]/90" onClick={handleSubmitFeedback}>
                     Submit Feedback
                   </Button>
                 </div>
@@ -239,12 +244,12 @@ const Settings = () => {
               <div className="flex flex-wrap gap-3">
                 <Button 
                   variant="outline" 
-                  className="border-primary text-primary hover:bg-primary/10"
+                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff]/10"
                 >
                   Reset Exams
                 </Button>
                 <Button 
-                  variant="default"
+                  className="bg-[#009dff] hover:bg-[#009dff]/90"
                 >
                   Reset All Progress
                 </Button>
@@ -281,7 +286,7 @@ const Settings = () => {
                 </div>
                 
                 <div className="pt-2">
-                  <Button>
+                  <Button className="bg-[#009dff] hover:bg-[#009dff]/90">
                     Manage Subscription
                   </Button>
                 </div>

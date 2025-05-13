@@ -11,7 +11,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import { toast } from '@/hooks/use-toast';
-import { Phone, Mail, MessageSquare, FileText, ChevronDown } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
 
 const Support = () => {
   const handleSubmitRequest = (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ const Support = () => {
             </p>
           </div>
           
-          <div className="bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-md text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+          <div className="bg-[#009dff]/10 border border-[#009dff]/20 text-[#009dff] px-4 py-3 rounded-md text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
             <span>Need help quickly? Call or email us anytime.</span>
             <a href="mailto:support@example.com" className="underline font-medium mt-2 sm:mt-0">Contact Support</a>
           </div>
@@ -46,7 +46,7 @@ const Support = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-white rounded-xl shadow-sm p-5 space-y-2 border border-gray-100 hover:shadow-md transition">
                   <div className="flex items-center gap-2">
-                    <Phone className="text-primary w-5 h-5" />
+                    <Phone className="text-[#009dff] w-5 h-5" />
                     <h3 className="text-md font-semibold text-gray-800">Call Us</h3>
                   </div>
                   <p className="text-sm text-gray-600">Have urgent issues? Call us directly for live assistance.</p>
@@ -55,29 +55,11 @@ const Support = () => {
                 
                 <div className="bg-white rounded-xl shadow-sm p-5 space-y-2 border border-gray-100 hover:shadow-md transition">
                   <div className="flex items-center gap-2">
-                    <Mail className="text-primary w-5 h-5" />
+                    <Mail className="text-[#009dff] w-5 h-5" />
                     <h3 className="text-md font-semibold text-gray-800">Email</h3>
                   </div>
                   <p className="text-sm text-gray-600">Send us a detailed message and we'll respond within 24 hours.</p>
                   <p className="text-sm font-medium text-gray-900">support@gateai.com</p>
-                </div>
-                
-                <div className="bg-white rounded-xl shadow-sm p-5 space-y-2 border border-gray-100 hover:shadow-md transition">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="text-primary w-5 h-5" />
-                    <h3 className="text-md font-semibold text-gray-800">Live Chat</h3>
-                  </div>
-                  <p className="text-sm text-gray-600">Chat with our support team during business hours.</p>
-                  <p className="text-sm font-medium text-gray-900">Available 9AM-5PM AEST</p>
-                </div>
-                
-                <div className="bg-white rounded-xl shadow-sm p-5 space-y-2 border border-gray-100 hover:shadow-md transition">
-                  <div className="flex items-center gap-2">
-                    <FileText className="text-primary w-5 h-5" />
-                    <h3 className="text-md font-semibold text-gray-800">Documentation</h3>
-                  </div>
-                  <p className="text-sm text-gray-600">Browse our help articles and tutorials.</p>
-                  <p className="text-sm font-medium text-primary">View Help Center</p>
                 </div>
               </div>
             </div>
@@ -99,7 +81,7 @@ const Support = () => {
                 
                 <div>
                   <label className="text-sm font-medium text-gray-700">Issue Type</label>
-                  <select className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary h-10">
+                  <select className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] h-10">
                     <option value="">Select an issue</option>
                     <option value="billing">Billing</option>
                     <option value="technical">Technical Issue</option>
@@ -113,7 +95,7 @@ const Support = () => {
                   <Textarea rows={5} className="resize-none" placeholder="Describe your issue or question in detail..." />
                 </div>
                 
-                <Button type="submit">
+                <Button type="submit" className="bg-[#009dff] hover:bg-[#009dff]/90">
                   Submit Request
                 </Button>
               </form>
@@ -125,16 +107,16 @@ const Support = () => {
               
               <Accordion type="single" collapsible className="space-y-2">
                 <AccordionItem value="item-1" className="border-b border-gray-100 pb-2">
-                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-primary">
+                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-[#009dff]">
                     How do I upgrade to premium?
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-gray-500">
-                    Go to Dashboard > Click on "Upgrade Account" in the sidebar > Follow the payment steps.
+                    Go to Dashboard {`>`} Click on "Upgrade Account" in the sidebar {`>`} Follow the payment steps.
                   </AccordionContent>
                 </AccordionItem>
                 
                 <AccordionItem value="item-2" className="border-b border-gray-100 pb-2">
-                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-primary">
+                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-[#009dff]">
                     How do I reset my password?
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-gray-500">
@@ -143,7 +125,7 @@ const Support = () => {
                 </AccordionItem>
                 
                 <AccordionItem value="item-3" className="border-b border-gray-100 pb-2">
-                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-primary">
+                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-[#009dff]">
                     Can I use this on mobile devices?
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-gray-500">
@@ -152,7 +134,7 @@ const Support = () => {
                 </AccordionItem>
                 
                 <AccordionItem value="item-4" className="border-b border-gray-100 pb-2">
-                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-primary">
+                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-[#009dff]">
                     How do I get my progress report?
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-gray-500">
@@ -161,11 +143,11 @@ const Support = () => {
                 </AccordionItem>
                 
                 <AccordionItem value="item-5" className="pb-2">
-                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-primary">
+                  <AccordionTrigger className="text-sm font-medium text-gray-700 hover:text-[#009dff]">
                     Can I cancel my subscription?
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-gray-500">
-                    Yes, you can cancel your subscription at any time from the Settings > Billing section.
+                    Yes, you can cancel your subscription at any time from the Settings {`>`} Billing section.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
