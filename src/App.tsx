@@ -11,6 +11,7 @@ import MiniMockExam from "./pages/MiniMockExam";
 import MockExam from "./pages/MockExam";
 import ExamInProgress from "./pages/ExamInProgress";
 import ExamHistory from "./pages/ExamHistory";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/mock" element={<MockExam />} />
           <Route path="/progress" element={<ExamInProgress />} />
           <Route path="/history" element={<ExamHistory />} />
+          <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

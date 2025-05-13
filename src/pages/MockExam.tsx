@@ -27,7 +27,7 @@ const mockExamData = [
   },
   {
     id: 3,
-    title: 'Sectional Mock: Quantitative',
+    title: 'Full Length Mock Exam 3',
     questions: 35,
     duration: 60,
     description: 'Focus on quantitative reasoning with this specialized mock exam. Great for strengthening your math skills.',
@@ -37,7 +37,7 @@ const mockExamData = [
   },
   {
     id: 4,
-    title: 'Sectional Mock: Verbal',
+    title: 'Full Length Mock Exam 4',
     questions: 40,
     duration: 60,
     description: 'Concentrate on verbal reasoning and reading comprehension with this sectional mock exam.',
@@ -47,7 +47,7 @@ const mockExamData = [
   },
   {
     id: 5,
-    title: 'Timed Mock Challenge',
+    title: 'Full Length Mock Exam 5',
     questions: 50,
     duration: 75,
     description: 'Test your speed and accuracy under time pressure with this challenging mock exam designed to improve your time management.',
