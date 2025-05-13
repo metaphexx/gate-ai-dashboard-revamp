@@ -96,7 +96,7 @@ const QuestionBankStatus = () => {
       
       <CardContent className="p-0">
         <Table>
-          <TableHeader className="bg-gray-50">
+          <TableHeader className="bg-white border-b">
             <TableRow className="border-b">
               <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Subject Area</TableHead>
               <TableHead className="py-3 px-6 text-xs uppercase text-gray-500 font-medium">Attempted</TableHead>
