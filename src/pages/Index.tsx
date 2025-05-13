@@ -1,4 +1,3 @@
-
 import React from 'react';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import WelcomeBanner from '@/components/WelcomeBanner';
@@ -11,18 +10,16 @@ import QuestionBankStatus from '@/components/cards/QuestionBankStatus';
 import VideoTutorialCard from '@/components/cards/VideoTutorialCard';
 import AccuracyTrendChart from '@/components/charts/AccuracyTrendChart';
 import UserProfileBadge from '@/components/UserProfileBadge';
-
 const Index = () => {
-  return (
-    <div className="flex min-h-screen bg-gray-50">
+  return <div className="flex min-h-screen bg-gray-50">
       <DashboardSidebar />
       
       <main className="flex-1 p-6 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
           <header className="mb-6 flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold mb-2">Dashboard</h1>
-              <p className="text-gray-500">Track your GATE exam preparation progress</p>
+              <h1 className="text-2xl font-bold mb-2">GATE AI Online Question Bank</h1>
+              <p className="text-gray-500">Track your GATE exam preparation progress on the Dashboard!</p>
             </div>
             <UserProfileBadge />
           </header>
@@ -67,8 +64,6 @@ const Index = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
