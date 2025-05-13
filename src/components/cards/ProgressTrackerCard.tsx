@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Award, TrendingUp } from 'lucide-react';
+import { Award, TrendingUp, Trophy, Star } from 'lucide-react';
 
 const ProgressTrackerCard = () => {
   const dailyGoal = 5;
@@ -44,7 +44,7 @@ const ProgressTrackerCard = () => {
         
         <div className="mt-4 pt-4 border-t border-gray-100">
           <h4 className="font-medium mb-2">Recent Achievements</h4>
-          <div className="flex space-x-2">
+          <div className="grid grid-cols-3 gap-2 mb-2">
             <div className="flex-1 p-3 bg-primary-light rounded-md text-center">
               <span className="text-2xl">🎯</span>
               <p className="text-xs font-medium mt-1">First Mock</p>
@@ -56,6 +56,16 @@ const ProgressTrackerCard = () => {
             <div className="flex-1 p-3 bg-primary-light rounded-md text-center">
               <span className="text-2xl">🏆</span>
               <p className="text-xs font-medium mt-1">Top 10%</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="flex-1 p-3 bg-primary-light rounded-md text-center">
+              <Trophy size={20} className="inline-block text-primary" />
+              <p className="text-xs font-medium mt-1">Top Scorer</p>
+            </div>
+            <div className="flex-1 p-3 bg-primary-light rounded-md text-center">
+              <Star size={20} className="inline-block text-accent" />
+              <p className="text-xs font-medium mt-1">Perfect Quiz</p>
             </div>
           </div>
         </div>
