@@ -5,8 +5,8 @@ import { Crown } from 'lucide-react';
 const UpgradeAccountCard = () => {
   return (
     <div className="flex justify-center w-full my-4">
-      <div className="rainbow-border w-[260px] min-h-[280px]">
-        <div className="bg-white rounded-[9px] p-4 flex flex-col items-center text-center">
+      <div className="rainbow-border w-[260px] min-h-[280px] bg-transparent">
+        <div className="bg-white rounded-[9px] p-4 flex flex-col items-center text-center h-full">
           <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-3">
             <Crown className="text-white w-6 h-6" />
           </div>
