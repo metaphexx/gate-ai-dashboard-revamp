@@ -16,7 +16,7 @@ const UpgradeAccountCard = () => {
         </button>
       </div>
       
-      <style jsx>{`
+      <style>{`
         .rainbow-border {
           border: 3px solid transparent;
           border-radius: 12px;
