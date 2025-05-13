@@ -27,7 +27,7 @@ const Index = () => {
             <UserProfileBadge />
           </header>
           
-          {/* Welcome Banner and Video Tutorial - Now at the top */}
+          {/* Welcome Banner and Video Tutorial - At the top */}
           <section className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
             <div className="lg:col-span-3">
               <WelcomeBanner />
@@ -37,17 +37,17 @@ const Index = () => {
             </div>
           </section>
           
-          {/* Performance Overview & Study Streak - Moved below the welcome banner */}
+          {/* Tier Summary - Moved above Performance Overview */}
+          <section className="mb-6">
+            <TierSummary />
+          </section>
+          
+          {/* Performance Overview & Study Streak - Now below Tier Summary */}
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="lg:col-span-2">
               <PerformanceOverview />
             </div>
             <StudyStreakCard />
-          </section>
-          
-          {/* Tier Summary */}
-          <section className="mb-6">
-            <TierSummary />
           </section>
           
           {/* Recent Activity & Smart Recommendations */}
