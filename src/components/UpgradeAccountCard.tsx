@@ -1,52 +1,56 @@
 
 import React from 'react';
-import { Crown } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const UpgradeAccountCard = () => {
   return (
-    <div className="flex justify-center w-full my-4">
-      <div className="rainbow-border p-[2px] rounded-xl w-[270px] min-h-[240px] overflow-visible">
-        <div className="bg-white rounded-xl p-4 text-center flex flex-col items-center justify-between h-full">
-          <div className="bg-blue-500 p-2 rounded-full text-white">
-            <Crown size={20} />
-          </div>
-          <div className="mt-3 font-semibold text-black">Upgrade your account</div>
-          <div className="text-sm text-gray-500 mb-3">Get access to all premium features</div>
-          <button className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-600 w-full">
-            Subscribe Now
-          </button>
+    <div className="upgrade-border">
+      <div className="upgrade-inner">
+        <div className="bg-[#009dff] rounded-lg p-2 mb-2">
+          <HelpCircle className="h-6 w-6 text-white" />
         </div>
+        <h3 className="text-lg font-semibold">Upgrade your account</h3>
+        <p className="text-sm text-gray-500 mb-4">Get access to all premium features</p>
+        <Button 
+          className="w-full bg-[#009dff] hover:bg-[#009dff]/90 transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
+        >
+          Subscribe Now
+        </Button>
       </div>
       
-      <style>
-        {`
-        .rainbow-border {
-          border: 3px solid transparent;
-          background: linear-gradient(
-            90deg,
-            #8B5CF6,
-            #D946EF,
-            #F97316,
-            #0EA5E9,
-            #33C3F0,
-            #8B5CF6
-          ) border-box;
-          -webkit-mask:
-            linear-gradient(#fff 0 0) padding-box,
-            linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          background-size: 300% 100%;
-          animation: rainbow-animation 3s linear infinite;
-          box-sizing: border-box;
+      <style>{`
+        .upgrade-border {
+          border-radius: 16px;
+          padding: 2px;
+          background: linear-gradient(270deg,
+            #ff6ec4,
+            #7873f5,
+            #2af598,
+            #fec051,
+            #ff6ec4);
+          background-size: 600% 600%;
+          animation: rainbow-border 8s ease infinite;
+          margin-top: auto;
+          margin-bottom: 1rem;
         }
 
-        @keyframes rainbow-animation {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 300% 50%; }
+        .upgrade-inner {
+          background-color: white;
+          border-radius: 14px;
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
         }
-        `}
-      </style>
+
+        @keyframes rainbow-border {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
     </div>
   );
 };
