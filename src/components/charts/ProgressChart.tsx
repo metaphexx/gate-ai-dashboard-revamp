@@ -17,6 +17,7 @@ const AnimatedProgressChart = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animatedData, setAnimatedData] = useState<typeof data>([]);
   const [displayValue, setDisplayValue] = useState(0);
+  const [animationProgress, setAnimationProgress] = useState(0);
 
   useEffect(() => {
     // Skip animation on server-side rendering
@@ -47,8 +48,42 @@ const AnimatedProgressChart = () => {
     }
   }, [currentIndex, animationFinished]);
 
+  // For the stroke animation
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Animate the stroke dashoffset
+    let startTime: number;
+    const duration = 1200; // 1.2 seconds
+    
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      
+      // Calculate progress as a value between 0 and 1
+      const progress = Math.min(elapsed / duration, 1);
+      setAnimationProgress(progress);
+      
+      // Continue animation until complete
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }, []);
+
   return (
     <div className="h-64">
+      <style>
+        {`
+          .animated-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: ${1000 - (animationProgress * 1000)};
+            transition: stroke-dashoffset 100ms linear;
+          }
+        `}
+      </style>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={animatedData}
@@ -74,6 +109,7 @@ const AnimatedProgressChart = () => {
             dot={{ r: 4, fill: '#009dff', stroke: '#fff', strokeWidth: 2 }}
             strokeWidth={3}
             isAnimationActive={true}
+            className="animated-line"
           />
         </LineChart>
       </ResponsiveContainer>

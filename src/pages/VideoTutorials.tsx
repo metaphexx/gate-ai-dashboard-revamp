@@ -41,31 +41,6 @@ const videoData = [
     isPopular: true
   },
   {
-    id: 5,
-    title: "Dr Jags's Speech PQRST Technique | Everest Tutoring",
-    category: "ATAR Tips",
-    thumbnail: "/mock-exam-1.jpg",
-    duration: "02:55",
-    year: "Year 6"
-  },
-  {
-    id: 6,
-    title: "ATAR Physics WACE 2023 Predictions PART 1!",
-    category: "ATAR Tips",
-    thumbnail: "/mock-exam-2.jpg",
-    duration: "01:30",
-    year: "Year 5"
-  },
-  {
-    id: 7,
-    title: "ATAR Physics WACE 2023 Prediction PART 3!",
-    category: "ATAR Tips",
-    thumbnail: "/mock-exam-3.jpg",
-    duration: "01:27",
-    year: "Year 4",
-    isNew: true
-  },
-  {
     id: 8,
     title: "GATE Exam Tips and Tricks for Year 4 Students",
     category: "Short Lessons",
@@ -79,7 +54,8 @@ const VideoTutorials = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const tabs = ["All", "GATE Walkthroughs", "ATAR Tips", "Short Lessons", "Student Picks"];
+  // Updated tabs without ATAR Tips
+  const tabs = ["All", "GATE Walkthroughs", "Short Lessons", "Student Picks"];
 
   // Filter videos based on active tab and search query
   const filteredVideos = videoData.filter(video => {
