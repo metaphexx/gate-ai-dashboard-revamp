@@ -4,9 +4,9 @@ import { Crown } from 'lucide-react';
 
 const UpgradeAccountCard = () => {
   return (
-    <div className="upgrade-card relative mb-4 mt-auto">
+    <div className="rainbow-border relative mb-4 mt-auto bg-white rounded-xl p-6 shadow-sm text-center w-full md:w-[90%] mx-auto">
       <div className="icon-circle">
-        <Crown className="h-8 w-8 text-white" />
+        <Crown className="h-6 w-6 text-white" />
       </div>
       <h3 className="text-lg font-bold mt-3">Upgrade your account</h3>
       <p className="text-sm text-gray-500 my-2 mb-5">Get access to all premium features</p>
@@ -16,42 +16,25 @@ const UpgradeAccountCard = () => {
       </button>
       
       <style>{`
-        .upgrade-card {
-          position: relative;
-          border-radius: 16px;
-          padding: 24px;
-          background: white;
-          text-align: center;
-          overflow: hidden;
-          z-index: 1;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        .rainbow-border {
+          border: 3px solid transparent;
+          background: linear-gradient(90deg, #8B5CF6, #D946EF, #F97316, #0EA5E9, #33C3F0, #8B5CF6) border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          background-size: 400% 100%;
+          animation: rainbow-animation 6s linear infinite;
         }
 
-        .upgrade-card::before {
-          content: "";
-          position: absolute;
-          top: -2px;
-          left: -2px;
-          right: -2px;
-          bottom: -2px;
-          background: linear-gradient(
-            270deg,
-            #ff6ec4,
-            #7873f5,
-            #2af598,
-            #fec051,
-            #ff6ec4
-          );
-          background-size: 600% 600%;
-          animation: rainbowFlow 6s linear infinite;
-          z-index: -1;
-          border-radius: 18px;
+        @keyframes rainbow-animation {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 100% 50%; }
         }
 
         .icon-circle {
           background: #007bff;
-          width: 56px;
-          height: 56px;
+          width: 48px;
+          height: 48px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -72,14 +55,9 @@ const UpgradeAccountCard = () => {
         }
 
         .subscribe-btn:hover {
-          transform: scale(1.05);
-          box-shadow: 0 6px 12px rgba(0, 123, 255, 0.25);
-        }
-
-        @keyframes rainbowFlow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          transform: scale(1.02);
+          background-color: #0069d9;
+          box-shadow: 0 4px 8px rgba(0, 123, 255, 0.25);
         }
       `}</style>
     </div>
