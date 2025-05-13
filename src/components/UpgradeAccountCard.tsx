@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Question } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const UpgradeAccountCard = () => {
@@ -8,7 +8,7 @@ const UpgradeAccountCard = () => {
     <div className="upgrade-border">
       <div className="upgrade-inner">
         <div className="bg-[#009dff] rounded-lg p-2 mb-2">
-          <Question className="h-6 w-6 text-white" />
+          <HelpCircle className="h-6 w-6 text-white" />
         </div>
         <h3 className="text-lg font-semibold">Upgrade your account</h3>
         <p className="text-sm text-gray-500 mb-4">Get access to all premium features</p>
@@ -19,7 +19,7 @@ const UpgradeAccountCard = () => {
         </Button>
       </div>
       
-      <style jsx>{`
+      <style>{`
         .upgrade-border {
           border-radius: 16px;
           padding: 2px;
