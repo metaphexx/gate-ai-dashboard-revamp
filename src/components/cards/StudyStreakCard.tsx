@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Award, TrendingUp } from 'lucide-react';
+import { Award, TrendingUp, Trophy, Medal, Star } from 'lucide-react';
 
 const StudyStreakCard = () => {
   const dailyGoal = 5;
@@ -50,7 +50,7 @@ const StudyStreakCard = () => {
         
         <div className="mt-2 pt-2 border-t border-gray-100">
           <h4 className="font-medium text-sm mb-2">Latest Achievements</h4>
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             <div className="flex-1 p-2 bg-primary-light rounded-md text-center">
               <span className="text-lg">🎯</span>
               <p className="text-xs font-medium mt-1">First Mock</p>
@@ -58,6 +58,14 @@ const StudyStreakCard = () => {
             <div className="flex-1 p-2 bg-primary-light rounded-md text-center">
               <span className="text-lg">⏱️</span>
               <p className="text-xs font-medium mt-1">Speed Master</p>
+            </div>
+            <div className="flex-1 p-2 bg-primary-light rounded-md text-center">
+              <span className="text-lg">🏆</span>
+              <p className="text-xs font-medium mt-1">Top Scorer</p>
+            </div>
+            <div className="flex-1 p-2 bg-primary-light rounded-md text-center">
+              <span className="text-lg">⭐</span>
+              <p className="text-xs font-medium mt-1">Perfect Quiz</p>
             </div>
           </div>
         </div>
