@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { motion, useInView } from 'framer-motion';
 
 // Subjects to filter by
 const SUBJECTS = ['All', 'Quantitative', 'Abstract', 'Writing', 'Reading'];
@@ -109,48 +109,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-// Custom animated line component
-const AnimatedLine = ({ data, color, dataKey }: { data: any[], color: string, dataKey: string }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.5 });
-  
-  // Generate SVG path from data points
-  const generatePath = () => {
-    if (!data || data.length === 0) return '';
-    
-    // Find min/max values to scale properly
-    const width = 100;
-    const height = 100;
-    
-    // Generate points
-    return data.map((entry, index) => {
-      const x = (index / (data.length - 1)) * 100;
-      const y = 100 - (entry[dataKey] / 100) * 100; // Assuming 0-100 scale
-      return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
-    }).join(' ');
-  };
-
-  return (
-    <svg ref={ref} width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}>
-      <motion.path
-        d={generatePath()}
-        stroke={color}
-        strokeWidth={3}
-        fill="none"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: isInView ? 1 : 0 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
-      />
-    </svg>
-  );
-};
-
 const AccuracyTrendChart = () => {
   const [subject, setSubject] = useState<string>('All');
-  const graphRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(graphRef, { once: false, amount: 0.3 });
-  
   const data = allData[subject as keyof typeof allData];
+  
   const trend = calculateTrend(data);
   const latestAccuracy = data.length > 0 ? data[data.length - 1].accuracy : 0;
   const latestWeekData = data[data.length - 1];
@@ -170,9 +132,7 @@ const AccuracyTrendChart = () => {
             <div className="w-40">
               <Select 
                 defaultValue="All" 
-                onValueChange={(value) => {
-                  setSubject(value);
-                }}
+                onValueChange={(value) => setSubject(value)}
               >
                 <SelectTrigger className="h-8 text-xs">
                   <SelectValue placeholder="Filter by subject" />
@@ -198,7 +158,7 @@ const AccuracyTrendChart = () => {
           </div>
         </div>
         
-        <div id="performance-graph" ref={graphRef} className="h-64 relative">
+        <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={data}
@@ -233,26 +193,17 @@ const AccuracyTrendChart = () => {
               <ReferenceLine y={70} stroke="#3B82F6" strokeOpacity={0.3} strokeWidth={1} />
               <ReferenceLine y={50} stroke="#F59E0B" strokeOpacity={0.3} strokeWidth={1} />
               
-              {/* Hidden Line to reserve space but not show */}
               <Line
                 type="monotone"
                 dataKey="accuracy"
-                stroke="transparent"
+                stroke="#3B82F6"
                 activeDot={{ r: 8, fill: '#3B82F6', stroke: '#fff', strokeWidth: 2 }}
                 dot={{ r: 4, fill: '#3B82F6', stroke: '#fff', strokeWidth: 2 }}
-                strokeWidth={0}
+                strokeWidth={3}
+                animationDuration={1000}
               />
             </LineChart>
           </ResponsiveContainer>
-          
-          {/* Animated line overlay */}
-          {isInView && (
-            <AnimatedLine 
-              data={data} 
-              color="#3B82F6" 
-              dataKey="accuracy" 
-            />
-          )}
         </div>
         
         <div className="mt-4 text-sm flex justify-between items-center">

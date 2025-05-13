@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
-import { motion, useInView } from 'framer-motion';
 
 const data = {
   allTime: [
@@ -30,27 +30,8 @@ const getTrendIcon = (trend: string) => {
   }
 };
 
-// Animated Bar component with proper type definition
-const AnimatedBar = ({ x, y, width, height, fill }: { x: number, y: number, width: number, height: number, fill: string }) => {
-  return (
-    <motion.rect
-      x={x}
-      y={y}
-      width={width}
-      rx={4}
-      ry={4}
-      fill={fill}
-      initial={{ height: 0, y: y + height }}
-      animate={{ height, y }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    />
-  );
-};
-
 const PerformanceOverview = () => {
   const [timeRange, setTimeRange] = useState<'allTime' | 'lastWeek'>('allTime');
-  const graphRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(graphRef, { once: false, amount: 0.5 });
   
   const chartData = data[timeRange];
   
@@ -90,7 +71,7 @@ const PerformanceOverview = () => {
         </div>
       </div>
       
-      <div className="h-64 mb-4 relative" ref={graphRef}>
+      <div className="h-64 mb-4">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
@@ -103,26 +84,7 @@ const PerformanceOverview = () => {
             <Tooltip 
               content={<CustomTooltip />}
             />
-            {isInView && (
-              <Bar 
-                dataKey="accuracy" 
-                fill="#009dff" 
-                radius={[4, 4, 0, 0]} 
-                shape={(props: any) => {
-                  // Make sure we pass all required properties to AnimatedBar
-                  const { x, y, width, height, fill } = props;
-                  return (
-                    <AnimatedBar 
-                      x={x} 
-                      y={y} 
-                      width={width} 
-                      height={height} 
-                      fill={fill} 
-                    />
-                  );
-                }}
-              />
-            )}
+            <Bar dataKey="accuracy" fill="#009dff" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
