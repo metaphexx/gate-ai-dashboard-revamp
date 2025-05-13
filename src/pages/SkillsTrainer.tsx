@@ -4,7 +4,7 @@ import DashboardSidebar from '@/components/DashboardSidebar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Play } from 'lucide-react';
+import { Play, Plus, Minus, Divide, X } from 'lucide-react';
 
 const SkillsTrainer = () => {
   // State for arithmetic game
@@ -21,6 +21,42 @@ const SkillsTrainer = () => {
   // Time limit selection handler
   const handleTimeLimitSelect = (timeLimit: number) => {
     setSelectedTimeLimit(timeLimit);
+  };
+
+  // Operation icons with clipart style
+  const operationIcons = {
+    addition: (
+      <div className="flex flex-col items-center">
+        <div className="bg-pink-200 p-4 rounded-lg">
+          <Plus size={28} className="text-green-700" strokeWidth={3} />
+        </div>
+        <span className="mt-2 text-sm font-medium">Addition</span>
+      </div>
+    ),
+    subtraction: (
+      <div className="flex flex-col items-center">
+        <div className="bg-purple-200 p-4 rounded-lg">
+          <Minus size={28} className="text-blue-600" strokeWidth={3} />
+        </div>
+        <span className="mt-2 text-sm font-medium">Subtraction</span>
+      </div>
+    ),
+    multiplication: (
+      <div className="flex flex-col items-center">
+        <div className="bg-blue-200 p-4 rounded-lg">
+          <X size={28} className="text-orange-500" strokeWidth={3} />
+        </div>
+        <span className="mt-2 text-sm font-medium">Multiplication</span>
+      </div>
+    ),
+    division: (
+      <div className="flex flex-col items-center">
+        <div className="bg-green-200 p-4 rounded-lg">
+          <Divide size={28} className="text-purple-600" strokeWidth={3} />
+        </div>
+        <span className="mt-2 text-sm font-medium">Division</span>
+      </div>
+    ),
   };
 
   return (
@@ -41,47 +77,50 @@ const SkillsTrainer = () => {
                 <h2 className="text-xl font-semibold mb-1">Arithmetic Game</h2>
                 <p className="text-gray-500 text-sm mb-6">Practice your maths with flexible training settings</p>
                 
-                {/* Operator Selector */}
+                {/* Operator Selector with clipart icons and operation names */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                   <button
                     onClick={() => handleOperationSelect('addition')}
-                    className={`aspect-square rounded-lg flex items-center justify-center p-4 text-2xl transition-colors ${
+                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
                       selectedOperation === 'addition' 
                         ? 'bg-blue-50 border-2 border-primary text-primary' 
                         : 'bg-gray-50 hover:bg-gray-100'
                     }`}
                   >
-                    ➕
+                    {operationIcons.addition}
                   </button>
+                  
                   <button
                     onClick={() => handleOperationSelect('subtraction')}
-                    className={`aspect-square rounded-lg flex items-center justify-center p-4 text-2xl transition-colors ${
+                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
                       selectedOperation === 'subtraction' 
                         ? 'bg-blue-50 border-2 border-primary text-primary' 
                         : 'bg-gray-50 hover:bg-gray-100'
                     }`}
                   >
-                    ➖
+                    {operationIcons.subtraction}
                   </button>
+                  
                   <button
                     onClick={() => handleOperationSelect('multiplication')}
-                    className={`aspect-square rounded-lg flex items-center justify-center p-4 text-2xl transition-colors ${
+                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
                       selectedOperation === 'multiplication' 
                         ? 'bg-blue-50 border-2 border-primary text-primary' 
                         : 'bg-gray-50 hover:bg-gray-100'
                     }`}
                   >
-                    ✖️
+                    {operationIcons.multiplication}
                   </button>
+                  
                   <button
                     onClick={() => handleOperationSelect('division')}
-                    className={`aspect-square rounded-lg flex items-center justify-center p-4 text-2xl transition-colors ${
+                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
                       selectedOperation === 'division' 
                         ? 'bg-blue-50 border-2 border-primary text-primary' 
                         : 'bg-gray-50 hover:bg-gray-100'
                     }`}
                   >
-                    ➗
+                    {operationIcons.division}
                   </button>
                 </div>
                 
