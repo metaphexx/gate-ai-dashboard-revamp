@@ -18,7 +18,7 @@ const DashboardSidebar = () => {
       title: "Learn",
       items: [
         { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/" },
-        { name: "Skills Trainer", icon: <BookOpen size={20} />, path: "/skills" },
+        { name: "Skills Trainer", icon: <BookOpen size={20} />, path: "/skills-trainer" },
         { name: "Practice Test", icon: <FileCheck size={20} />, path: "/practice" },
         { name: "Mock Exam", icon: <FileCheck size={20} />, path: "/mock" },
         { name: "Exam History", icon: <Clock size={20} />, path: "/history" }
