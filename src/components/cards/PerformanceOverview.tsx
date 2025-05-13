@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -31,7 +30,7 @@ const getTrendIcon = (trend: string) => {
   }
 };
 
-// Animated Bar component
+// Animated Bar component with proper type definition
 const AnimatedBar = ({ x, y, width, height, fill }: { x: number, y: number, width: number, height: number, fill: string }) => {
   return (
     <motion.rect
@@ -50,8 +49,8 @@ const AnimatedBar = ({ x, y, width, height, fill }: { x: number, y: number, widt
 
 const PerformanceOverview = () => {
   const [timeRange, setTimeRange] = useState<'allTime' | 'lastWeek'>('allTime');
-  const chartRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(chartRef, { once: false, amount: 0.5 });
+  const graphRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(graphRef, { once: false, amount: 0.5 });
   
   const chartData = data[timeRange];
   
@@ -91,7 +90,7 @@ const PerformanceOverview = () => {
         </div>
       </div>
       
-      <div className="h-64 mb-4 relative" ref={chartRef}>
+      <div className="h-64 mb-4 relative" ref={graphRef}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
@@ -104,14 +103,26 @@ const PerformanceOverview = () => {
             <Tooltip 
               content={<CustomTooltip />}
             />
-            {isInView ? (
+            {isInView && (
               <Bar 
                 dataKey="accuracy" 
                 fill="#009dff" 
                 radius={[4, 4, 0, 0]} 
-                shape={<AnimatedBar />}
+                shape={(props: any) => {
+                  // Make sure we pass all required properties to AnimatedBar
+                  const { x, y, width, height, fill } = props;
+                  return (
+                    <AnimatedBar 
+                      x={x} 
+                      y={y} 
+                      width={width} 
+                      height={height} 
+                      fill={fill} 
+                    />
+                  );
+                }}
               />
-            ) : null}
+            )}
           </BarChart>
         </ResponsiveContainer>
       </div>
