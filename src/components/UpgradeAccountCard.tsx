@@ -7,18 +7,14 @@ const UpgradeAccountCard = () => {
   return (
     <div className="relative overflow-visible mb-4 w-full">
       <div className="rainbow-border">
-        <div className="bg-white rounded-lg p-4 flex flex-row items-center justify-between relative z-20">
-          <div className="flex items-center space-x-3">
-            <div className="bg-[#1d7dff] rounded-full p-2">
-              <Crown className="h-5 w-5 text-white" />
-            </div>
-            <div className="text-left">
-              <h3 className="text-lg font-bold text-gray-900">Upgrade your account</h3>
-              <p className="text-xs text-gray-600">Get access to all premium features</p>
-            </div>
+        <div className="bg-white rounded-lg p-4 flex flex-col items-center text-center relative z-20">
+          <div className="bg-[#1d7dff] rounded-full p-2 mb-3">
+            <Crown className="h-5 w-5 text-white" />
           </div>
+          <h3 className="text-xl font-bold text-gray-900">Upgrade your account</h3>
+          <p className="text-sm text-gray-600 mb-4">Get access to all premium features</p>
           <Button 
-            className="bg-[#1d7dff] hover:bg-[#0a6eef] transition-all transform hover:scale-105 shadow-sm hover:shadow-md text-white font-medium"
+            className="w-full bg-[#1d7dff] hover:bg-[#0a6eef] transition-all transform hover:scale-105 shadow-sm hover:shadow-md text-white font-medium"
           >
             Subscribe Now
           </Button>
