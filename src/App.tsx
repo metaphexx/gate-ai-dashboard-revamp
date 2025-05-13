@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import SkillsTrainer from "./pages/SkillsTrainer";
 import PracticeTest from "./pages/PracticeTest";
 import MiniMockExam from "./pages/MiniMockExam";
+import MockExam from "./pages/MockExam";
+import ExamInProgress from "./pages/ExamInProgress";
+import ExamHistory from "./pages/ExamHistory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +26,9 @@ const App = () => (
           <Route path="/skills-trainer" element={<SkillsTrainer />} />
           <Route path="/practice" element={<PracticeTest />} />
           <Route path="/mini-mock" element={<MiniMockExam />} />
+          <Route path="/mock" element={<MockExam />} />
+          <Route path="/progress" element={<ExamInProgress />} />
+          <Route path="/history" element={<ExamHistory />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

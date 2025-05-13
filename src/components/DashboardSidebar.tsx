@@ -22,6 +22,7 @@ const DashboardSidebar = () => {
         { name: "Practice Test", icon: <FileCheck size={20} />, path: "/practice" },
         { name: "Mini Mock Exam", icon: <FileCheck size={20} />, path: "/mini-mock" },
         { name: "Mock Exam", icon: <FileCheck size={20} />, path: "/mock" },
+        { name: "Exam in Progress", icon: <Clock size={20} />, path: "/progress" },
         { name: "Exam History", icon: <Clock size={20} />, path: "/history" }
       ]
     },
