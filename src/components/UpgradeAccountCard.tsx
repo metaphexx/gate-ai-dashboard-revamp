@@ -35,15 +35,15 @@ const UpgradeAccountCard = () => {
           right: -2px;
           bottom: -2px;
           background: linear-gradient(
-            135deg,
+            270deg,
             #ff6ec4,
             #7873f5,
             #2af598,
             #fec051,
             #ff6ec4
           );
-          background-size: 400% 400%;
-          animation: borderShift 6s ease infinite;
+          background-size: 600% 600%;
+          animation: rainbowFlow 6s linear infinite;
           z-index: -1;
           border-radius: 18px;
         }
@@ -76,7 +76,7 @@ const UpgradeAccountCard = () => {
           box-shadow: 0 6px 12px rgba(0, 123, 255, 0.25);
         }
 
-        @keyframes borderShift {
+        @keyframes rainbowFlow {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
