@@ -68,7 +68,7 @@ const DashboardSidebar = () => {
         ))}
       </div>
       
-      <div className="flex justify-center w-full px-4 mb-4">
+      <div className="flex justify-center w-full mt-auto mb-4">
         <UpgradeAccountCard />
       </div>
       
