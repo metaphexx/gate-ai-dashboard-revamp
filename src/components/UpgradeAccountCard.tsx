@@ -11,8 +11,8 @@ const UpgradeAccountCard = () => {
           <div className="bg-[#1d7dff] rounded-full p-2 mb-3">
             <Crown className="h-5 w-5 text-white" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900">Upgrade your account</h3>
-          <p className="text-sm text-gray-600 mb-4">Get access to all premium features</p>
+          <h3 className="text-[14px] font-bold text-gray-900 whitespace-nowrap">Upgrade your account</h3>
+          <p className="text-[12px] text-gray-600 mb-4 whitespace-nowrap">Get access to all premium features</p>
           <Button 
             className="w-full bg-[#1d7dff] hover:bg-[#0a6eef] transition-all transform hover:scale-105 shadow-sm hover:shadow-md text-white font-medium"
           >
