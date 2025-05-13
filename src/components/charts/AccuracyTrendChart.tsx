@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -111,8 +111,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const AccuracyTrendChart = () => {
   const [subject, setSubject] = useState<string>('All');
-  const data = allData[subject as keyof typeof allData];
+  const [animateGraph, setAnimateGraph] = useState(false);
+  const [animatedData, setAnimatedData] = useState<any[]>([]);
+  const graphRef = useRef<HTMLDivElement>(null);
   
+  const data = allData[subject as keyof typeof allData];
   const trend = calculateTrend(data);
   const latestAccuracy = data.length > 0 ? data[data.length - 1].accuracy : 0;
   const latestWeekData = data[data.length - 1];
@@ -121,6 +124,48 @@ const AccuracyTrendChart = () => {
   const weekDifference = previousWeekData 
     ? latestWeekData.accuracy - previousWeekData.accuracy
     : 0;
+
+  // Setup intersection observer to detect when chart comes into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnimateGraph(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (graphRef.current) {
+      observer.observe(graphRef.current);
+    }
+
+    return () => {
+      if (graphRef.current) {
+        observer.unobserve(graphRef.current);
+      }
+    };
+  }, []);
+
+  // Animate data points sequentially when graph is visible
+  useEffect(() => {
+    if (!animateGraph) {
+      setAnimatedData([]);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const animate = (index: number) => {
+        if (index <= data.length) {
+          setAnimatedData(data.slice(0, index));
+          setTimeout(() => animate(index + 1), 150);
+        }
+      };
+      animate(1);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [animateGraph, data, subject]);
 
   return (
     <Card className="animate-fade-in">
@@ -132,7 +177,11 @@ const AccuracyTrendChart = () => {
             <div className="w-40">
               <Select 
                 defaultValue="All" 
-                onValueChange={(value) => setSubject(value)}
+                onValueChange={(value) => {
+                  setSubject(value);
+                  setAnimateGraph(false);
+                  setTimeout(() => setAnimateGraph(true), 100);
+                }}
               >
                 <SelectTrigger className="h-8 text-xs">
                   <SelectValue placeholder="Filter by subject" />
@@ -158,10 +207,10 @@ const AccuracyTrendChart = () => {
           </div>
         </div>
         
-        <div className="h-64">
+        <div id="performance-graph" ref={graphRef} className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
-              data={data}
+              data={animateGraph ? animatedData : []}
               margin={{
                 top: 10,
                 right: 10,
@@ -201,6 +250,7 @@ const AccuracyTrendChart = () => {
                 dot={{ r: 4, fill: '#3B82F6', stroke: '#fff', strokeWidth: 2 }}
                 strokeWidth={3}
                 animationDuration={1000}
+                isAnimationActive={true}
               />
             </LineChart>
           </ResponsiveContainer>
