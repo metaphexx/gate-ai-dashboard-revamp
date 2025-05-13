@@ -15,7 +15,7 @@ const UpgradeAccountCard = () => {
         Subscribe Now
       </button>
       
-      <style jsx>{`
+      <style>{`
         .upgrade-card {
           position: relative;
           border-radius: 16px;
