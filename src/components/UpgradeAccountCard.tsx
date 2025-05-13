@@ -4,29 +4,42 @@ import { Crown } from 'lucide-react';
 
 const UpgradeAccountCard = () => {
   return (
-    <div className="rainbow-border relative mb-4 mt-auto bg-white rounded-xl p-6 shadow-sm text-center w-full md:w-[90%] mx-auto">
-      <div className="icon-circle">
-        <Crown className="h-6 w-6 text-white" />
+    <div className="rainbow-border relative mb-4 mt-auto mx-auto">
+      <div className="card-content">
+        <div className="icon-circle">
+          <Crown className="h-6 w-6 text-white" />
+        </div>
+        <h3 className="text-lg font-bold mt-3">Upgrade your account</h3>
+        <p className="text-sm text-gray-500 my-2 mb-5">Get access to all premium features</p>
+        
+        <button className="subscribe-btn w-full">
+          Subscribe Now
+        </button>
       </div>
-      <h3 className="text-lg font-bold mt-3">Upgrade your account</h3>
-      <p className="text-sm text-gray-500 my-2 mb-5">Get access to all premium features</p>
-      
-      <button className="subscribe-btn w-full">
-        Subscribe Now
-      </button>
       
       <style>{`
         .rainbow-border {
-          border: 3px solid transparent;
-          background: linear-gradient(90deg, #8B5CF6, #D946EF, #F97316, #0EA5E9, #33C3F0, #8B5CF6) border-box;
-          -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          background-size: 400% 100%;
-          animation: rainbow-animation 6s linear infinite;
+          padding: 3px;
+          border-radius: 16px;
+          background: linear-gradient(90deg, #ff0080, #ff8c00, #40e0d0, #ff0080);
+          background-size: 300% 300%;
+          animation: rainbow-border-animation 3s linear infinite;
+          width: 280px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
-        @keyframes rainbow-animation {
+        .card-content {
+          background: white;
+          border-radius: 12px;
+          padding: 24px;
+          text-align: center;
+          width: 100%;
+          height: 100%;
+        }
+
+        @keyframes rainbow-border-animation {
           0% { background-position: 0% 50%; }
           100% { background-position: 100% 50%; }
         }
