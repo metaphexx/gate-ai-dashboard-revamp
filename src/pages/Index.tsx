@@ -9,6 +9,7 @@ import PerformanceOverview from '@/components/cards/PerformanceOverview';
 import StudyStreakCard from '@/components/cards/StudyStreakCard';
 import QuestionBankStatus from '@/components/cards/QuestionBankStatus';
 import VideoTutorialCard from '@/components/cards/VideoTutorialCard';
+import AccuracyTrendChart from '@/components/charts/AccuracyTrendChart';
 
 const Index = () => {
   return (
@@ -49,6 +50,11 @@ const Index = () => {
               <PerformanceOverview />
             </div>
             <StudyStreakCard />
+          </section>
+          
+          {/* Accuracy Trend Chart */}
+          <section className="mb-6">
+            <AccuracyTrendChart />
           </section>
           
           {/* Question Bank Status */}
