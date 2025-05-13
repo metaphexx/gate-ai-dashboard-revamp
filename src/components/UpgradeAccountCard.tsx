@@ -9,8 +9,8 @@ const UpgradeAccountCard = () => {
         <div className="icon-circle">
           <Crown className="h-6 w-6 text-white" />
         </div>
-        <h3 className="text-lg font-bold mt-3">Upgrade your account</h3>
-        <p className="text-sm text-gray-500 my-2 mb-5">Get access to all premium features</p>
+        <h3 className="text-base font-semibold text-center mt-2">Upgrade your account</h3>
+        <p className="text-gray-500 text-center text-sm mb-4">Get access to all premium features</p>
         
         <button className="subscribe-btn w-full">
           Subscribe Now
@@ -19,15 +19,19 @@ const UpgradeAccountCard = () => {
       
       <style>{`
         .rainbow-border {
-          padding: 3px;
-          border-radius: 16px;
-          background: linear-gradient(90deg, #ff0080, #ff8c00, #40e0d0, #ff0080);
-          background-size: 300% 300%;
-          animation: rainbow-border-animation 3s linear infinite;
+          border: 3px solid transparent;
+          border-radius: 12px;
+          background: linear-gradient(90deg, #8B5CF6, #D946EF, #F97316, #0EA5E9, #33C3F0, #8B5CF6) border-box;
+          -webkit-mask: 
+            linear-gradient(#fff 0 0) padding-box, 
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          background-size: 400% 100%;
+          animation: rainbow-animation 3s linear infinite;
           width: 280px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          box-sizing: border-box;
+          height: 280px;
         }
 
         .card-content {
@@ -37,40 +41,45 @@ const UpgradeAccountCard = () => {
           text-align: center;
           width: 100%;
           height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          box-sizing: border-box;
         }
 
-        @keyframes rainbow-border-animation {
+        @keyframes rainbow-animation {
           0% { background-position: 0% 50%; }
           100% { background-position: 100% 50%; }
         }
 
         .icon-circle {
-          background: #007bff;
+          background-color: #2563eb;
           width: 48px;
           height: 48px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto;
+          margin-bottom: 10px;
         }
 
         .subscribe-btn {
-          background-color: #007bff;
+          background-color: #2563eb;
           color: white;
-          padding: 12px 20px;
-          border-radius: 10px;
+          padding: 8px 0;
+          border-radius: 6px;
           font-weight: 600;
           font-size: 16px;
           border: none;
           transition: all 0.2s ease;
           cursor: pointer;
+          width: 100%;
+          margin-top: auto;
         }
 
         .subscribe-btn:hover {
-          transform: scale(1.02);
-          background-color: #0069d9;
-          box-shadow: 0 4px 8px rgba(0, 123, 255, 0.25);
+          background-color: #1d4ed8;
+          transform: translateY(-1px);
         }
       `}</style>
     </div>
