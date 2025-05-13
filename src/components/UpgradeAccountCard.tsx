@@ -5,14 +5,14 @@ import { Crown } from 'lucide-react';
 const UpgradeAccountCard = () => {
   return (
     <div className="flex justify-center w-full my-4">
-      <div className="rainbow-border w-[260px] min-h-[280px] bg-transparent">
-        <div className="bg-white rounded-[9px] p-4 flex flex-col items-center text-center h-full">
-          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-3">
-            <Crown className="text-white w-6 h-6" />
+      <div className="rainbow-border p-[2px] rounded-xl w-[270px] min-h-[240px] overflow-visible">
+        <div className="bg-white rounded-xl p-4 text-center flex flex-col items-center justify-between h-full">
+          <div className="bg-blue-500 p-2 rounded-full text-white">
+            <Crown size={20} />
           </div>
-          <h3 className="font-semibold text-lg mb-1 text-gray-900">Upgrade your account</h3>
-          <p className="text-sm text-gray-500 mb-4">Get access to all premium features</p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 w-full rounded-md">
+          <div className="mt-3 font-semibold text-black">Upgrade your account</div>
+          <div className="text-sm text-gray-500 mb-3">Get access to all premium features</div>
+          <button className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-600 w-full">
             Subscribe Now
           </button>
         </div>
@@ -22,7 +22,6 @@ const UpgradeAccountCard = () => {
         {`
         .rainbow-border {
           border: 3px solid transparent;
-          border-radius: 12px;
           background: linear-gradient(
             90deg,
             #8B5CF6,
