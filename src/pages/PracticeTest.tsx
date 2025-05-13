@@ -10,33 +10,36 @@ const testData = [
     title: 'Abstract Reasoning',
     questions: 37,
     duration: 20,
-    description: 'Test your pattern recognition and logic with non-verbal, visual problems.',
+    description: 'Test your pattern recognition and logic with non-verbal, visual problems. Improve your ability to identify patterns and solve complex puzzles.',
     imagePath: '/abstract-reasoning.jpg',
+    hasAI: false,
   },
   {
     id: 2,
     title: 'Writing Test',
     questions: 1,
     duration: 25,
-    description: 'Evaluate your ability to think creatively, express ideas clearly, and structure writing.',
+    description: 'Evaluate your ability to think creatively, express ideas clearly, and structure writing effectively. AI-powered analysis provides detailed feedback on your writing style.',
     imagePath: '/writing-test.jpg',
-    isNew: true,
+    hasAI: true,
   },
   {
     id: 3,
     title: 'Reading Comprehension',
     questions: 38,
     duration: 10,
-    description: 'Assess your ability to recognize words quickly and understand complex text passages.',
+    description: 'Assess your ability to recognize words quickly and understand complex text passages. AI technology adapts questions based on your reading speed and comprehension level.',
     imagePath: '/reading-comprehension.jpg',
+    hasAI: true,
   },
   {
     id: 4,
     title: 'Quantitative Reasoning',
     questions: 10,
     duration: 10,
-    description: 'Evaluate your ability to interpret and analyze numerical data in various formats.',
+    description: 'Evaluate your ability to interpret and analyze numerical data in various formats. Practice with problems designed to strengthen your mathematical reasoning skills.',
     imagePath: '/quantitative-reasoning.jpg',
+    hasAI: false,
   },
 ];
 
@@ -50,7 +53,7 @@ const PracticeTest = () => {
           <p className="text-gray-500">Select a test to practice your skills</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {testData.map((test) => (
             <TestCard
               key={test.id}
@@ -60,6 +63,7 @@ const PracticeTest = () => {
               description={test.description}
               imagePath={test.imagePath}
               isNew={test.isNew}
+              hasAI={test.hasAI}
             />
           ))}
         </div>
