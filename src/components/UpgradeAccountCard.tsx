@@ -5,7 +5,7 @@ import { Crown } from 'lucide-react';
 const UpgradeAccountCard = () => {
   return (
     <div className="rainbow-border relative mb-4 mt-auto mx-auto">
-      <div className="flex flex-col items-center text-center p-4 bg-white rounded-[9px]">
+      <div className="bg-white rounded-[9px] p-4 flex flex-col items-center text-center">
         <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-3">
           <Crown className="text-white w-6 h-6" />
         </div>
@@ -16,7 +16,7 @@ const UpgradeAccountCard = () => {
         </button>
       </div>
       
-      <style>{`
+      <style jsx>{`
         .rainbow-border {
           border: 3px solid transparent;
           border-radius: 12px;
