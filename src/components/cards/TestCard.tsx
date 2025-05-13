@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Clock } from 'lucide-react';
@@ -57,7 +58,7 @@ const TestCard = ({
       </p>
 
       {/* CTA Button */}
-      <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 mt-auto">
+      <Button className="w-full">
         Start Now
       </Button>
     </div>;
