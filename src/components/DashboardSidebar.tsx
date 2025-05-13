@@ -68,20 +68,9 @@ const DashboardSidebar = () => {
         ))}
       </div>
       
-      <div className="px-4">
+      {/* Sticky upgrade card */}
+      <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 z-10">
         <UpgradeAccountCard />
-      </div>
-      
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center space-x-3">
-          <div className="bg-gray-100 rounded-full p-2">
-            <User size={20} className="text-gray-500" />
-          </div>
-          <div>
-            <p className="font-medium text-sm">Hari</p>
-            <p className="text-xs text-gray-500">Free Plan</p>
-          </div>
-        </div>
       </div>
     </aside>
   );

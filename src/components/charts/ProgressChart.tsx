@@ -27,7 +27,12 @@ const AnimatedProgressChart = () => {
       return;
     }
 
-    // Draw the chart point by point
+    // Reset animation state when component mounts
+    setCurrentIndex(0);
+    setAnimatedData([]);
+    setAnimationFinished(false);
+
+    // Draw the chart point by point with faster animation
     if (currentIndex <= data.length && !animationFinished) {
       const timer = setTimeout(() => {
         setAnimatedData(data.slice(0, currentIndex + 1));
@@ -42,7 +47,7 @@ const AnimatedProgressChart = () => {
         if (currentIndex >= data.length - 1) {
           setAnimationFinished(true);
         }
-      }, 200); // Time between each point appearing
+      }, 150); // Faster animation: 150ms between each point appearing
 
       return () => clearTimeout(timer);
     }
@@ -54,7 +59,7 @@ const AnimatedProgressChart = () => {
 
     // Animate the stroke dashoffset
     let startTime: number;
-    const duration = 1200; // 1.2 seconds
+    const duration = 1000; // 1 second animation (faster)
     
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
@@ -80,7 +85,7 @@ const AnimatedProgressChart = () => {
           .animated-line {
             stroke-dasharray: 1000;
             stroke-dashoffset: ${1000 - (animationProgress * 1000)};
-            transition: stroke-dashoffset 100ms linear;
+            transition: stroke-dashoffset 50ms ease-out;
           }
         `}
       </style>
