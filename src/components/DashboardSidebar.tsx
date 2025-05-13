@@ -40,7 +40,7 @@ const DashboardSidebar = () => {
 
   return (
     <aside className="bg-white border-r border-gray-200 w-64 h-screen flex flex-col">
-      <div className="p-5 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200">
         <Logo />
       </div>
       
