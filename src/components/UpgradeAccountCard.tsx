@@ -10,10 +10,10 @@ const UpgradeAccountCard = () => {
         <div className="bg-[#1d7dff] rounded-full p-2 mb-3">
           <Crown className="h-5 w-5 text-white" />
         </div>
-        <h3 className="text-lg font-semibold">Upgrade your account</h3>
-        <p className="text-sm text-gray-500 mb-4">Get access to all premium features</p>
+        <h3 className="text-xl font-bold text-gray-900">Upgrade your account</h3>
+        <p className="text-sm text-gray-600 mb-4">Get access to all premium features</p>
         <Button 
-          className="w-full bg-[#1d7dff] hover:bg-[#0a6eef] transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
+          className="w-full bg-[#1d7dff] hover:bg-[#0a6eef] transition-all transform hover:scale-105 shadow-sm hover:shadow-md text-white font-medium"
         >
           Subscribe Now
         </Button>
@@ -43,6 +43,8 @@ const UpgradeAccountCard = () => {
           margin-bottom: 1rem;
           width: 100%;
           overflow: visible;
+          position: relative;
+          z-index: 10;
         }
 
         @keyframes rainbow-animation {
