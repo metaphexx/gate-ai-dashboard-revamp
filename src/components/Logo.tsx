@@ -1,14 +1,19 @@
 
 import React from 'react';
+import { AspectRatio } from './ui/aspect-ratio';
 
 const Logo = () => {
   return (
     <div className="flex items-center justify-center">
-      <img 
-        src="/lovable-uploads/d2612452-9d00-45aa-a63c-6555c43e82ab.png" 
-        alt="Everest Tutoring" 
-        className="h-14 w-auto"
-      />
+      <div className="w-48">
+        <AspectRatio ratio={3 / 1}>
+          <img 
+            src="/lovable-uploads/348c5da7-861f-48c6-aa6b-cf3202685210.png" 
+            alt="Everest Tutoring" 
+            className="object-contain h-full w-full"
+          />
+        </AspectRatio>
+      </div>
     </div>
   );
 };
