@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { Card, CardContent } from '@/components/ui/card';
@@ -26,35 +25,43 @@ const SkillsTrainer = () => {
   // Operation icons with clipart style
   const operationIcons = {
     addition: (
-      <div className="flex flex-col items-center">
-        <div className="bg-pink-200 p-4 rounded-lg">
-          <Plus size={28} className="text-green-700" strokeWidth={3} />
+      <div className="flex flex-col items-center space-y-2">
+        <div className={`w-16 h-16 rounded-lg flex items-center justify-center bg-pink-200 ${
+          selectedOperation === 'addition' ? 'border-2 border-primary' : ''
+        }`}>
+          <Plus size={32} className="text-green-700" strokeWidth={3} />
         </div>
-        <span className="mt-2 text-sm font-medium">Addition</span>
+        <span className="text-sm font-medium">Addition</span>
       </div>
     ),
     subtraction: (
-      <div className="flex flex-col items-center">
-        <div className="bg-purple-200 p-4 rounded-lg">
-          <Minus size={28} className="text-blue-600" strokeWidth={3} />
+      <div className="flex flex-col items-center space-y-2">
+        <div className={`w-16 h-16 rounded-lg flex items-center justify-center bg-purple-200 ${
+          selectedOperation === 'subtraction' ? 'border-2 border-primary' : ''
+        }`}>
+          <Minus size={32} className="text-blue-600" strokeWidth={3} />
         </div>
-        <span className="mt-2 text-sm font-medium">Subtraction</span>
+        <span className="text-sm font-medium">Subtraction</span>
       </div>
     ),
     multiplication: (
-      <div className="flex flex-col items-center">
-        <div className="bg-blue-200 p-4 rounded-lg">
-          <X size={28} className="text-orange-500" strokeWidth={3} />
+      <div className="flex flex-col items-center space-y-2">
+        <div className={`w-16 h-16 rounded-lg flex items-center justify-center bg-blue-200 ${
+          selectedOperation === 'multiplication' ? 'border-2 border-primary' : ''
+        }`}>
+          <X size={32} className="text-orange-500" strokeWidth={3} />
         </div>
-        <span className="mt-2 text-sm font-medium">Multiplication</span>
+        <span className="text-sm font-medium">Multiplication</span>
       </div>
     ),
     division: (
-      <div className="flex flex-col items-center">
-        <div className="bg-green-200 p-4 rounded-lg">
-          <Divide size={28} className="text-purple-600" strokeWidth={3} />
+      <div className="flex flex-col items-center space-y-2">
+        <div className={`w-16 h-16 rounded-lg flex items-center justify-center bg-green-200 ${
+          selectedOperation === 'division' ? 'border-2 border-primary' : ''
+        }`}>
+          <Divide size={32} className="text-purple-600" strokeWidth={3} />
         </div>
-        <span className="mt-2 text-sm font-medium">Division</span>
+        <span className="text-sm font-medium">Division</span>
       </div>
     ),
   };
@@ -77,48 +84,32 @@ const SkillsTrainer = () => {
                 <h2 className="text-xl font-semibold mb-1">Arithmetic Game</h2>
                 <p className="text-gray-500 text-sm mb-6">Practice your maths with flexible training settings</p>
                 
-                {/* Operator Selector with clipart icons and operation names */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                {/* Operator Selector with clipart icons and operation names - UPDATED */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
                   <button
                     onClick={() => handleOperationSelect('addition')}
-                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
-                      selectedOperation === 'addition' 
-                        ? 'bg-blue-50 border-2 border-primary text-primary' 
-                        : 'bg-gray-50 hover:bg-gray-100'
-                    }`}
+                    className="bg-transparent border-0 p-0 focus:outline-none"
                   >
                     {operationIcons.addition}
                   </button>
                   
                   <button
                     onClick={() => handleOperationSelect('subtraction')}
-                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
-                      selectedOperation === 'subtraction' 
-                        ? 'bg-blue-50 border-2 border-primary text-primary' 
-                        : 'bg-gray-50 hover:bg-gray-100'
-                    }`}
+                    className="bg-transparent border-0 p-0 focus:outline-none"
                   >
                     {operationIcons.subtraction}
                   </button>
                   
                   <button
                     onClick={() => handleOperationSelect('multiplication')}
-                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
-                      selectedOperation === 'multiplication' 
-                        ? 'bg-blue-50 border-2 border-primary text-primary' 
-                        : 'bg-gray-50 hover:bg-gray-100'
-                    }`}
+                    className="bg-transparent border-0 p-0 focus:outline-none"
                   >
                     {operationIcons.multiplication}
                   </button>
                   
                   <button
                     onClick={() => handleOperationSelect('division')}
-                    className={`rounded-lg flex flex-col items-center justify-center transition-colors ${
-                      selectedOperation === 'division' 
-                        ? 'bg-blue-50 border-2 border-primary text-primary' 
-                        : 'bg-gray-50 hover:bg-gray-100'
-                    }`}
+                    className="bg-transparent border-0 p-0 focus:outline-none"
                   >
                     {operationIcons.division}
                   </button>
