@@ -5,7 +5,7 @@ import { AspectRatio } from './ui/aspect-ratio';
 const Logo = () => {
   return (
     <div className="flex items-center justify-center">
-      <div className="w-48">
+      <div className="w-36">
         <AspectRatio ratio={3 / 1}>
           <img 
             src="/lovable-uploads/348c5da7-861f-48c6-aa6b-cf3202685210.png" 
