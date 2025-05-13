@@ -13,6 +13,7 @@ const testData = [
     description: 'Test your pattern recognition and logic with non-verbal, visual problems. Improve your ability to identify patterns and solve complex puzzles.',
     imagePath: '/abstract-reasoning.jpg',
     hasAI: false,
+    isNew: false,
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const testData = [
     description: 'Evaluate your ability to think creatively, express ideas clearly, and structure writing effectively. AI-powered analysis provides detailed feedback on your writing style.',
     imagePath: '/writing-test.jpg',
     hasAI: true,
+    isNew: false,
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ const testData = [
     description: 'Assess your ability to recognize words quickly and understand complex text passages. AI technology adapts questions based on your reading speed and comprehension level.',
     imagePath: '/reading-comprehension.jpg',
     hasAI: true,
+    isNew: false,
   },
   {
     id: 4,
@@ -40,6 +43,7 @@ const testData = [
     description: 'Evaluate your ability to interpret and analyze numerical data in various formats. Practice with problems designed to strengthen your mathematical reasoning skills.',
     imagePath: '/quantitative-reasoning.jpg',
     hasAI: false,
+    isNew: false,
   },
 ];
 
