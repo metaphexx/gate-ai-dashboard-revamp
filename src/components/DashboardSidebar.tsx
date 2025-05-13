@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
+import UpgradeAccountCard from './UpgradeAccountCard';
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -67,6 +68,10 @@ const DashboardSidebar = () => {
         ))}
       </div>
       
+      <div className="px-4">
+        <UpgradeAccountCard />
+      </div>
+      
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="bg-gray-100 rounded-full p-2">
@@ -77,9 +82,6 @@ const DashboardSidebar = () => {
             <p className="text-xs text-gray-500">Free Plan</p>
           </div>
         </div>
-        <button className="w-full mt-3 px-4 py-2 text-sm text-center text-primary-foreground bg-[#009dff] rounded-md hover:bg-[#009dff]/90 transition-colors">
-          Upgrade Account
-        </button>
       </div>
     </aside>
   );
