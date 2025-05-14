@@ -7,8 +7,7 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  ReferenceLine
+  ResponsiveContainer
 } from 'recharts';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -110,8 +109,6 @@ const generateQuestionData = () => {
     return {
       questionNumber: i + 1,
       status,
-      // Add color property for dots based on status
-      color: status === 2 ? '#38C172' : status === 1 ? '#EF4444' : '#F59E0B'
     };
   });
 };
@@ -187,31 +184,18 @@ const calculateOverallPerformance = () => {
   }
 };
 
-// Custom tooltip for line chart with cleaner, more descriptive information
+// Custom tooltip for line chart to smooth out labels
 const CustomLineTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const value = payload[0].value;
     let status = 'Skipped';
-    let color = '#F59E0B';
-    
-    if (value === 1) {
-      status = 'Incorrect';
-      color = '#EF4444';
-    } else if (value === 2) {
-      status = 'Correct';
-      color = '#38C172';
-    }
+    if (value === 1) status = 'Incorrect';
+    else if (value === 2) status = 'Correct';
     
     return (
-      <div className="bg-white p-3 border border-gray-100 shadow-md rounded-md">
-        <p className="font-medium">Question {label}</p>
-        <div className="flex items-center gap-2 mt-1">
-          <span 
-            className="h-3 w-3 rounded-full" 
-            style={{ backgroundColor: color }}
-          ></span>
-          <span className="font-medium" style={{ color }}>{status}</span>
-        </div>
+      <div className="bg-white p-2 border border-gray-100 shadow-md rounded-md">
+        <p>Question {label}</p>
+        <p className="font-medium">{status}</p>
       </div>
     );
   }
@@ -423,7 +407,7 @@ const AbstractReasoningResults = () => {
           </div>
         </div>
 
-        {/* Question Report Section - UPDATED */}
+        {/* Question Report Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Question Report</h2>
           <Card className="shadow-sm">
@@ -435,15 +419,15 @@ const AbstractReasoningResults = () => {
                   <div className="text-sm text-muted-foreground">Questions</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#38C172]">{resultData.correct}</div>
+                  <div className="text-3xl font-bold text-accent">{resultData.correct}</div>
                   <div className="text-sm text-muted-foreground">Correct</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#EF4444]">{resultData.incorrect}</div>
+                  <div className="text-3xl font-bold text-destructive">{resultData.incorrect}</div>
                   <div className="text-sm text-muted-foreground">Incorrect</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#F59E0B]">{resultData.skipped}</div>
+                  <div className="text-3xl font-bold text-warning">{resultData.skipped}</div>
                   <div className="text-sm text-muted-foreground">Skipped</div>
                 </div>
                 <div className="text-center">
@@ -455,112 +439,63 @@ const AbstractReasoningResults = () => {
               {/* Progress Bar */}
               <div className="h-3 flex rounded-md overflow-hidden mb-8">
                 <div 
-                  className="bg-[#38C172]"
+                  className="bg-accent"
                   style={{width: `${(resultData.correct / resultData.totalQuestions) * 100}%`}}
                 ></div>
                 <div 
-                  className="bg-[#EF4444]"
+                  className="bg-destructive"
                   style={{width: `${(resultData.incorrect / resultData.totalQuestions) * 100}%`}}
                 ></div>
                 <div 
-                  className="bg-[#F59E0B]"
+                  className="bg-warning"
                   style={{width: `${(resultData.skipped / resultData.totalQuestions) * 100}%`}}
                 ></div>
               </div>
               
-              {/* Performance Trend Line Chart - UPDATED with improved Y-axis handling */}
-              <div className="h-80 px-6 py-4"> {/* Increased height for better spacing */}
+              {/* Performance Trend Line Chart with enhanced axes labels */}
+              <div className="h-64 px-2">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={questionData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
+                    margin={{ top: 10, right: 20, left: 15, bottom: 20 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis 
                       dataKey="questionNumber" 
-                      label={{ 
-                        value: "Question Number", 
-                        position: "insideBottom", 
-                        offset: -10,
-                        fill: "#666" 
-                      }}
-                      tick={{ fontSize: 12 }}
-                      tickMargin={10}
+                      label={{ value: "Question Number", position: "insideBottom", offset: -5 }} 
+                      tickMargin={8}
                     />
                     <YAxis 
                       domain={[0, 2]} 
                       ticks={[0, 1, 2]} 
                       tickFormatter={(value) => {
-                        if (value === 0) return "Skipped";
-                        if (value === 1) return "Incorrect";
-                        if (value === 2) return "Correct";
-                        return "";
+                        return value === 0 ? 'Skipped' : value === 1 ? 'Incorrect' : 'Correct';
                       }}
-                      label={{ 
-                        value: 'Outcome', 
-                        angle: -90, 
-                        position: 'insideLeft', 
-                        offset: -10,
-                        style: { 
-                          textAnchor: 'middle',
-                          fill: "#666"
-                        } 
-                      }}
-                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Outcome', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
                       tickMargin={10}
                     />
                     <Tooltip content={<CustomLineTooltip />} />
-                    
-                    {/* Reference lines for better visual separation between categories */}
-                    <ReferenceLine y={0.5} stroke="#ccc" strokeDasharray="3 3" />
-                    <ReferenceLine y={1.5} stroke="#ccc" strokeDasharray="3 3" />
-                    
-                    {/* Line chart with colored dots */}
                     <Line 
                       type="monotoneX" 
                       dataKey="status" 
                       stroke="#009dff" 
-                      strokeWidth={1.5}
-                      dot={{ 
-                        r: 4, 
-                        strokeWidth: 1,
-                        fill: (entry) => entry.color, 
-                        stroke: "#fff"
-                      }}
-                      activeDot={{ 
-                        r: 6, 
-                        strokeWidth: 2,
-                        stroke: "#fff"
-                      }} 
+                      strokeWidth={2}
+                      dot={{ r: 3 }} 
+                      activeDot={{ r: 5 }} 
                       className="animate-[fade-in_1s_ease-out]"
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-              
-              {/* Color Legend */}
-              <div className="flex justify-center mt-2 gap-6">
-                <div className="flex items-center">
-                  <span className="h-3 w-3 rounded-full bg-[#38C172] mr-2"></span>
-                  <span className="text-sm">Correct</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="h-3 w-3 rounded-full bg-[#EF4444] mr-2"></span>
-                  <span className="text-sm">Incorrect</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="h-3 w-3 rounded-full bg-[#F59E0B] mr-2"></span>
-                  <span className="text-sm">Skipped</span>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Time Analysis Sections */}
+        {/* Time Analysis Sections - Updated with new components */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Time Analysis Pie Chart */}
           <TimeAnalysisSection timeData={timeData} totalTime={resultData.timeTaken} />
+
           {/* Average Time per Sub-Type with thinner bars */}
           <AverageTimeSection avgTimeData={avgTimeData} />
         </div>
