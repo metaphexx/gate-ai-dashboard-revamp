@@ -1,346 +1,110 @@
-
-import React, { useState, useEffect } from 'react';
-import { Question } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { CheckCircle, AlertCircle, Flag } from 'lucide-react';
-import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { useToast } from "@/components/ui/use-toast"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { 
+  Card, 
+  CardContent,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { RadioGroup } from '@/components/ui/radio-group';
+import { 
+  Clock, 
+  ChevronLeft, 
+  Flag,
+  ArrowLeft,
+  ArrowRight,
+  AlertCircle,
+} from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+import QuestionTracker from '@/components/test/QuestionTracker';
+import QuestionTimer from '@/components/test/QuestionTimer';
 import TestSummaryModal from '@/components/test/TestSummaryModal';
 import EverestLogo from '@/components/test/EverestLogo';
 
-const questionsData: Question[] = [
+// Mock data for questions
+const mockQuestions = [
   {
     id: 1,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/001.png",
+    prompt: "What is the next shape in this sequence?",
+    category: "Pattern Recognition",
+    image: "/abstract-reasoning.jpg",
     options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 1."
+    answer: null
   },
   {
     id: 2,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/002.png",
+    prompt: "Identify the pattern that does not belong in the group.",
+    category: "Pattern Recognition",
+    image: "/abstract-reasoning.jpg",
     options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 2."
+    answer: null
   },
   {
     id: 3,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/003.png",
+    prompt: "Which figure completes the sequence?",
+    category: "Pattern Recognition",
+    image: "/abstract-reasoning.jpg",
     options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 3."
-  },
-  {
-    id: 4,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/004.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 4."
-  },
-  {
-    id: 5,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/005.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 5."
-  },
-  {
-    id: 6,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/006.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 6."
-  },
-  {
-    id: 7,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/007.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 7."
-  },
-  {
-    id: 8,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/008.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 8."
-  },
-  {
-    id: 9,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/009.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 9."
-  },
-  {
-    id: 10,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/010.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 10."
-  },
-  {
-    id: 11,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/011.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 11."
-  },
-    {
-    id: 12,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/012.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 12."
-  },
-  {
-    id: 13,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/013.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 13."
-  },
-  {
-    id: 14,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/014.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 14."
-  },
-  {
-    id: 15,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/015.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 15."
-  },
-  {
-    id: 16,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/016.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 16."
-  },
-  {
-    id: 17,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/017.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 17."
-  },
-  {
-    id: 18,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/018.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 18."
-  },
-  {
-    id: 19,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/019.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 19."
-  },
-  {
-    id: 20,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/020.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 20."
-  },
-  {
-    id: 21,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/021.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 21."
-  },
-    {
-    id: 22,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/022.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 22."
-  },
-  {
-    id: 23,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/023.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 23."
-  },
-  {
-    id: 24,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/024.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 24."
-  },
-  {
-    id: 25,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/025.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 25."
-  },
-  {
-    id: 26,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/026.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 26."
-  },
-  {
-    id: 27,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/027.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 27."
-  },
-  {
-    id: 28,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/028.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 28."
-  },
-  {
-    id: 29,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/029.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 29."
-  },
-  {
-    id: 30,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/030.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 30."
-  },
-  {
-    id: 31,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/031.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 31."
-  },
-    {
-    id: 32,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/032.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 32."
-  },
-  {
-    id: 33,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/033.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 33."
-  },
-  {
-    id: 34,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/034.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "B",
-    explanation: "Explanation for question 34."
-  },
-  {
-    id: 35,
-    text: "Identify the odd one out.",
-    image: "/lovable-uploads/035.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "Explanation for question 35."
-  },
-  {
-    id: 36,
-    text: "Continue the pattern.",
-    image: "/lovable-uploads/036.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "D",
-    explanation: "Explanation for question 36."
-  },
-  {
-    id: 37,
-    text: "Which figure completes the sequence?",
-    image: "/lovable-uploads/037.png",
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "C",
-    explanation: "Explanation for question 37."
-  },
+    answer: null
+  }
 ];
 
 const AbstractReasoningTest = () => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<(string | null)[]>(Array(questionsData.length).fill(null));
-  const [flaggedQuestions, setFlaggedQuestions] = useState(Array(questionsData.length).fill(false));
-  const [isExplanationOpen, setIsExplanationOpen] = useState(false);
-  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<(string | null)[]>(Array(mockQuestions.length).fill(null));
+  const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>(Array(mockQuestions.length).fill(false));
+  const [time, setTime] = useState(1200); // 20 minutes in seconds
+  const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+  const [isTestCompleted, setIsTestCompleted] = useState(false);
   
-  const totalQuestions = questionsData.length;
-  const currentQuestion = questionsData[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+  const currentQuestion = mockQuestions[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / mockQuestions.length) * 100;
 
+  // Handle keyboard navigation
   useEffect(() => {
-    // Prevent scrolling when the explanation dialog is open
-    if (isExplanationOpen || isSubmitModalOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        goToPreviousQuestion();
+      } else if (e.key === 'ArrowRight') {
+        goToNextQuestion();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFlagQuestion();
+      } else if (e.key === 'c' || e.key === 'C') {
+        clearCurrentAnswer();
+      }
     };
-  }, [isExplanationOpen, isSubmitModalOpen]);
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentQuestionIndex]);
+
+  // Timer countdown
+  useEffect(() => {
+    if (isTestCompleted) return;
+    
+    const timer = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(timer);
+          handleTimeUp();
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isTestCompleted]);
+
+  const handleTimeUp = () => {
+    toast({
+      title: "Time's up!",
+      description: "Your test has been submitted automatically.",
+      variant: "destructive",
+    });
+    handleSubmitTest();
+  };
 
   const handleAnswerChange = (value: string) => {
     const newAnswers = [...answers];
@@ -348,183 +112,285 @@ const AbstractReasoningTest = () => {
     setAnswers(newAnswers);
   };
 
-  const handleFlagToggle = () => {
-    const newFlaggedQuestions = [...flaggedQuestions];
-    newFlaggedQuestions[currentQuestionIndex] = !flaggedQuestions[currentQuestionIndex];
-    setFlaggedQuestions(newFlaggedQuestions);
-  };
-
-  const goToNextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setIsExplanationOpen(false); // Close explanation when moving to the next question
-    }
-  };
-
   const goToPreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setIsExplanationOpen(false); // Close explanation when moving to the previous question
     }
   };
 
-  const openExplanation = () => {
-    setIsExplanationOpen(true);
+  const goToNextQuestion = () => {
+    if (currentQuestionIndex < mockQuestions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // Check for unanswered questions before submitting
+      checkForUnansweredQuestions();
+    }
   };
 
-  const closeExplanation = () => {
-    setIsExplanationOpen(false);
+  const toggleFlagQuestion = () => {
+    const newFlaggedQuestions = [...flaggedQuestions];
+    newFlaggedQuestions[currentQuestionIndex] = !newFlaggedQuestions[currentQuestionIndex];
+    setFlaggedQuestions(newFlaggedQuestions);
+    
+    toast({
+      title: newFlaggedQuestions[currentQuestionIndex] 
+        ? "Question flagged" 
+        : "Flag removed",
+      description: newFlaggedQuestions[currentQuestionIndex] 
+        ? "You've flagged this question for review" 
+        : "You've removed the flag from this question",
+      variant: "default",
+    });
   };
 
-  const openSubmitModal = () => {
-    setIsSubmitModalOpen(true);
+  const clearCurrentAnswer = () => {
+    const newAnswers = [...answers];
+    newAnswers[currentQuestionIndex] = null;
+    setAnswers(newAnswers);
+    
+    toast({
+      title: "Answer cleared",
+      description: "You've cleared your answer for this question",
+      variant: "default",
+    });
   };
 
-  const closeSubmitModal = () => {
-    setIsSubmitModalOpen(false);
+  const getQuestionStatus = (index: number) => {
+    if (flaggedQuestions[index]) return 'flagged';
+    if (answers[index]) return 'answered';
+    return 'blank';
+  };
+
+  const handleJumpToQuestion = (index: number) => {
+    setCurrentQuestionIndex(index);
+  };
+
+  const checkForUnansweredQuestions = () => {
+    const unanswered = answers.filter(answer => answer === null).length;
+    
+    if (unanswered > 0 || flaggedQuestions.includes(true)) {
+      setShowSubmitDialog(true);
+    } else {
+      handleSubmitTest();
+    }
   };
 
   const handleSubmitTest = () => {
-    setIsSubmitModalOpen(false);
-    navigate('/abstract-reasoning-results');
+    setIsTestCompleted(true);
+    // Here you would typically send data to a backend or store locally
+    
+    toast({
+      title: "Test completed!",
+      description: "Your answers have been submitted.",
+      variant: "default",
+    });
+    
+    // For demo purposes, just close the dialog
+    setShowSubmitDialog(false);
   };
 
-  const handleQuickNavigation = (index: number) => {
-    setCurrentQuestionIndex(index);
-    setIsExplanationOpen(false);
+  const handleCancel = () => {
+    setShowSubmitDialog(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 py-2">
-        <div className="container flex items-center justify-between">
-          <EverestLogo />
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Fixed top navigation bar */}
+      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm" onClick={() => toast({
-              title: "Test Paused",
-              description: "You can resume this test later from your dashboard.",
-            })}>
-              Pause Test
-            </Button>
-            <Button size="sm" onClick={openSubmitModal} className="bg-[#009dff] hover:bg-[#0084d6] text-white">
-              Submit Test
-            </Button>
+            <EverestLogo />
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={() => navigate(-1)}
+              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
+            >
+              <ChevronLeft className="h-5 w-5 mr-1" />
+              <span>Back to Tests</span>
+            </button>
+            
+            <QuestionTimer 
+              time={time}
+              isWarning={time <= 60}
+            />
           </div>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="container grid grid-cols-4 gap-4 py-8">
-        {/* Question Area */}
-        <div className="col-span-3">
-          <Card className="h-full">
-            <CardContent className="relative">
-              {/* Progress Bar */}
-              <div className="mb-4">
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-700">
-                    Question {currentQuestionIndex + 1} of {totalQuestions}
-                  </span>
-                  <span className="text-sm font-medium text-gray-700">{progress.toFixed(0)}%</span>
-                </div>
-                <Progress value={progress} className="h-2" />
-              </div>
-
-              {/* Question Text */}
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">{currentQuestion.text}</h2>
-                {currentQuestion.image && (
-                  <AspectRatio ratio={16 / 9}>
-                    <img
-                      src={currentQuestion.image}
-                      alt={`Question ${currentQuestionIndex + 1}`}
-                      className="object-contain w-full h-full question-image rounded-md"
-                    />
-                  </AspectRatio>
-                )}
-              </div>
-
-              {/* Answer Options */}
-              <RadioGroup defaultValue={answers[currentQuestionIndex] || undefined} onValueChange={handleAnswerChange} className="w-full">
-                <div className="grid gap-2">
-                  {currentQuestion.options.map((option) => (
-                    <div key={option} className="flex items-center space-x-2">
-                      <RadioGroupItem value={option} id={option} className="peer h-5 w-5 shrink-0 rounded-full border-2 border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" />
-                      <Label htmlFor={option} className="cursor-pointer peer-checked:font-semibold">{option}</Label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup>
-
-              <Separator className="my-6" />
-
-              {/* Action Buttons */}
-              <div className="flex justify-between items-center">
-                <Button variant="outline" onClick={handleFlagToggle} className="gap-2">
-                  {flaggedQuestions[currentQuestionIndex] ? <AlertCircle className="w-4 h-4" /> : <Flag className="w-4 h-4" />}
-                  {flaggedQuestions[currentQuestionIndex] ? 'Unflag Question' : 'Flag for Review'}
-                </Button>
-                <div className="flex space-x-2">
-                  <Button variant="secondary" onClick={goToPreviousQuestion} disabled={currentQuestionIndex === 0}>
-                    Previous
-                  </Button>
-                  <Button onClick={goToNextQuestion} disabled={currentQuestionIndex === totalQuestions - 1}>
-                    Next
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Sidebar with Question Navigation */}
-        <div className="col-span-1">
-          <Card className="h-full">
-            <CardContent className="flex flex-col h-full">
-              <h3 className="text-sm font-semibold mb-3">Quick Navigation</h3>
-              <ScrollArea className="flex-1">
-                <div className="grid grid-cols-2 sm:grid-cols-1 gap-2 p-1">
-                  {questionsData.map((question, index) => (
-                    <Button
-                      key={question.id}
-                      variant="outline"
-                      className={`justify-start text-sm ${currentQuestionIndex === index ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
-                      onClick={() => handleQuickNavigation(index)}
-                    >
-                      {index + 1}. {answers[index] ? <CheckCircle className="w-4 h-4 ml-auto" /> : flaggedQuestions[index] ? <AlertCircle className="w-4 h-4 ml-auto text-orange-500" /> : null}
-                    </Button>
-                  ))}
-                </div>
-              </ScrollArea>
-              <div className="mt-4">
-                <Button variant="secondary" className="w-full" onClick={openExplanation}>View Explanation</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
-
-      {/* Explanation Modal */}
-      <Dialog open={isExplanationOpen} onOpenChange={closeExplanation}>
-        <DialogContent className="sm:max-w-[525px]">
-          <DialogHeader>
-            <DialogTitle>Question {currentQuestionIndex + 1} Explanation</DialogTitle>
-            <DialogDescription>{currentQuestion.explanation}</DialogDescription>
-          </DialogHeader>
-          <Button className="w-full" onClick={closeExplanation}>Close</Button>
-        </DialogContent>
-      </Dialog>
-
-      {/* Submit Test Modal */}
-      <TestSummaryModal 
-        isOpen={isSubmitModalOpen} 
-        onClose={closeSubmitModal} 
-        onSubmit={handleSubmitTest}
-        questions={questionsData}
-        answers={answers}
-        flaggedQuestions={flaggedQuestions}
-      />
+      
+      {/* Main content with top padding to account for fixed header */}
+      <div className="container mx-auto pt-20 px-4 pb-24">
+        {/* Test title and progress */}
+        <div className="mb-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+            <h1 className="text-2xl font-bold text-blue-900">
+              Abstract Reasoning Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
+            </h1>
+          </div>
+          
+          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
+            <div 
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+          
+          {/* Question tracker */}
+          <QuestionTracker 
+            questions={mockQuestions}
+            currentIndex={currentQuestionIndex}
+            getStatus={getQuestionStatus}
+            onSelect={handleJumpToQuestion}
+          />
+        </div>
+        
+        {/* Main question card */}
+        <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
+          <CardContent className="p-0">
+            {/* Category banner - Updated to use solid color instead of gradient */}
+            <div className="bg-[#009dff] py-3 px-6 text-white shadow-sm rounded-t-lg">
+              <p className="text-sm font-medium">{currentQuestion.category}</p>
+            </div>
+            
+            {/* Question content */}
+            <div className="p-6 md:p-8">
+              {/* Question prompt */}
+              <h2 className="text-xl font-semibold text-gray-800 mb-8">
+                {currentQuestion.prompt}
+              </h2>
+              
+              {/* Image section */}
+              <div className="mb-8">
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  <div className="relative">
+                    <img 
+                      src={currentQuestion.image}
+                      alt="Abstract reasoning question" 
+                      className="max-h-[300px] w-auto mx-auto rounded object-contain question-image hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Answer options */}
+              <div className="mb-8">
+                <RadioGroup 
+                  value={answers[currentQuestionIndex] || ""}
+                  onValueChange={handleAnswerChange}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {currentQuestion.options.map((option, idx) => {
+                      const optionLabels = ['A', 'B', 'C', 'D'];
+                      const optionLabel = optionLabels[idx];
+                      return (
+                        <div 
+                          key={option}
+                          className={`border rounded-xl p-4 transition-all cursor-pointer
+                            ${answers[currentQuestionIndex] === option 
+                              ? 'border-[#009dff] bg-blue-50 shadow-md' 
+                              : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
+                            }`}
+                          onClick={() => handleAnswerChange(option)}
+                        >
+                          <div className="flex items-center">
+                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                              answers[currentQuestionIndex] === option 
+                                ? 'bg-[#009dff] text-white' 
+                                : 'bg-gray-100 text-gray-700'
+                            }`}>
+                              {optionLabel}
+                            </div>
+                            <div className="flex-1 ml-3">
+                              <p className="text-gray-700 font-medium">Option {optionLabel}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </RadioGroup>
+              </div>
+              
+              {/* Flag button */}
+              <div className="flex items-center justify-start mb-4">
+                <Button 
+                  variant="outline"
+                  onClick={toggleFlagQuestion}
+                  className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
+                >
+                  <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
+                  {flaggedQuestions[currentQuestionIndex] ? 'Flagged for Review' : 'Flag for Review'}
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  onClick={clearCurrentAnswer}
+                  className="ml-2 border-gray-200 text-gray-600 hover:bg-gray-50"
+                  disabled={answers[currentQuestionIndex] === null}
+                >
+                  Clear Answer
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Keyboard shortcuts info */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-500">
+            Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate, 
+            <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">F</span> to flag, 
+            <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">C</span> to clear answer
+          </p>
+        </div>
+        
+        {/* Fixed bottom navigation */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10">
+          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+            <Button 
+              variant="outline"
+              onClick={goToPreviousQuestion}
+              disabled={currentQuestionIndex === 0}
+              className="border-gray-200 hover:bg-gray-50"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Previous
+            </Button>
+            
+            <div className="flex items-center space-x-2">
+              {currentQuestionIndex < mockQuestions.length - 1 ? (
+                <Button
+                  onClick={goToNextQuestion}
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+                >
+                  Next
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={checkForUnansweredQuestions}
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+                >
+                  Submit Test
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {/* Test submission dialog */}
+        {showSubmitDialog && (
+          <TestSummaryModal
+            isOpen={showSubmitDialog}
+            onClose={handleCancel}
+            onSubmit={handleSubmitTest}
+            questions={mockQuestions}
+            answers={answers}
+            flaggedQuestions={flaggedQuestions}
+          />
+        )}
+      </div>
     </div>
   );
 };
