@@ -19,8 +19,8 @@ interface QuestionTrackerProps {
 
 const QuestionTracker = ({ questions, currentIndex, getStatus, onSelect }: QuestionTrackerProps) => {
   return (
-    <div className="mb-8 overflow-x-auto">
-      <div className="flex space-x-3">
+    <div className="mb-8 overflow-visible">
+      <div className="flex space-x-3 overflow-visible">
         {questions.map((question, index) => {
           const status = getStatus(index);
           return (
@@ -28,9 +28,9 @@ const QuestionTracker = ({ questions, currentIndex, getStatus, onSelect }: Quest
               key={question.id}
               onClick={() => onSelect(index)}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-full transition-all relative",
+                "w-10 h-10 flex items-center justify-center rounded-full transition-all relative overflow-visible",
                 index === currentIndex
-                  ? 'bg-gradient-to-r from-[#009dff] to-[#66CCFF] text-white shadow-lg shadow-blue-200' 
+                  ? 'bg-[#009dff] text-white shadow-lg shadow-blue-200' 
                   : status === 'flagged'
                     ? 'bg-white text-orange-600 border-2 border-orange-400'
                     : status === 'answered'
@@ -41,7 +41,7 @@ const QuestionTracker = ({ questions, currentIndex, getStatus, onSelect }: Quest
             >
               {index + 1}
               {status === 'flagged' && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center z-10">
                   <Flag className="w-3 h-3 text-white" />
                 </span>
               )}

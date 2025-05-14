@@ -195,7 +195,7 @@ const AbstractReasoningTest = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
-      <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-[#009dff] to-[#66CCFF] shadow-md z-10">
+      <div className="fixed top-0 left-0 right-0 bg-[#009dff] shadow-md z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button 
@@ -226,7 +226,7 @@ const AbstractReasoningTest = () => {
           
           <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
             <div 
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#66CCFF] transition-all duration-300 ease-out"
+              className="absolute top-0 left-0 h-full bg-[#009dff] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -244,7 +244,7 @@ const AbstractReasoningTest = () => {
         <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
             {/* Category banner */}
-            <div className="bg-gradient-to-r from-[#009dff] to-[#66CCFF] py-3 px-6 text-white shadow-sm">
+            <div className="bg-[#009dff] py-3 px-6 text-white shadow-sm">
               <p className="text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
@@ -357,7 +357,7 @@ const AbstractReasoningTest = () => {
               {currentQuestionIndex < mockQuestions.length - 1 ? (
                 <Button
                   onClick={goToNextQuestion}
-                  className="bg-gradient-to-r from-[#009dff] to-[#66CCFF] hover:from-[#008ae6] hover:to-[#55bbff]"
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white"
                 >
                   Next
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -365,7 +365,7 @@ const AbstractReasoningTest = () => {
               ) : (
                 <Button
                   onClick={checkForUnansweredQuestions}
-                  className="bg-gradient-to-r from-[#009dff] to-[#66CCFF] hover:from-[#008ae6] hover:to-[#55bbff]"
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white"
                 >
                   Submit Test
                 </Button>
