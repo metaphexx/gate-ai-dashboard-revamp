@@ -248,8 +248,8 @@ const AbstractReasoningTest = () => {
         {/* Main question card */}
         <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
-            {/* Category banner */}
-            <div className="bg-gradient-to-r from-[#009dff] to-[#80dfff] py-3 px-6 text-white shadow-sm">
+            {/* Category banner - Updated to use solid color instead of gradient */}
+            <div className="bg-[#009dff] py-3 px-6 text-white shadow-sm rounded-t-lg">
               <p className="text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
