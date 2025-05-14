@@ -16,12 +16,12 @@ const QuestionTimer = ({ time, isWarning }: QuestionTimerProps) => {
 
   return (
     <div className={`
-      bg-white shadow-md rounded-full px-4 py-2 
+      bg-white shadow-md rounded-full px-3 py-1.5
       flex items-center
       border ${isWarning ? 'border-red-200' : 'border-blue-100'}
       ${isWarning ? 'animate-pulse' : ''}
     `}>
-      <Clock className={`h-5 w-5 mr-2 ${isWarning ? 'text-red-500' : 'text-[#009dff]'}`} />
+      <Clock className={`h-4 w-4 mr-1.5 ${isWarning ? 'text-red-500' : 'text-[#009dff]'}`} />
       <span 
         className={`font-medium ${isWarning ? 'text-red-500' : 'text-[#009dff]'}`}
       >

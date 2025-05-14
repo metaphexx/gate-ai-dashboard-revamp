@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -196,12 +195,12 @@ const AbstractReasoningTest = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
-      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
+      <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-[#009dff] to-[#66CCFF] shadow-md z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button 
               onClick={() => navigate(-1)}
-              className="flex items-center text-[#009dff] hover:text-blue-500 transition-colors"
+              className="flex items-center text-white hover:text-blue-100 transition-colors"
             >
               <ChevronLeft className="h-5 w-5 mr-1" />
               <span>Back to Tests</span>
@@ -227,7 +226,7 @@ const AbstractReasoningTest = () => {
           
           <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
             <div 
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#0084d6] transition-all duration-300 ease-out"
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#66CCFF] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -245,7 +244,7 @@ const AbstractReasoningTest = () => {
         <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
             {/* Category banner */}
-            <div className="bg-gradient-to-r from-[#009dff] to-[#0084d6] py-3 px-6 text-white">
+            <div className="bg-gradient-to-r from-[#009dff] to-[#66CCFF] py-3 px-6 text-white shadow-sm">
               <p className="text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
@@ -289,7 +288,7 @@ const AbstractReasoningTest = () => {
                             }`}
                           onClick={() => handleAnswerChange(option)}
                         >
-                          <div className="flex items-start space-x-3">
+                          <div className="flex items-start">
                             <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                               answers[currentQuestionIndex] === option 
                                 ? 'bg-[#009dff] text-white' 
@@ -297,11 +296,8 @@ const AbstractReasoningTest = () => {
                             }`}>
                               {optionLabel}
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 ml-3">
                               <p className="text-gray-700 font-medium">Option {option}</p>
-                              <p className="text-gray-500 text-sm mt-1">
-                                Select this answer
-                              </p>
                             </div>
                           </div>
                         </div>
@@ -361,7 +357,7 @@ const AbstractReasoningTest = () => {
               {currentQuestionIndex < mockQuestions.length - 1 ? (
                 <Button
                   onClick={goToNextQuestion}
-                  className="bg-gradient-to-r from-[#009dff] to-[#0084d6] hover:from-[#008ae6] hover:to-[#0073bd]"
+                  className="bg-gradient-to-r from-[#009dff] to-[#66CCFF] hover:from-[#008ae6] hover:to-[#55bbff]"
                 >
                   Next
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -369,7 +365,7 @@ const AbstractReasoningTest = () => {
               ) : (
                 <Button
                   onClick={checkForUnansweredQuestions}
-                  className="bg-gradient-to-r from-[#009dff] to-[#0084d6] hover:from-[#008ae6] hover:to-[#0073bd]"
+                  className="bg-gradient-to-r from-[#009dff] to-[#66CCFF] hover:from-[#008ae6] hover:to-[#55bbff]"
                 >
                   Submit Test
                 </Button>
