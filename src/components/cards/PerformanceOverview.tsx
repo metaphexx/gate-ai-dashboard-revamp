@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { ArrowUp, ArrowDown, Minus, CheckCircle, XCircle, Circle } from 'lucide-react';
+import { PieChart, Pie, Cell } from 'recharts';
+import { Badge } from '@/components/ui/badge';
 
 const data = {
   allTime: [
@@ -46,6 +48,30 @@ const PerformanceOverview = () => {
     }
     return null;
   };
+
+  // Performance summary data for donut chart
+  const summaryData = [
+    { name: 'Correct', value: 16, color: '#38C172' },
+    { name: 'Incorrect', value: 5, color: '#EF4444' },
+    { name: 'Skipped', value: 16, color: '#F59E0B' },
+  ];
+  
+  // Calculate overall percentage for performance level
+  const totalQuestions = summaryData.reduce((total, item) => total + item.value, 0);
+  const correctPercentage = (summaryData[0].value / totalQuestions) * 100;
+  
+  // Determine performance level based on percentage
+  const getPerformanceLevel = (percentage: number) => {
+    if (percentage >= 71) {
+      return { level: 'Strong', color: 'bg-accent text-accent-foreground' };
+    } else if (percentage >= 41) {
+      return { level: 'Developing', color: 'bg-warning text-warning-foreground' };
+    } else {
+      return { level: 'Needs Work', color: 'bg-destructive text-destructive-foreground' };
+    }
+  };
+  
+  const performanceLevel = getPerformanceLevel(correctPercentage);
   
   return (
     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
@@ -71,6 +97,50 @@ const PerformanceOverview = () => {
         </div>
       </div>
       
+      {/* Performance Summary Section - Redesigned */}
+      <div className="mb-8 p-4 bg-gray-50 rounded-lg">
+        <h4 className="text-sm font-medium text-gray-700 mb-3">Performance Overview</h4>
+        
+        {/* Progress bar with embedded badge */}
+        <div className="relative h-9 mb-5">
+          <div className="absolute inset-0 flex rounded-md overflow-hidden">
+            <div 
+              className="bg-[#38C172] h-full animate-fade-in flex items-center justify-center" 
+              style={{width: `${(summaryData[0].value / totalQuestions) * 100}%`}}
+            ></div>
+            <div 
+              className="bg-[#EF4444] h-full animate-fade-in" 
+              style={{width: `${(summaryData[1].value / totalQuestions) * 100}%`}}
+            ></div>
+            <div 
+              className="bg-[#F59E0B] h-full animate-fade-in flex items-center justify-center" 
+              style={{width: `${(summaryData[2].value / totalQuestions) * 100}%`}}
+            >
+              {/* Badge displayed inside the bar */}
+              <Badge className={`${performanceLevel.color} text-xs absolute z-10`}>
+                {performanceLevel.level} ({correctPercentage.toFixed(1)}%)
+              </Badge>
+            </div>
+          </div>
+        </div>
+        
+        {/* Metrics with icons */}
+        <div className="grid grid-cols-3 gap-2">
+          {summaryData.map((item, index) => (
+            <div key={index} className="flex flex-col items-center p-2 rounded-md" style={{backgroundColor: `${item.color}15`}}>
+              <div className="flex items-center gap-1.5 mb-1">
+                {index === 0 ? <CheckCircle size={16} className="text-[#38C172]" /> : 
+                 index === 1 ? <XCircle size={16} className="text-[#EF4444]" /> : 
+                               <Circle size={16} className="text-[#F59E0B]" />}
+                <span className="text-sm font-medium">{item.name}</span>
+              </div>
+              <span className="text-lg font-bold" style={{color: item.color}}>{item.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Bar Chart */}
       <div className="h-64 mb-4">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
