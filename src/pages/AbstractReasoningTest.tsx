@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import QuestionTracker from '@/components/test/QuestionTracker';
 import QuestionTimer from '@/components/test/QuestionTimer';
 import TestSummaryModal from '@/components/test/TestSummaryModal';
+import EverestLogo from '@/components/test/EverestLogo';
 
 // Mock data for questions
 const mockQuestions = [
@@ -195,12 +196,16 @@ const AbstractReasoningTest = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
-      <div className="fixed top-0 left-0 right-0 bg-[#009dff] shadow-md z-10">
+      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <EverestLogo />
+          </div>
+          
           <div className="flex items-center space-x-4">
             <button 
               onClick={() => navigate(-1)}
-              className="flex items-center text-white hover:text-blue-100 transition-colors"
+              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
               <ChevronLeft className="h-5 w-5 mr-1" />
               <span>Back to Tests</span>
@@ -226,7 +231,7 @@ const AbstractReasoningTest = () => {
           
           <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
             <div 
-              className="absolute top-0 left-0 h-full bg-[#009dff] transition-all duration-300 ease-out"
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -244,7 +249,7 @@ const AbstractReasoningTest = () => {
         <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
             {/* Category banner */}
-            <div className="bg-[#009dff] py-3 px-6 text-white shadow-sm">
+            <div className="bg-gradient-to-r from-[#009dff] to-[#80dfff] py-3 px-6 text-white shadow-sm">
               <p className="text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
@@ -288,7 +293,7 @@ const AbstractReasoningTest = () => {
                             }`}
                           onClick={() => handleAnswerChange(option)}
                         >
-                          <div className="flex items-start">
+                          <div className="flex items-center">
                             <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                               answers[currentQuestionIndex] === option 
                                 ? 'bg-[#009dff] text-white' 
@@ -297,7 +302,7 @@ const AbstractReasoningTest = () => {
                               {optionLabel}
                             </div>
                             <div className="flex-1 ml-3">
-                              <p className="text-gray-700 font-medium">Option {option}</p>
+                              <p className="text-gray-700 font-medium">Option {optionLabel}</p>
                             </div>
                           </div>
                         </div>
