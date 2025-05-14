@@ -13,7 +13,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Info } from 'lucide-react';
+import { ArrowLeft, Info, Clock } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import { Progress } from '@/components/ui/progress';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
