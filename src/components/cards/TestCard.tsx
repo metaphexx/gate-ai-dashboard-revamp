@@ -3,6 +3,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
+
 interface TestCardProps {
   title: string;
   questions: number;
@@ -12,6 +14,7 @@ interface TestCardProps {
   isNew?: boolean;
   hasAI?: boolean;
 }
+
 const TestCard = ({
   title,
   questions,
@@ -21,6 +24,18 @@ const TestCard = ({
   isNew = false,
   hasAI = false
 }: TestCardProps) => {
+  const navigate = useNavigate();
+
+  const handleStartTest = () => {
+    // For now, only Abstract Reasoning links to the new page
+    if (title === 'Abstract Reasoning') {
+      navigate('/abstract-reasoning-test');
+    } else {
+      // We'll implement other tests later
+      console.log(`Starting test: ${title}`);
+    }
+  };
+
   return <div className="w-full max-w-[350px] min-h-[400px] p-5 rounded-xl shadow-md bg-white hover:shadow-lg transition flex flex-col justify-between">
       {/* Card image */}
       <div className="relative">
@@ -58,9 +73,10 @@ const TestCard = ({
       </p>
 
       {/* CTA Button */}
-      <Button className="w-full">
+      <Button className="w-full" onClick={handleStartTest}>
         Start Now
       </Button>
     </div>;
 };
+
 export default TestCard;

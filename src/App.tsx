@@ -15,6 +15,7 @@ import Settings from "./pages/Settings";
 import Support from "./pages/Support";
 import VideoTutorials from "./pages/VideoTutorials";
 import NotFound from "./pages/NotFound";
+import AbstractReasoningTest from "./pages/AbstractReasoningTest";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/skills-trainer" element={<SkillsTrainer />} />
             <Route path="/practice" element={<PracticeTest />} />
+            <Route path="/abstract-reasoning-test" element={<AbstractReasoningTest />} />
             <Route path="/mini-mock" element={<MiniMockExam />} />
             <Route path="/mock" element={<MockExam />} />
             <Route path="/progress" element={<ExamInProgress />} />
