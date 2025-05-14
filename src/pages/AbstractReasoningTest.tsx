@@ -6,12 +6,11 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { RadioGroup } from '@/components/ui/radio-group';
 import { 
   Clock, 
   ChevronLeft, 
   Flag,
-  Maximize,
   ArrowLeft,
   ArrowRight,
   AlertCircle,
@@ -20,7 +19,6 @@ import { useToast } from "@/hooks/use-toast";
 import QuestionTracker from '@/components/test/QuestionTracker';
 import QuestionTimer from '@/components/test/QuestionTimer';
 import TestSummaryModal from '@/components/test/TestSummaryModal';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 // Mock data for questions
 const mockQuestions = [
@@ -57,7 +55,6 @@ const AbstractReasoningTest = () => {
   const [answers, setAnswers] = useState<(string | null)[]>(Array(mockQuestions.length).fill(null));
   const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>(Array(mockQuestions.length).fill(false));
   const [time, setTime] = useState(1200); // 20 minutes in seconds
-  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   
@@ -158,10 +155,6 @@ const AbstractReasoningTest = () => {
     });
   };
 
-  const toggleImageSize = () => {
-    setIsImageEnlarged(!isImageEnlarged);
-  };
-
   const getQuestionStatus = (index: number) => {
     if (flaggedQuestions[index]) return 'flagged';
     if (answers[index]) return 'answered';
@@ -205,18 +198,20 @@ const AbstractReasoningTest = () => {
       {/* Fixed top navigation bar */}
       <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <button 
-            onClick={() => navigate(-1)}
-            className="flex items-center text-blue-700 hover:text-blue-500 transition-colors"
-          >
-            <ChevronLeft className="h-5 w-5 mr-1" />
-            <span>Back to Tests</span>
-          </button>
-          
-          <QuestionTimer 
-            time={time}
-            isWarning={time <= 60}
-          />
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={() => navigate(-1)}
+              className="flex items-center text-[#009dff] hover:text-blue-500 transition-colors"
+            >
+              <ChevronLeft className="h-5 w-5 mr-1" />
+              <span>Back to Tests</span>
+            </button>
+            
+            <QuestionTimer 
+              time={time}
+              isWarning={time <= 60}
+            />
+          </div>
         </div>
       </div>
       
@@ -226,13 +221,13 @@ const AbstractReasoningTest = () => {
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
             <h1 className="text-2xl font-bold text-blue-900">
-              Abstract Reasoning Test <span className="text-base font-medium text-blue-600">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
+              Abstract Reasoning Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
             </h1>
           </div>
           
           <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
             <div 
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-300 ease-out"
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#0084d6] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -250,7 +245,7 @@ const AbstractReasoningTest = () => {
         <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
             {/* Category banner */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-400 py-3 px-6 text-white">
+            <div className="bg-gradient-to-r from-[#009dff] to-[#0084d6] py-3 px-6 text-white">
               <p className="text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
@@ -262,21 +257,14 @@ const AbstractReasoningTest = () => {
               </h2>
               
               {/* Image section */}
-              <div className={`relative mb-8 transition-all duration-300 ${isImageEnlarged ? 'scale-110' : 'scale-100'}`}>
+              <div className="mb-8">
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
                   <div className="relative">
                     <img 
                       src={currentQuestion.image}
                       alt="Abstract reasoning question" 
-                      className="max-h-[300px] w-auto mx-auto rounded object-contain"
+                      className="max-h-[300px] w-auto mx-auto rounded object-contain question-image hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer"
                     />
-                    <button 
-                      onClick={toggleImageSize}
-                      className="absolute top-2 right-2 p-2 bg-white/80 rounded-lg hover:bg-white shadow-sm"
-                      aria-label="Enlarge image"
-                    >
-                      <Maximize size={18} />
-                    </button>
                   </div>
                 </div>
               </div>
@@ -288,35 +276,37 @@ const AbstractReasoningTest = () => {
                   onValueChange={handleAnswerChange}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {currentQuestion.options.map((option) => (
-                      <div 
-                        key={option}
-                        className={`border rounded-xl p-4 transition-all
-                          ${answers[currentQuestionIndex] === option 
-                            ? 'border-blue-500 bg-blue-50 shadow-md' 
-                            : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
-                          }`}
-                      >
-                        <div className="flex items-start space-x-3">
-                          <RadioGroupItem 
-                            value={option} 
-                            id={`option-${option}`}
-                            className="mt-1"
-                          />
-                          <div className="flex-1">
-                            <label 
-                              htmlFor={`option-${option}`}
-                              className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer"
-                            >
-                              Option {option}
-                            </label>
-                            <p className="text-gray-500 text-sm">
-                              Select this answer
-                            </p>
+                    {currentQuestion.options.map((option, idx) => {
+                      const optionLabels = ['A', 'B', 'C', 'D'];
+                      const optionLabel = optionLabels[idx];
+                      return (
+                        <div 
+                          key={option}
+                          className={`border rounded-xl p-4 transition-all cursor-pointer
+                            ${answers[currentQuestionIndex] === option 
+                              ? 'border-[#009dff] bg-blue-50 shadow-md' 
+                              : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
+                            }`}
+                          onClick={() => handleAnswerChange(option)}
+                        >
+                          <div className="flex items-start space-x-3">
+                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                              answers[currentQuestionIndex] === option 
+                                ? 'bg-[#009dff] text-white' 
+                                : 'bg-gray-100 text-gray-700'
+                            }`}>
+                              {optionLabel}
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-gray-700 font-medium">Option {option}</p>
+                              <p className="text-gray-500 text-sm mt-1">
+                                Select this answer
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </RadioGroup>
               </div>
@@ -326,7 +316,7 @@ const AbstractReasoningTest = () => {
                 <Button 
                   variant="outline"
                   onClick={toggleFlagQuestion}
-                  className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-blue-600 hover:bg-blue-50'}`}
+                  className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
                 >
                   <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
                   {flaggedQuestions[currentQuestionIndex] ? 'Flagged for Review' : 'Flag for Review'}
@@ -371,7 +361,7 @@ const AbstractReasoningTest = () => {
               {currentQuestionIndex < mockQuestions.length - 1 ? (
                 <Button
                   onClick={goToNextQuestion}
-                  className="bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
+                  className="bg-gradient-to-r from-[#009dff] to-[#0084d6] hover:from-[#008ae6] hover:to-[#0073bd]"
                 >
                   Next
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -379,7 +369,7 @@ const AbstractReasoningTest = () => {
               ) : (
                 <Button
                   onClick={checkForUnansweredQuestions}
-                  className="bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
+                  className="bg-gradient-to-r from-[#009dff] to-[#0084d6] hover:from-[#008ae6] hover:to-[#0073bd]"
                 >
                   Submit Test
                 </Button>

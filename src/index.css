@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -98,4 +99,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.question-image {
+  position: relative;
+  z-index: 1;
+}
+
+.question-image:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+  z-index: 10;
 }

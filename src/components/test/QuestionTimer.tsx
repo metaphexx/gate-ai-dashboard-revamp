@@ -16,15 +16,14 @@ const QuestionTimer = ({ time, isWarning }: QuestionTimerProps) => {
 
   return (
     <div className={`
-      fixed top-3 right-4 md:right-8 z-20
       bg-white shadow-md rounded-full px-4 py-2 
       flex items-center
       border ${isWarning ? 'border-red-200' : 'border-blue-100'}
       ${isWarning ? 'animate-pulse' : ''}
     `}>
-      <Clock className={`h-5 w-5 mr-2 ${isWarning ? 'text-red-500' : 'text-blue-500'}`} />
+      <Clock className={`h-5 w-5 mr-2 ${isWarning ? 'text-red-500' : 'text-[#009dff]'}`} />
       <span 
-        className={`font-medium ${isWarning ? 'text-red-500' : 'text-blue-700'}`}
+        className={`font-medium ${isWarning ? 'text-red-500' : 'text-[#009dff]'}`}
       >
         {formatTime(time)}
       </span>

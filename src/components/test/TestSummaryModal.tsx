@@ -111,7 +111,7 @@ const TestSummaryModal = ({
           </Button>
           <Button 
             onClick={onSubmit}
-            className="bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
+            className="bg-gradient-to-r from-[#009dff] to-[#0084d6] hover:from-[#008ae6] hover:to-[#0073bd]"
           >
             Submit Anyway
           </Button>

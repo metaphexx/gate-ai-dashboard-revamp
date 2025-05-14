@@ -30,11 +30,11 @@ const QuestionTracker = ({ questions, currentIndex, getStatus, onSelect }: Quest
               className={cn(
                 "w-10 h-10 flex items-center justify-center rounded-full transition-all relative",
                 index === currentIndex
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-400 text-white shadow-lg shadow-blue-200' 
+                  ? 'bg-gradient-to-r from-[#009dff] to-[#0084d6] text-white shadow-lg shadow-blue-200' 
                   : status === 'flagged'
                     ? 'bg-white text-orange-600 border-2 border-orange-400'
                     : status === 'answered'
-                      ? 'bg-blue-100 text-blue-700' 
+                      ? 'bg-blue-100 text-[#009dff]' 
                       : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
               )}
               aria-label={`Question ${index + 1}`}
@@ -42,7 +42,7 @@ const QuestionTracker = ({ questions, currentIndex, getStatus, onSelect }: Quest
               {index + 1}
               {status === 'flagged' && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-                  <Flag className="w-3 h-3 text-white" />
+                  <Flag className="w-2 h-2 text-white" />
                 </span>
               )}
             </button>
