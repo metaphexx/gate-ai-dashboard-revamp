@@ -13,7 +13,8 @@ import {
   Bar,
   Cell,
   PieChart,
-  Pie
+  Pie,
+  Label
 } from 'recharts';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Clock, Info } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
+import { 
+  ChartContainer, 
+  ChartTooltip, 
+  ChartTooltipContent 
+} from '@/components/ui/chart';
+import { Progress } from '@/components/ui/progress';
 
 interface ResultData {
   totalQuestions: number;
@@ -174,11 +181,73 @@ const getStrongAreas = () => {
   return strongAreas;
 };
 
+// Calculate overall performance level
+const calculateOverallPerformance = () => {
+  const accuracy = (resultData.correct / resultData.totalQuestions) * 100;
+  
+  if (accuracy >= 71) {
+    return { level: 'Strong', color: 'text-accent', bgColor: 'bg-accent' };
+  } else if (accuracy >= 41) {
+    return { level: 'Developing', color: 'text-warning', bgColor: 'bg-warning' };
+  } else {
+    return { level: 'Needs Work', color: 'text-destructive', bgColor: 'bg-destructive' };
+  }
+};
+
+// Custom tooltip for line chart to smooth out labels
+const CustomLineTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const value = payload[0].value;
+    let status = 'Skipped';
+    if (value === 1) status = 'Incorrect';
+    else if (value === 2) status = 'Correct';
+    
+    return (
+      <div className="bg-white p-2 border border-gray-100 shadow-md rounded-md">
+        <p>Question {label}</p>
+        <p className="font-medium">{status}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+// Custom tooltip for time data
+const CustomTimeTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-white p-2 border border-gray-100 shadow-md rounded-md">
+        <p className="font-medium">{data.name}</p>
+        <p>{data.value}% of total time</p>
+        <p className="text-xs text-gray-500">~{Math.round(data.value * 0.2)}m</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+// Custom tooltip for average time data
+const CustomAvgTimeTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-white p-2 border border-gray-100 shadow-md rounded-md">
+        <p className="font-medium">{data.name}</p>
+        <p>{data.value} minutes per question</p>
+        <p className="text-xs text-gray-500">{Math.round(data.value * 60)} seconds average</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 const AbstractReasoningResults = () => {
   const questionData = React.useMemo(() => generateQuestionData(), []);
   const accuracy = resultData.correct / resultData.totalQuestions * 100;
   const weakAreas = getWeakAreas();
   const strongAreas = getStrongAreas();
+  const performanceLevel = calculateOverallPerformance();
   
   return (
     <div className="min-h-screen bg-background">
@@ -253,8 +322,14 @@ const AbstractReasoningResults = () => {
               <h2 className="text-2xl font-bold">Performance Overview</h2>
             </CardHeader>
             <CardContent className="pt-4">
-              {/* Horizontal stacked bar chart */}
-              <div className="mb-6">
+              {/* Horizontal stacked bar chart with performance label */}
+              <div className="mb-2">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm">Performance Level:</span>
+                  <Badge className={performanceLevel.bgColor + " text-foreground"}>
+                    {performanceLevel.level} ({accuracy.toFixed(1)}%)
+                  </Badge>
+                </div>
                 <div className="h-8 flex rounded-md overflow-hidden">
                   <div 
                     className="bg-accent animate-fade-in" 
@@ -284,25 +359,6 @@ const AbstractReasoningResults = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Performance Bands */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Performance Bands</h3>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 bg-accent rounded-full"></div>
-                    <span className="text-sm">71-100% - Strong</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 bg-warning rounded-full"></div>
-                    <span className="text-sm">41-70% - Developing</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 bg-destructive rounded-full"></div>
-                    <span className="text-sm">0-40% - Needs Work</span>
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
@@ -329,23 +385,29 @@ const AbstractReasoningResults = () => {
                   return (
                     <TableRow key={subType.name}>
                       <TableCell className="font-medium">{subType.name}</TableCell>
-                      <TableCell>
-                        <div className="w-full bg-gray-100 rounded-full h-2.5">
-                          <div 
-                            className={`h-2.5 rounded-full ${
+                      <TableCell className="w-1/4">
+                        <Progress 
+                          value={subType.percentage} 
+                          className="h-2 w-full"
+                          style={{
+                            backgroundColor: 'transparent',
+                          }}
+                        >
+                          <div
+                            className={`h-full ${
                               subType.percentage > 70 ? 'bg-accent' : 
                               subType.percentage > 40 ? 'bg-warning' : 'bg-destructive'
                             }`}
-                            style={{ width: `${subType.percentage}%` }}
+                            style={{width: `${subType.percentage}%`}}
                           ></div>
-                        </div>
+                        </Progress>
                       </TableCell>
                       <TableCell>{subType.correct} / {subType.total}</TableCell>
                       <TableCell>{subType.incorrect} / {subType.total}</TableCell>
                       <TableCell>{subType.skipped} / {subType.total}</TableCell>
                       <TableCell className="font-semibold">{subType.percentage.toFixed(1)}%</TableCell>
                       <TableCell>
-                        <Badge className={color}>{status}</Badge>
+                        <Badge className={color + " min-w-[90px] justify-center"}>{status}</Badge>
                       </TableCell>
                     </TableRow>
                   );
@@ -400,18 +462,18 @@ const AbstractReasoningResults = () => {
                 ></div>
               </div>
               
-              {/* Performance Trend Line Chart */}
-              <h3 className="text-lg font-semibold mb-2">Performance Trend Across Questions</h3>
-              <div className="h-64">
+              {/* Performance Trend Line Chart with enhanced axes labels */}
+              <div className="h-64 px-2">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={questionData}
-                    margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+                    margin={{ top: 10, right: 20, left: 15, bottom: 20 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis 
                       dataKey="questionNumber" 
                       label={{ value: "Question Number", position: "insideBottom", offset: -5 }} 
+                      tickMargin={8}
                     />
                     <YAxis 
                       domain={[0, 2]} 
@@ -419,20 +481,17 @@ const AbstractReasoningResults = () => {
                       tickFormatter={(value) => {
                         return value === 0 ? 'Skipped' : value === 1 ? 'Incorrect' : 'Correct';
                       }}
+                      label={{ value: 'Outcome', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                      tickMargin={10}
                     />
-                    <Tooltip 
-                      formatter={(value: any) => {
-                        return value === 0 ? 'Skipped' : value === 1 ? 'Incorrect' : 'Correct';
-                      }}
-                      labelFormatter={(label) => `Question ${label}`}
-                    />
+                    <Tooltip content={<CustomLineTooltip />} />
                     <Line 
-                      type="monotone" 
+                      type="monotoneX" 
                       dataKey="status" 
                       stroke="#009dff" 
                       strokeWidth={2}
-                      dot={{ r: 4 }} 
-                      activeDot={{ r: 6 }} 
+                      dot={{ r: 3 }} 
+                      activeDot={{ r: 5 }} 
                       className="animate-[fade-in_1s_ease-out]"
                     />
                   </LineChart>
@@ -442,12 +501,12 @@ const AbstractReasoningResults = () => {
           </Card>
         </div>
 
-        {/* Time Analysis Section */}
+        {/* Time Analysis Section with updated styling */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Time Analysis Pie Chart */}
           <Card className="shadow-sm">
             <CardHeader className="pb-0">
-              <h2 className="text-xl font-bold">Time Analysis</h2>
+              <h3 className="text-xl font-medium">Time Analysis</h3>
             </CardHeader>
             <CardContent className="flex flex-col items-center pt-4">
               <div className="h-64 w-full">
@@ -463,14 +522,14 @@ const AbstractReasoningResults = () => {
                       paddingAngle={5}
                       dataKey="value"
                       className="animate-[fade-in_1s_ease-out]"
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      labelLine={false}
                     >
                       {timeData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      formatter={(value: any) => [`${value}%`, 'Time Spent']}
-                    />
+                    <Tooltip content={<CustomTimeTooltip />} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -479,24 +538,13 @@ const AbstractReasoningResults = () => {
                 <div className="text-center font-semibold text-lg">{resultData.timeTaken}</div>
                 <div className="text-center text-sm text-muted-foreground">Total Time Spent</div>
               </div>
-
-              <div className="grid grid-cols-3 w-full mt-4">
-                {timeData.map((item) => (
-                  <div key={item.name} className="text-center">
-                    <div className="text-sm font-semibold" style={{ color: item.color }}>
-                      {item.value}%
-                    </div>
-                    <div className="text-xs text-muted-foreground">{item.name}</div>
-                  </div>
-                ))}
-              </div>
             </CardContent>
           </Card>
 
-          {/* Average Time per Sub-Type */}
+          {/* Average Time per Sub-Type with thinner bars and lighter colors */}
           <Card className="shadow-sm">
             <CardHeader className="pb-0">
-              <h2 className="text-xl font-bold">Average Time per Sub-Type</h2>
+              <h3 className="text-xl font-medium">Average Time per Sub-Type</h3>
             </CardHeader>
             <CardContent className="pt-4">
               <div className="h-64">
@@ -504,29 +552,34 @@ const AbstractReasoningResults = () => {
                   <BarChart
                     data={avgTimeData}
                     layout="vertical"
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    margin={{ top: 5, right: 10, left: 20, bottom: 5 }}
+                    barSize={12}
                   >
                     <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
                     <XAxis
                       type="number"
                       label={{ value: 'Minutes', position: 'insideBottom', offset: -5 }}
+                      tickMargin={5}
                     />
                     <YAxis
                       dataKey="name"
                       type="category"
-                      width={100}
-                      tick={{ fontSize: 12 }}
+                      width={120}
+                      tick={{ fontSize: 11 }}
+                      tickMargin={5}
                     />
-                    <Tooltip
-                      formatter={(value: any) => [`${value} minutes`, 'Average Time']}
-                    />
+                    <Tooltip content={<CustomAvgTimeTooltip />} />
                     <Bar
                       dataKey="value"
                       className="animate-[fade-in_1s_ease-out]"
                       radius={[0, 4, 4, 0]}
                     >
                       {avgTimeData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={entry.color} 
+                          fillOpacity={0.8} 
+                        />
                       ))}
                     </Bar>
                   </BarChart>
