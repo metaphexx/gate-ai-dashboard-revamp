@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -403,8 +402,8 @@ const AbstractReasoningResults = () => {
                       type="monotone" 
                       dataKey="status" 
                       stroke="#009dff" 
-                      activeDot={{ r: 8, fill: (entry) => entry.color }}
-                      dot={{ fill: (entry) => entry.color, stroke: '#fff' }}
+                      activeDot={{ r: 8, fill: "#009dff" }}
+                      dot={{ fill: "#009dff", stroke: '#fff' }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
