@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -8,26 +7,17 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell,
-  PieChart,
-  Pie,
-  Label
+  ResponsiveContainer
 } from 'recharts';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Clock, Info } from 'lucide-react';
+import { ArrowLeft, Info } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
-import { 
-  ChartContainer, 
-  ChartTooltip, 
-  ChartTooltipContent 
-} from '@/components/ui/chart';
 import { Progress } from '@/components/ui/progress';
+import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
+import AverageTimeSection from '@/components/results/AverageTimeSection';
 
 interface ResultData {
   totalQuestions: number;
@@ -501,92 +491,13 @@ const AbstractReasoningResults = () => {
           </Card>
         </div>
 
-        {/* Time Analysis Section with updated styling */}
+        {/* Time Analysis Sections - Updated with new components */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Time Analysis Pie Chart */}
-          <Card className="shadow-sm">
-            <CardHeader className="pb-0">
-              <h3 className="text-xl font-medium">Time Analysis</h3>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center pt-4">
-              <div className="h-64 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={timeData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      paddingAngle={5}
-                      dataKey="value"
-                      className="animate-[fade-in_1s_ease-out]"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                      labelLine={false}
-                    >
-                      {timeData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTimeTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+          <TimeAnalysisSection timeData={timeData} totalTime={resultData.timeTaken} />
 
-              <div className="flex flex-col w-full gap-1 mt-2">
-                <div className="text-center font-semibold text-lg">{resultData.timeTaken}</div>
-                <div className="text-center text-sm text-muted-foreground">Total Time Spent</div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Average Time per Sub-Type with thinner bars and lighter colors */}
-          <Card className="shadow-sm">
-            <CardHeader className="pb-0">
-              <h3 className="text-xl font-medium">Average Time per Sub-Type</h3>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={avgTimeData}
-                    layout="vertical"
-                    margin={{ top: 5, right: 10, left: 20, bottom: 5 }}
-                    barSize={12}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
-                    <XAxis
-                      type="number"
-                      label={{ value: 'Minutes', position: 'insideBottom', offset: -5 }}
-                      tickMargin={5}
-                    />
-                    <YAxis
-                      dataKey="name"
-                      type="category"
-                      width={120}
-                      tick={{ fontSize: 11 }}
-                      tickMargin={5}
-                    />
-                    <Tooltip content={<CustomAvgTimeTooltip />} />
-                    <Bar
-                      dataKey="value"
-                      className="animate-[fade-in_1s_ease-out]"
-                      radius={[0, 4, 4, 0]}
-                    >
-                      {avgTimeData.map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={entry.color} 
-                          fillOpacity={0.8} 
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Average Time per Sub-Type with thinner bars */}
+          <AverageTimeSection avgTimeData={avgTimeData} />
         </div>
       </div>
     </div>
