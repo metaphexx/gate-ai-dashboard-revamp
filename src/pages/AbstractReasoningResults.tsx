@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
 import AverageTimeSection from '@/components/results/AverageTimeSection';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const AbstractReasoningResults = () => {
   const navigate = useNavigate();
@@ -49,10 +50,32 @@ const AbstractReasoningResults = () => {
     { subType: 'Analogies', performance: 1, correct: 1, incorrect: 1, skipped: 4, percentage: 16.7, status: 'Needs Work' }
   ];
 
-  const questionReportData = Array.from({ length: 37 }, (_, i) => ({
-    question: i + 1,
-    status: i < 16 ? 1 : i < 21 ? -1 : 0 // 1 = correct, -1 = incorrect, 0 = skipped
-  }));
+  // Enhanced question report data with time spent and status for bar chart
+  const questionReportData = Array.from({ length: 37 }, (_, i) => {
+    const questionNum = i + 1;
+    let status, timeSpent, fill;
+    
+    if (questionNum <= 16) {
+      status = 'Correct';
+      timeSpent = Math.floor(Math.random() * 60) + 20; // 20-80 seconds for correct
+      fill = '#22c55e'; // Green
+    } else if (questionNum <= 21) {
+      status = 'Incorrect';
+      timeSpent = Math.floor(Math.random() * 80) + 15; // 15-95 seconds for incorrect
+      fill = '#ef4444'; // Red
+    } else {
+      status = 'Skipped';
+      timeSpent = Math.floor(Math.random() * 30) + 5; // 5-35 seconds for skipped
+      fill = '#9ca3af'; // Grey
+    }
+    
+    return {
+      question: questionNum,
+      timeSpent,
+      status,
+      fill
+    };
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -63,6 +86,20 @@ const AbstractReasoningResults = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="bg-white p-3 border rounded-lg shadow-lg">
+          <p className="font-medium">{`Question ${label}`}</p>
+          <p className="text-sm">{`Status: ${data.status}`}</p>
+          <p className="text-sm">{`Time: ${data.timeSpent}s`}</p>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -119,13 +156,13 @@ const AbstractReasoningResults = () => {
                   <div className="text-6xl font-bold text-[#009dff] mb-2">16</div>
                   <p className="text-lg text-gray-600 mb-4">Out of 37</p>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-base font-medium">
                       <span>Accuracy</span>
-                      <span className="font-medium">43.2%</span>
+                      <span className="font-bold">43.2%</span>
                     </div>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-base font-medium">
                       <span>Time Taken</span>
-                      <span className="font-medium flex items-center">
+                      <span className="font-bold flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
                         00h 20m 0s
                       </span>
@@ -184,7 +221,7 @@ const AbstractReasoningResults = () => {
             </CardContent>
           </Card>
 
-          {/* Question Report */}
+          {/* Question Report with Bar Chart */}
           <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none mb-8">
             <CardHeader>
               <CardTitle className="text-xl font-medium">Question Report</CardTitle>
@@ -202,12 +239,12 @@ const AbstractReasoningResults = () => {
                   <div className="text-gray-600">Incorrect</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-orange-600">16</div>
+                  <div className="text-2xl font-bold text-gray-600">16</div>
                   <div className="text-gray-600">Skipped</div>
                 </div>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-gradient-to-r from-green-500 via-red-500 to-orange-500 h-2 rounded-full" style={{width: '100%'}}></div>
+                <div className="bg-gradient-to-r from-green-500 via-red-500 to-gray-500 h-2 rounded-full" style={{width: '100%'}}></div>
               </div>
               <div className="text-right text-sm text-gray-600 flex items-center justify-end">
                 <Clock className="h-4 w-4 mr-1" />
@@ -215,37 +252,44 @@ const AbstractReasoningResults = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 mb-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={questionReportData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                  <BarChart data={questionReportData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis 
                       dataKey="question" 
-                      type="number" 
-                      domain={[1, 37]}
-                      ticks={[1, 5, 10, 15, 20, 25, 30, 35, 37]}
+                      tick={{ fontSize: 12 }}
+                      axisLine={{ stroke: '#9ca3af' }}
                     />
                     <YAxis 
-                      domain={[-1.5, 1.5]} 
-                      ticks={[-1, 0, 1]}
-                      tickFormatter={(value) => value === 1 ? 'Correct' : value === 0 ? 'Skipped' : 'Incorrect'}
+                      label={{ value: 'Time Spent (sec)', angle: -90, position: 'insideLeft' }}
+                      tick={{ fontSize: 12 }}
+                      axisLine={{ stroke: '#9ca3af' }}
                     />
-                    <Tooltip 
-                      formatter={(value, name) => {
-                        const status = value === 1 ? 'Correct' : value === 0 ? 'Skipped' : 'Incorrect';
-                        return [status, 'Status'];
-                      }}
-                      labelFormatter={(label) => `Question ${label}`}
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar 
+                      dataKey="timeSpent" 
+                      fill={(entry: any) => entry.fill}
+                      radius={[2, 2, 0, 0]}
                     />
-                    <Line 
-                      type="stepAfter" 
-                      dataKey="status" 
-                      stroke="#009dff" 
-                      strokeWidth={2}
-                      dot={{ fill: '#009dff', strokeWidth: 2, r: 3 }}
-                    />
-                  </LineChart>
+                  </BarChart>
                 </ResponsiveContainer>
+              </div>
+              
+              {/* Custom Legend */}
+              <div className="flex justify-center space-x-6 text-sm">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                  <span>Correct</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-red-500 rounded mr-2"></div>
+                  <span>Incorrect</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-gray-400 rounded mr-2"></div>
+                  <span>Skipped</span>
+                </div>
               </div>
             </CardContent>
           </Card>
