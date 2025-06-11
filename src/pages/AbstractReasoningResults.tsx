@@ -385,5 +385,3 @@ const AbstractReasoningResults = () => {
 };
 
 export default AbstractReasoningResults;
-
-</edits_to_apply>
