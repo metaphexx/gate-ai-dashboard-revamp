@@ -211,24 +211,29 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
 
   if (!isOpen) return null;
 
+  // Check if this is being used as a side panel (when it has a type and questions)
+  const isSidePanel = type && questions.length > 0;
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col">
+    <div className={isSidePanel ? "h-full flex flex-col bg-white" : "fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"}>
+      <div className={isSidePanel ? "h-full flex flex-col" : "bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col"}>
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-8 h-8 rounded-full" />
+        {!isSidePanel && (
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-8 h-8 rounded-full" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Chat with Elliot</h2>
+                <p className="text-sm text-gray-500">Your AI study assistant</p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900">Chat with Elliot</h2>
-              <p className="text-sm text-gray-500">Your AI study assistant</p>
-            </div>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="h-5 w-5" />
+            </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
+        )}
 
         {/* Messages */}
         <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
