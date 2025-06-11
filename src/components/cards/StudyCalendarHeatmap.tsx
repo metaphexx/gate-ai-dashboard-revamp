@@ -32,10 +32,19 @@ const StudyCalendarHeatmap = () => {
   const getActivityLevel = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
     const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
     
-    if (totalActivity === 0) return 'bg-gray-100 border-gray-200 hover:bg-primary/10 hover:border-primary/30';
-    if (totalActivity <= 8) return 'bg-primary/20 border-primary/30 hover:bg-primary/30 hover:border-primary/50';
-    if (totalActivity <= 20) return 'bg-primary/60 border-primary/70 hover:bg-primary/70 hover:border-primary/80';
-    return 'bg-primary border-primary hover:bg-primary/90 hover:border-primary';
+    if (totalActivity === 0) return 'bg-gray-100 hover:bg-gray-200';
+    if (totalActivity <= 8) return 'bg-blue-100 hover:bg-blue-200';
+    if (totalActivity <= 20) return 'bg-blue-300 hover:bg-blue-400';
+    return 'bg-blue-500 hover:bg-blue-600';
+  };
+
+  const getTextColor = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
+    const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
+    
+    if (totalActivity === 0) return 'text-gray-600';
+    if (totalActivity <= 8) return 'text-blue-800';
+    if (totalActivity <= 20) return 'text-white';
+    return 'text-white';
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -89,6 +98,10 @@ const StudyCalendarHeatmap = () => {
     return dateString === today;
   };
 
+  const hasActivity = (questionsCompleted: number, testsCompleted: number, examsCompleted: number) => {
+    return questionsCompleted > 0 || testsCompleted > 0 || examsCompleted > 0;
+  };
+
   const days = getDaysInMonth(currentDate);
   const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
@@ -101,7 +114,7 @@ const StudyCalendarHeatmap = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
+              className="h-6 w-6 hover:bg-blue-100 hover:text-blue-600"
               onClick={() => navigateMonth('prev')}
             >
               <ChevronLeft size={12} />
@@ -109,7 +122,7 @@ const StudyCalendarHeatmap = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
+              className="h-6 w-6 hover:bg-blue-100 hover:text-blue-600"
               onClick={() => navigateMonth('next')}
             >
               <ChevronRight size={12} />
@@ -118,7 +131,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Week Days Header */}
-        <div className="grid grid-cols-7 gap-1 mb-1">
+        <div className="grid grid-cols-7 gap-1 mb-2">
           {weekDays.map(day => (
             <div key={day} className="text-xs text-gray-500 text-center py-1 font-medium">
               {day}
@@ -135,15 +148,13 @@ const StudyCalendarHeatmap = () => {
                   <TooltipTrigger asChild>
                     <div
                       className={`
-                        w-8 h-8 rounded-md cursor-pointer transition-all duration-200 hover:scale-105 flex items-center justify-center border-2
+                        w-8 h-8 rounded-sm cursor-pointer transition-all duration-200 flex items-center justify-center
                         ${getActivityLevel(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
-                        ${isToday(dayData.date) ? 'ring-2 ring-primary ring-offset-1' : ''}
+                        ${isToday(dayData.date) ? 'ring-2 ring-blue-400 ring-offset-1' : ''}
                       `}
                     >
                       <span className={`text-xs font-medium ${
-                        dayData.questionsCompleted + dayData.testsCompleted + dayData.examsCompleted > 0 
-                          ? 'text-white' 
-                          : 'text-gray-600'
+                        getTextColor(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)
                       }`}>
                         {dayData.day}
                       </span>
@@ -157,9 +168,15 @@ const StudyCalendarHeatmap = () => {
                           day: 'numeric' 
                         })}
                       </div>
-                      <div className="text-gray-700">Completed {dayData.questionsCompleted} questions</div>
-                      <div className="text-gray-700">Completed {dayData.testsCompleted} tests</div>
-                      <div className="text-gray-700">Completed {dayData.examsCompleted} exams</div>
+                      {hasActivity(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted) ? (
+                        <>
+                          <div className="text-gray-700">Completed {dayData.questionsCompleted} questions</div>
+                          <div className="text-gray-700">Completed {dayData.testsCompleted} tests</div>
+                          <div className="text-gray-700">Completed {dayData.examsCompleted} exams</div>
+                        </>
+                      ) : (
+                        <div className="text-gray-500">No activity on this date.</div>
+                      )}
                     </div>
                   </TooltipContent>
                 </Tooltip>

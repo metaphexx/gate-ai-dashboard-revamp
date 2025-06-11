@@ -3,11 +3,10 @@ import React, { useState } from 'react';
 import { 
   Trophy, Target, Zap, Calendar, Clock, TrendingUp, 
   Award, Star, Flame, Moon, Coffee, CheckCircle2,
-  BarChart3, Timer, Medal, X
+  BarChart3, Timer, Medal
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 
 interface Achievement {
   id: string;
@@ -83,7 +82,7 @@ const AchievementsGrid = () => {
             className={`
               p-2 rounded-md text-center transition-all duration-200 hover:scale-105 cursor-pointer
               ${achievement.isUnlocked 
-                ? 'bg-primary-light border border-primary/20 hover:bg-primary/10' 
+                ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100' 
                 : 'bg-gray-50 border border-gray-200 opacity-60 hover:bg-gray-100'
               }
             `}
@@ -129,7 +128,7 @@ const AchievementsGrid = () => {
         <div className="text-center">
           <Dialog open={showAllModal} onOpenChange={setShowAllModal}>
             <DialogTrigger asChild>
-              <button className="text-xs text-primary hover:text-primary/80 font-medium transition-colors">
+              <button className="text-xs text-blue-600 hover:text-blue-500 font-medium transition-colors">
                 View all {achievements.length} achievements
               </button>
             </DialogTrigger>
