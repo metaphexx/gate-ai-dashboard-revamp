@@ -7,7 +7,6 @@ import RecentActivityCard from '@/components/cards/RecentActivityCard';
 import SmartRecommendations from '@/components/cards/SmartRecommendations';
 import PerformanceOverview from '@/components/cards/PerformanceOverview';
 import StudyStreakCard from '@/components/cards/StudyStreakCard';
-import StudyCalendarHeatmap from '@/components/cards/StudyCalendarHeatmap';
 import QuestionBankStatus from '@/components/cards/QuestionBankStatus';
 import VideoTutorialCard from '@/components/cards/VideoTutorialCard';
 import AccuracyTrendChart from '@/components/charts/AccuracyTrendChart';
@@ -58,8 +57,7 @@ const Index = () => {
             <div className="lg:col-span-2">
               <PerformanceOverview />
             </div>
-            <div className="space-y-4">
-              <StudyCalendarHeatmap />
+            <div>
               <StudyStreakCard />
             </div>
           </section>

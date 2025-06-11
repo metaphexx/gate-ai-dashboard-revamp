@@ -34,14 +34,11 @@ const StudyCalendarHeatmap = () => {
     { date: '2025-06-11', questionsCompleted: 16, questionsReviewed: 4, testsCompleted: 1 },
   ];
 
-  const currentStreak = 4;
-  const longestStreak = 12;
-
   const getActivityLevel = (questionsCompleted: number): string => {
-    if (questionsCompleted === 0) return 'bg-gray-200';
-    if (questionsCompleted <= 5) return 'bg-green-200';
-    if (questionsCompleted <= 15) return 'bg-green-400';
-    return 'bg-green-600';
+    if (questionsCompleted === 0) return 'bg-gray-100 border border-gray-200';
+    if (questionsCompleted <= 5) return 'bg-blue-100 border border-blue-200';
+    if (questionsCompleted <= 15) return 'bg-blue-300 border border-blue-400';
+    return 'bg-blue-500 border border-blue-600';
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -107,85 +104,62 @@ const StudyCalendarHeatmap = () => {
   };
 
   const days = getDaysInMonth(currentDate);
-  const weekDays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   return (
-    <div className="bg-white rounded-lg p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Work</h3>
-        <Button variant="ghost" size="icon" className="h-6 w-6">
-          <ChevronRight size={14} />
-        </Button>
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="font-semibold text-base text-gray-900">{formatMonthYear(currentDate)}</h4>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => navigateMonth('prev')}
+          >
+            <ChevronLeft size={12} />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => navigateMonth('next')}
+          >
+            <ChevronRight size={12} />
+          </Button>
+        </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Calendar */}
-        <div className="flex-1">
-          {/* Month Navigation */}
-          <div className="flex items-center justify-between mb-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => navigateMonth('prev')}
-            >
-              <ChevronLeft size={16} />
-            </Button>
-            <h4 className="font-medium text-base">{formatMonthYear(currentDate)}</h4>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => navigateMonth('next')}
-            >
-              <ChevronRight size={16} />
-            </Button>
+      {/* Week Days Header */}
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {weekDays.map(day => (
+          <div key={day} className="text-xs text-gray-500 text-center py-1 font-medium">
+            {day}
           </div>
+        ))}
+      </div>
 
-          {/* Week Days Header */}
-          <div className="grid grid-cols-7 gap-1 mb-2">
-            {weekDays.map(day => (
-              <div key={day} className="text-xs text-gray-500 text-center py-1 font-medium">
-                {day}
-              </div>
-            ))}
+      {/* Calendar Grid */}
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((dayData, index) => (
+          <div
+            key={index}
+            className={`
+              w-6 h-6 rounded-sm cursor-pointer transition-all duration-200 hover:scale-110 relative flex items-center justify-center
+              ${dayData ? getActivityLevel(dayData.questionsCompleted) : ''}
+              ${dayData && isToday(dayData.date) ? 'ring-2 ring-primary ring-offset-1' : ''}
+              ${!dayData ? 'bg-transparent' : ''}
+            `}
+            onMouseEnter={(e) => dayData && handleDayHover(dayData, e)}
+            onMouseLeave={() => setHoveredDay(null)}
+          >
+            {dayData && (
+              <span className="text-xs font-medium text-gray-700">
+                {dayData.day}
+              </span>
+            )}
           </div>
-
-          {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-1">
-            {days.map((dayData, index) => (
-              <div
-                key={index}
-                className={`
-                  aspect-square rounded-sm cursor-pointer transition-all duration-200 hover:scale-110 relative
-                  ${dayData ? getActivityLevel(dayData.questionsCompleted) : ''}
-                  ${dayData && isToday(dayData.date) ? 'ring-2 ring-primary ring-offset-1' : ''}
-                  ${!dayData ? 'bg-transparent' : ''}
-                `}
-                onMouseEnter={(e) => dayData && handleDayHover(dayData, e)}
-                onMouseLeave={() => setHoveredDay(null)}
-              >
-                {dayData && (
-                  <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-700">
-                    {dayData.day}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Streak Stats */}
-        <div className="flex flex-col gap-4 lg:w-32">
-          <div>
-            <div className="text-xs text-gray-500 mb-1">Current Streak</div>
-            <div className="text-2xl font-bold text-gray-900">{currentStreak} days</div>
-          </div>
-          <div>
-            <div className="text-xs text-gray-500 mb-1">Longest Streak</div>
-            <div className="text-2xl font-bold text-gray-900">{longestStreak} days</div>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Tooltip */}
