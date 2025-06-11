@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp, Calendar } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
 import AverageTimeSection from '@/components/results/AverageTimeSection';
@@ -23,6 +22,20 @@ const AbstractReasoningResults = () => {
 
   const handleBackToTests = () => {
     navigate('/practice');
+  };
+
+  // Get current date and time for completion
+  const completionDate = new Date();
+  const formatCompletionDate = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return date.toLocaleDateString('en-US', options);
   };
 
   // Sample data for charts and tables
@@ -156,15 +169,22 @@ const AbstractReasoningResults = () => {
                   <div className="text-6xl font-bold text-[#009dff] mb-2">16</div>
                   <p className="text-lg text-gray-600 mb-4">Out of 37</p>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-lg font-medium">
+                    <div className="flex justify-between text-xl font-medium">
                       <span>Accuracy</span>
                       <span className="font-bold">43.2%</span>
                     </div>
-                    <div className="flex justify-between text-lg font-medium">
+                    <div className="flex justify-between text-xl font-medium">
                       <span>Time Taken</span>
                       <span className="font-bold flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
                         00h 20m 0s
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-lg font-medium text-gray-600">
+                      <span>Completed</span>
+                      <span className="flex items-center">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {formatCompletionDate(completionDate)}
                       </span>
                     </div>
                   </div>
