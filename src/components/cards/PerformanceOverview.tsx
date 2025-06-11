@@ -22,7 +22,7 @@ const data = {
 const getTrendIcon = (trend: string) => {
   switch (trend) {
     case 'up':
-      return <ArrowUp size={14} className="text-accent" />;
+      return <ArrowUp size={14} className="text-[#009dff]" />;
     case 'down':
       return <ArrowDown size={14} className="text-destructive" />;
     default:
@@ -56,7 +56,11 @@ const PerformanceOverview = () => {
             size="sm" 
             variant={timeRange === 'allTime' ? 'default' : 'outline'}
             onClick={() => setTimeRange('allTime')}
-            className="h-8 text-xs"
+            className={`h-8 text-xs ${
+              timeRange === 'allTime' 
+                ? 'bg-[#009dff] hover:bg-[#009dff]/90' 
+                : 'hover:bg-[#009dff]/10 hover:text-[#009dff] hover:border-[#009dff]/20'
+            }`}
           >
             All Time
           </Button>
@@ -64,7 +68,11 @@ const PerformanceOverview = () => {
             size="sm" 
             variant={timeRange === 'lastWeek' ? 'default' : 'outline'}
             onClick={() => setTimeRange('lastWeek')}
-            className="h-8 text-xs"
+            className={`h-8 text-xs ${
+              timeRange === 'lastWeek' 
+                ? 'bg-[#009dff] hover:bg-[#009dff]/90' 
+                : 'hover:bg-[#009dff]/10 hover:text-[#009dff] hover:border-[#009dff]/20'
+            }`}
           >
             Last 7 Days
           </Button>
@@ -100,7 +108,7 @@ const PerformanceOverview = () => {
             <span>{item.subject}</span>
             <div className="flex items-center gap-2">
               <span className={`font-medium ${
-                item.accuracy >= 70 ? 'text-accent' :
+                item.accuracy >= 70 ? 'text-[#009dff]' :
                 item.accuracy >= 40 ? 'text-warning' :
                 'text-destructive'
               }`}>
