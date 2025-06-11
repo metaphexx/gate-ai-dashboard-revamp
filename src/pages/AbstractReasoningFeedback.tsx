@@ -11,11 +11,11 @@ const AbstractReasoningFeedback = () => {
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
 
   const feedbackOptions = [
-    { id: 'very-easy', emoji: '😄', label: 'Very Easy' },
-    { id: 'easy', emoji: '😊', label: 'Easy' },
-    { id: 'moderate', emoji: '😐', label: 'Moderate' },
+    { id: 'very-difficult', emoji: '😠', label: 'Very Difficult' },
     { id: 'difficult', emoji: '😟', label: 'Difficult' },
-    { id: 'very-difficult', emoji: '😠', label: 'Very Difficult' }
+    { id: 'moderate', emoji: '😐', label: 'Moderate' },
+    { id: 'easy', emoji: '😊', label: 'Easy' },
+    { id: 'very-easy', emoji: '😄', label: 'Very Easy' }
   ];
 
   const handleSubmitFeedback = () => {
