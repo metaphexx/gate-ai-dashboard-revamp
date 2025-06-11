@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -38,8 +37,9 @@ const mockQuestions = [
     prompt: "Use this idea as the basis for a piece of writing. You may write in any style.",
     category: "Creative Writing",
     image: "/writing-test.jpg",
-    instruction: "Look at the image above and write a creative piece inspired by what you see. You may choose any writing style - narrative, descriptive, persuasive, or analytical. Your response should be a minimum of 120 words.",
-    minWords: 120,
+    instruction: "Look at the image above and write a creative piece inspired by what you see. You may choose any writing style - narrative, descriptive, persuasive, or analytical. Your response should be between 200-300 words.",
+    minWords: 200,
+    maxWords: 300,
     answer: null
   }
 ];
@@ -54,10 +54,29 @@ const WritingTest = () => {
   const [time, setTime] = useState(2700); // 45 minutes in seconds for writing
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
-  const [wordCount, setWordCount] = useState(0);
+  const [writingAnalytics, setWritingAnalytics] = useState({
+    words: 0,
+    characters: 0,
+    sentences: 0,
+    paragraphs: 0
+  });
   
   const currentQuestion = mockQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / mockQuestions.length) * 100;
+
+  // Calculate writing analytics
+  const calculateAnalytics = (text: string) => {
+    if (!text) {
+      return { words: 0, characters: 0, sentences: 0, paragraphs: 0 };
+    }
+
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+    const characters = text.length;
+    const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0).length;
+    const paragraphs = text.split(/\n\s*\n/).filter(paragraph => paragraph.trim().length > 0).length;
+
+    return { words, characters, sentences, paragraphs };
+  };
 
   // Text formatting functions
   const applyFormat = (command: string, value?: string) => {
@@ -160,6 +179,13 @@ const WritingTest = () => {
     setWordCount(words.length);
   }, [answers, currentQuestionIndex]);
 
+  // Update analytics when answer changes
+  useEffect(() => {
+    const currentAnswer = answers[currentQuestionIndex] || '';
+    const analytics = calculateAnalytics(currentAnswer);
+    setWritingAnalytics(analytics);
+  }, [answers, currentQuestionIndex]);
+
   const handleTimeUp = () => {
     toast({
       title: "Time's up!",
@@ -249,7 +275,7 @@ const WritingTest = () => {
     setShowSubmitDialog(false);
   };
 
-  const canSubmit = wordCount >= currentQuestion.minWords;
+  const canSubmit = writingAnalytics.words >= currentQuestion.minWords && writingAnalytics.words <= currentQuestion.maxWords;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -337,18 +363,41 @@ const WritingTest = () => {
                   <label className="text-lg font-semibold text-gray-900">Your Response:</label>
                   <div className="flex items-center space-x-4">
                     <div className={`text-sm px-3 py-1 rounded-full ${
-                      wordCount >= currentQuestion.minWords 
+                      canSubmit 
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-orange-100 text-orange-700'
                     }`}>
-                      {wordCount} / {currentQuestion.minWords} words minimum
+                      Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
                     </div>
-                    {!canSubmit && (
+                    {!canSubmit && writingAnalytics.words > 0 && (
                       <div className="flex items-center text-sm text-orange-600">
                         <AlertCircle className="h-4 w-4 mr-1" />
-                        Need {currentQuestion.minWords - wordCount} more words
+                        {writingAnalytics.words < currentQuestion.minWords 
+                          ? `Need ${currentQuestion.minWords - writingAnalytics.words} more words`
+                          : `${writingAnalytics.words - currentQuestion.maxWords} words over limit`
+                        }
                       </div>
                     )}
+                  </div>
+                </div>
+                
+                {/* Writing Analytics */}
+                <div className="grid grid-cols-4 gap-4 mb-4">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.words}</div>
+                    <div className="text-sm text-gray-600">Words</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.characters}</div>
+                    <div className="text-sm text-gray-600">Characters</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.sentences}</div>
+                    <div className="text-sm text-gray-600">Sentences</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
+                    <div className="text-sm text-gray-600">Paragraphs</div>
                   </div>
                 </div>
                 
