@@ -136,17 +136,13 @@ const WritingTest = () => {
     }, 0);
   };
 
-  // Handle keyboard navigation
+  // Handle keyboard navigation - removed flag and clear shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         goToPreviousQuestion();
       } else if (e.key === 'ArrowRight') {
         goToNextQuestion();
-      } else if (e.key === 'f' || e.key === 'F') {
-        toggleFlagQuestion();
-      } else if (e.key === 'c' || e.key === 'C') {
-        clearCurrentAnswer();
       }
     };
 
@@ -220,18 +216,6 @@ const WritingTest = () => {
       description: newFlaggedQuestions[currentQuestionIndex] 
         ? "You've flagged this question for review" 
         : "You've removed the flag from this question",
-      variant: "default",
-    });
-  };
-
-  const clearCurrentAnswer = () => {
-    const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = null;
-    setAnswers(newAnswers);
-    
-    toast({
-      title: "Answer cleared",
-      description: "You've cleared your answer for this question",
       variant: "default",
     });
   };
@@ -346,7 +330,15 @@ const WritingTest = () => {
               <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
                 <div className="flex items-start">
                   <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                  <div className="space-y-2">
+                    <p className="text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                    {writingAnalytics.words > 0 && writingAnalytics.words < 120 && (
+                      <div className="flex items-center text-sm text-orange-600">
+                        <AlertCircle className="h-4 w-4 mr-1" />
+                        Need {120 - writingAnalytics.words} more words (minimum 120 words required)
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               
@@ -478,7 +470,7 @@ const WritingTest = () => {
                 />
               </div>
               
-              {/* Flag and Clear buttons */}
+              {/* Flag button only - removed clear option */}
               <div className="flex items-center justify-start space-x-2">
                 <Button 
                   variant="outline"
@@ -488,26 +480,15 @@ const WritingTest = () => {
                   <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
                   {flaggedQuestions[currentQuestionIndex] ? 'Flagged for Review' : 'Flag for Review'}
                 </Button>
-                
-                <Button 
-                  variant="outline" 
-                  onClick={clearCurrentAnswer}
-                  className="border-gray-200 text-gray-600 hover:bg-gray-50"
-                  disabled={answers[currentQuestionIndex] === null || answers[currentQuestionIndex] === ''}
-                >
-                  Clear Answer
-                </Button>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        {/* Keyboard shortcuts info */}
+        {/* Keyboard shortcuts info - removed flag and clear shortcuts */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
-            Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate, 
-            <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">F</span> to flag, 
-            <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">C</span> to clear answer
+            Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate
           </p>
         </div>
         
