@@ -1,12 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Card, 
   CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { 
   Clock, 
   ChevronLeft, 
@@ -15,6 +14,17 @@ import {
   ArrowRight,
   AlertCircle,
   FileText,
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  List,
+  ListOrdered,
+  Quote,
+  Code,
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import QuestionTimer from '@/components/test/QuestionTimer';
@@ -37,6 +47,7 @@ const mockQuestions = [
 const WritingTest = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<(string | null)[]>(Array(mockQuestions.length).fill(null));
   const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>(Array(mockQuestions.length).fill(false));
@@ -47,6 +58,64 @@ const WritingTest = () => {
   
   const currentQuestion = mockQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / mockQuestions.length) * 100;
+
+  // Text formatting functions
+  const applyFormat = (command: string, value?: string) => {
+    if (!textareaRef.current) return;
+    
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const beforeText = textarea.value.substring(0, start);
+    const afterText = textarea.value.substring(end);
+    
+    let newText = '';
+    let newCursorPos = start;
+    
+    switch (command) {
+      case 'bold':
+        newText = `${beforeText}**${selectedText}**${afterText}`;
+        newCursorPos = selectedText ? end + 4 : start + 2;
+        break;
+      case 'italic':
+        newText = `${beforeText}_${selectedText}_${afterText}`;
+        newCursorPos = selectedText ? end + 2 : start + 1;
+        break;
+      case 'underline':
+        newText = `${beforeText}<u>${selectedText}</u>${afterText}`;
+        newCursorPos = selectedText ? end + 7 : start + 3;
+        break;
+      case 'strikethrough':
+        newText = `${beforeText}~~${selectedText}~~${afterText}`;
+        newCursorPos = selectedText ? end + 4 : start + 2;
+        break;
+      case 'quote':
+        newText = `${beforeText}> ${selectedText}${afterText}`;
+        newCursorPos = selectedText ? end + 2 : start + 2;
+        break;
+      case 'bulletList':
+        newText = `${beforeText}• ${selectedText}${afterText}`;
+        newCursorPos = selectedText ? end + 2 : start + 2;
+        break;
+      case 'numberedList':
+        newText = `${beforeText}1. ${selectedText}${afterText}`;
+        newCursorPos = selectedText ? end + 3 : start + 3;
+        break;
+      default:
+        return;
+    }
+    
+    handleAnswerChange(newText);
+    
+    // Restore cursor position
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+        textareaRef.current.focus();
+      }
+    }, 0);
+  };
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -283,11 +352,87 @@ const WritingTest = () => {
                   </div>
                 </div>
                 
-                <Textarea
+                {/* Text formatting toolbar */}
+                <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap items-center gap-1">
+                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('bold')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Bold"
+                    >
+                      <Bold className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('italic')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Italic"
+                    >
+                      <Italic className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('underline')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Underline"
+                    >
+                      <Underline className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('strikethrough')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Strikethrough"
+                    >
+                      <Strikethrough className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('bulletList')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Bullet List"
+                    >
+                      <List className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('numberedList')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Numbered List"
+                    >
+                      <ListOrdered className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('quote')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Quote"
+                    >
+                      <Quote className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <textarea
+                  ref={textareaRef}
                   value={answers[currentQuestionIndex] || ""}
                   onChange={(e) => handleAnswerChange(e.target.value)}
                   placeholder="Write something here..."
-                  className="min-h-[400px] text-base leading-relaxed resize-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff]"
+                  className="min-h-[400px] w-full text-base leading-relaxed resize-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0"
                 />
               </div>
               
