@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Flame, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,15 +30,15 @@ const StudyCalendarHeatmap = () => {
 
   const getActivityLevel = (questionsCompleted: number): string => {
     if (questionsCompleted === 0) return 'bg-gray-100 border border-gray-200 hover:bg-gray-200';
-    if (questionsCompleted <= 30) return 'bg-[#009dff]/30 border border-[#009dff]/40 hover:bg-[#009dff]/40';
-    if (questionsCompleted <= 70) return 'bg-[#009dff]/70 border border-[#009dff]/80 hover:bg-[#009dff]/80';
+    if (questionsCompleted <= 10) return 'bg-[#009dff]/30 border border-[#009dff]/40 hover:bg-[#009dff]/40';
+    if (questionsCompleted <= 30) return 'bg-[#009dff]/60 border border-[#009dff]/70 hover:bg-[#009dff]/70';
     return 'bg-[#009dff] border border-[#009dff] hover:bg-[#009dff]/90';
   };
 
   const getTextColor = (questionsCompleted: number): string => {
     if (questionsCompleted === 0) return 'text-gray-600';
-    if (questionsCompleted <= 30) return 'text-[#009dff]';
-    return 'text-white';
+    if (questionsCompleted <= 10) return 'text-[#009dff] font-semibold';
+    return 'text-white font-bold';
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -128,7 +127,7 @@ const StudyCalendarHeatmap = () => {
         {/* Week Days Header */}
         <div className="grid grid-cols-7 gap-0.5 mb-1">
           {weekDays.map(day => (
-            <div key={day} className="text-xs text-gray-600 text-center py-1 font-semibold">
+            <div key={day} className="text-xs text-gray-700 text-center py-1 font-semibold">
               {day}
             </div>
           ))}
@@ -143,10 +142,10 @@ const StudyCalendarHeatmap = () => {
                   <TooltipTrigger asChild>
                     <div
                       className={`
-                        w-10 h-10 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-sm font-medium
+                        w-10 h-10 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-sm
                         ${getActivityLevel(dayData.questionsCompleted)}
                         ${getTextColor(dayData.questionsCompleted)}
-                        ${isToday(dayData.date) ? 'ring-2 ring-[#009dff] ring-offset-1' : ''}
+                        ${isToday(dayData.date) ? 'ring-2 ring-orange-400 ring-offset-1' : ''}
                       `}
                     >
                       {dayData.day}
@@ -154,7 +153,7 @@ const StudyCalendarHeatmap = () => {
                   </TooltipTrigger>
                   <TooltipContent 
                     side="top" 
-                    className="bg-white border border-gray-200 shadow-lg z-[9999] fixed"
+                    className="bg-white border border-gray-200 shadow-lg min-w-[200px] max-w-[300px] w-auto z-[9999] fixed"
                     avoidCollisions={true}
                     collisionPadding={16}
                     sideOffset={8}
@@ -170,13 +169,13 @@ const StudyCalendarHeatmap = () => {
                         })}
                       </div>
                       {hasActivity(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted) ? (
-                        <div className="space-y-0.5">
+                        <div className="space-y-0.5 whitespace-nowrap">
                           <div className="text-gray-700">Completed {dayData.questionsCompleted} questions</div>
                           <div className="text-gray-700">Completed {dayData.testsCompleted} tests</div>
                           <div className="text-gray-700">Completed {dayData.examsCompleted} exams</div>
                         </div>
                       ) : (
-                        <div className="text-gray-500">No activity on this date.</div>
+                        <div className="text-gray-500 whitespace-nowrap">No activity on this date.</div>
                       )}
                     </div>
                   </TooltipContent>
@@ -194,7 +193,7 @@ const StudyCalendarHeatmap = () => {
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-gray-100 border border-gray-200"></div>
             <div className="w-3 h-3 rounded bg-[#009dff]/30 border border-[#009dff]/40"></div>
-            <div className="w-3 h-3 rounded bg-[#009dff]/70 border border-[#009dff]/80"></div>
+            <div className="w-3 h-3 rounded bg-[#009dff]/60 border border-[#009dff]/70"></div>
             <div className="w-3 h-3 rounded bg-[#009dff] border border-[#009dff]"></div>
           </div>
           <span>More</span>
