@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -130,7 +131,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Week Days Header */}
-        <div className="grid grid-cols-7 gap-1 mb-2">
+        <div className="grid grid-cols-7 gap-0.5 mb-1">
           {weekDays.map(day => (
             <div key={day} className="text-xs text-gray-500 text-center py-1 font-medium">
               {day}
@@ -139,7 +140,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Calendar Grid */}
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-0.5">
           {days.map((dayData, index) => (
             <div key={index} className="flex justify-center">
               {dayData ? (
@@ -147,7 +148,7 @@ const StudyCalendarHeatmap = () => {
                   <TooltipTrigger asChild>
                     <div
                       className={`
-                        w-8 h-8 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-xs font-medium
+                        w-10 h-10 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-sm font-medium
                         ${getActivityLevel(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
                         ${getTextColor(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
                         ${isToday(dayData.date) ? 'ring-2 ring-[#009dff] ring-offset-1' : ''}
@@ -177,7 +178,7 @@ const StudyCalendarHeatmap = () => {
                   </TooltipContent>
                 </Tooltip>
               ) : (
-                <div className="w-8 h-8" />
+                <div className="w-10 h-10" />
               )}
             </div>
           ))}
