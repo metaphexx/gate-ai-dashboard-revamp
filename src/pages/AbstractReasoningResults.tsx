@@ -7,6 +7,7 @@ import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp, Calendar } from 'luci
 import EverestLogo from '@/components/test/EverestLogo';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
 import AverageTimeSection from '@/components/results/AverageTimeSection';
+import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 
 const AbstractReasoningResults = () => {
@@ -22,6 +23,10 @@ const AbstractReasoningResults = () => {
 
   const handleBackToTests = () => {
     navigate('/practice');
+  };
+
+  const handleOpenChat = () => {
+    navigate('/chat-with-elliot');
   };
 
   // Get current date and time for completion
@@ -372,8 +377,13 @@ const AbstractReasoningResults = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Chat Button */}
+      <FloatingChatButton onClick={handleOpenChat} />
     </div>
   );
 };
 
 export default AbstractReasoningResults;
+
+</edits_to_apply>
