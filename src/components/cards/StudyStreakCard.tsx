@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Award, TrendingUp, Settings, Flame, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -181,7 +180,7 @@ const StudyStreakCard = () => {
                 <span className="text-xs text-gray-500">{completedSessions}/{dailyGoal} questions</span>
               </div>
               {completedSessions === 0 && (
-                <div className="mt-2 text-sm text-[#009dff] font-medium">
+                <div className="mt-1 text-xs text-red-500 font-medium whitespace-nowrap">
                   🚀 Start Now! Complete your daily goal today!
                 </div>
               )}
