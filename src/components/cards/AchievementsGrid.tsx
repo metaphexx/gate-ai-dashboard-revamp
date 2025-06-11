@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Trophy, Target, Zap, Calendar, Clock, TrendingUp, 
@@ -25,7 +24,7 @@ const AchievementsGrid = () => {
   const achievements: Achievement[] = [
     // Practice Milestones
     { id: '1', title: 'Question Grinder', description: 'Complete 500 Questions in total.', icon: <Target size={16} />, category: 'practice', isUnlocked: true },
-    { id: '2', title: 'Quiz Explorer', description: 'Complete 20 Quizzes.', icon: <CheckCircle2 size={16} />, category: 'practice', isUnlocked: true },
+    { id: '2', title: 'Mini Mock Explorer', description: 'Complete 20 Mini Mocks.', icon: <CheckCircle2 size={16} />, category: 'practice', isUnlocked: true },
     { id: '3', title: 'Test Finisher', description: 'Complete 50 Tests.', icon: <Award size={16} />, category: 'practice', isUnlocked: false },
     { id: '4', title: 'Exam Veteran', description: 'Complete 10 Exams.', icon: <Medal size={16} />, category: 'practice', isUnlocked: false },
     { id: '5', title: 'Daily Starter', description: 'Complete at least 1 activity for 7 consecutive days.', icon: <Calendar size={16} />, category: 'practice', isUnlocked: true },
@@ -104,7 +103,7 @@ const AchievementsGrid = () => {
       </TooltipTrigger>
       <TooltipContent 
         side="top" 
-        className="bg-white border border-gray-200 shadow-lg min-w-[250px] max-w-[350px] w-auto z-[9999] fixed" 
+        className="bg-white border border-gray-200 shadow-lg min-w-[280px] max-w-[400px] w-auto z-[9999] fixed" 
         avoidCollisions={true} 
         collisionPadding={16}
         sideOffset={8}
@@ -114,7 +113,7 @@ const AchievementsGrid = () => {
       >
         <div className="text-sm p-2">
           <div className="font-semibold mb-2 text-gray-900">{achievement.title}</div>
-          <div className={`${achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'} leading-relaxed whitespace-nowrap`}>
+          <div className={`${achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'} leading-relaxed`}>
             {achievement.isUnlocked ? achievement.description : `Locked - ${achievement.description}`}
           </div>
         </div>
@@ -139,7 +138,7 @@ const AchievementsGrid = () => {
                   View all {achievements.length} achievements
                 </button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+              <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>All Achievements</DialogTitle>
                 </DialogHeader>
@@ -149,7 +148,7 @@ const AchievementsGrid = () => {
                       <h3 className="text-sm font-semibold text-gray-700 mb-3">
                         {getCategoryName(category)}
                       </h3>
-                      <div className="grid grid-cols-4 gap-3">
+                      <div className="grid grid-cols-5 gap-3">
                         {categoryAchievements.map((achievement) => (
                           <AchievementItem key={achievement.id} achievement={achievement} />
                         ))}
