@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -110,7 +109,7 @@ const AbstractReasoningResults = () => {
             </div>
           </div>
 
-          {/* Score Overview */}
+          {/* Score Overview with Action Buttons */}
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
             {/* Your Score Card */}
             <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none">
@@ -161,6 +160,29 @@ const AbstractReasoningResults = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Action buttons moved to top */}
+          <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none mb-8">
+            <CardContent className="p-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  onClick={handleViewSolution}
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
+                >
+                  <Eye className="mr-2 h-5 w-5" />
+                  View Solutions
+                </Button>
+                <Button 
+                  onClick={handleProceedToFeedback}
+                  variant="outline"
+                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors flex-1"
+                >
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Proceed to Feedback
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Question Report */}
           <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none mb-8">
@@ -281,29 +303,6 @@ const AbstractReasoningResults = () => {
             <TimeAnalysisSection timeData={timeData} totalTime="00h 20m 0s" />
             <AverageTimeSection avgTimeData={avgTimeData} />
           </div>
-
-          {/* Action buttons */}
-          <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none">
-            <CardContent className="p-8">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  onClick={handleViewSolution}
-                  variant="outline"
-                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors flex-1"
-                >
-                  <Eye className="mr-2 h-5 w-5" />
-                  View Solutions
-                </Button>
-                <Button 
-                  onClick={handleProceedToFeedback}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
-                >
-                  <MessageSquare className="mr-2 h-5 w-5" />
-                  Proceed to Feedback
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
