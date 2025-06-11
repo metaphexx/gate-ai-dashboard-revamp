@@ -17,6 +17,7 @@ import VideoTutorials from "./pages/VideoTutorials";
 import NotFound from "./pages/NotFound";
 import AbstractReasoningTest from "./pages/AbstractReasoningTest";
 import AbstractReasoningResults from "./pages/AbstractReasoningResults";
+import ChatWithElliot from "./pages/ChatWithElliot";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/mock" element={<MockExam />} />
             <Route path="/progress" element={<ExamInProgress />} />
             <Route path="/history" element={<ExamHistory />} />
+            <Route path="/chat" element={<ChatWithElliot />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/support" element={<Support />} />
             <Route path="/video-tutorials" element={<VideoTutorials />} />

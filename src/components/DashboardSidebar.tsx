@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
@@ -11,7 +10,8 @@ import {
   Settings, 
   HelpCircle,
   User,
-  Video
+  Video,
+  MessageCircle
 } from 'lucide-react';
 
 const DashboardSidebar = () => {
@@ -32,6 +32,7 @@ const DashboardSidebar = () => {
     {
       title: "Help",
       items: [
+        { name: "Chat with Elliot", icon: <MessageCircle size={20} />, path: "/chat" },
         { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
         { name: "Support", icon: <HelpCircle size={20} />, path: "/support" }
       ]
