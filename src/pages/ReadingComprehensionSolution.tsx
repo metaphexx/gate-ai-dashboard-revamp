@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft, MessageCircle, X } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import ChatPanel from '@/components/chat/ChatPanel';
@@ -91,7 +92,7 @@ const ReadingComprehensionSolution = () => {
         {/* Left side - Questions content */}
         <div className={`${isChatOpen ? 'w-2/3' : 'w-full'} transition-all duration-300 overflow-y-auto`}>
           <div className="container mx-auto px-4 py-8">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-7xl mx-auto">
               {/* Header */}
               <div className="text-center mb-8">
                 <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
@@ -149,84 +150,103 @@ const ReadingComprehensionSolution = () => {
                 </div>
               </div>
 
-              {/* Question Card */}
-              <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none mb-6">
-                <CardContent className="p-8">
-                  {/* Passage */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Passage:</h3>
-                    <div className="bg-gray-50 p-4 rounded-lg border">
-                      <p className="text-gray-700 leading-relaxed">{currentQuestion.passage}</p>
-                    </div>
+              {/* Question Card with improved layout */}
+              <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100 mb-6">
+                <CardContent className="p-0">
+                  {/* Category banner */}
+                  <div className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] text-white p-4 text-center">
+                    <p className="text-sm font-medium">{currentQuestion.category}</p>
                   </div>
-
-                  {/* Question */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Question:</h3>
-                    <p className="text-gray-700 font-medium">{currentQuestion.question}</p>
-                  </div>
-
-                  {/* Options */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Options:</h3>
-                    <div className="space-y-3">
-                      {currentQuestion.options.map((option, index) => {
-                        const letter = String.fromCharCode(65 + index);
-                        const isCorrectAnswer = option === currentQuestion.correctAnswer;
-                        const isUserAnswer = option === currentQuestion.userAnswer;
-                        
-                        return (
-                          <div 
-                            key={index} 
-                            className={`p-3 rounded-lg border-2 ${
-                              isCorrectAnswer 
-                                ? 'border-green-500 bg-green-50' 
-                                : isUserAnswer 
-                                  ? 'border-red-500 bg-red-50'
-                                  : 'border-gray-200 bg-gray-50'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
-                                isCorrectAnswer 
-                                  ? 'bg-green-500 text-white' 
-                                  : isUserAnswer 
-                                    ? 'bg-red-500 text-white'
-                                    : 'bg-gray-300 text-gray-700'
-                              }`}>
-                                {letter}
-                              </span>
-                              <span className="text-gray-700">{option}</span>
-                              {isCorrectAnswer && (
-                                <span className="ml-auto text-green-600 font-medium text-sm">✓ Correct Answer</span>
-                              )}
-                              {isUserAnswer && !isCorrectAnswer && (
-                                <span className="ml-auto text-red-600 font-medium text-sm">✗ Your Answer</span>
-                              )}
-                            </div>
+                  
+                  {/* Content area with improved layout - 60% passage, 40% question */}
+                  <div className="p-6 md:p-8">
+                    <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+                      {/* Left side - Passage (larger area - 3/5) */}
+                      <div className="xl:col-span-3 space-y-4">
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Passage:</h3>
+                        <ScrollArea className="h-[600px] w-full rounded-lg border border-gray-300 p-6 bg-white shadow-sm">
+                          <div className="pr-4">
+                            {currentQuestion.passage.split('\n\n').map((paragraph, index) => (
+                              <p key={index} className="text-gray-800 leading-relaxed text-base mb-6 last:mb-0 font-medium">
+                                {paragraph}
+                              </p>
+                            ))}
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
+                        </ScrollArea>
+                      </div>
 
-                  {/* Result */}
-                  <div className={`p-4 rounded-lg mb-6 ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-lg ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                        {isCorrect ? '✓' : '✗'}
-                      </span>
-                      <span className={`font-semibold ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
-                        {isCorrect ? 'Correct!' : 'Incorrect'}
-                      </span>
-                    </div>
-                  </div>
+                      {/* Right side - Question and Options (smaller area - 2/5) */}
+                      <div className="xl:col-span-2 space-y-6">
+                        {/* Question */}
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-900 mb-4">Question:</h3>
+                          <p className="text-gray-800 font-medium text-lg leading-relaxed">{currentQuestion.question}</p>
+                        </div>
+                        
+                        {/* Options */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-3">Options:</h3>
+                          <div className="space-y-3">
+                            {currentQuestion.options.map((option, index) => {
+                              const letter = String.fromCharCode(65 + index);
+                              const isCorrectAnswer = option === currentQuestion.correctAnswer;
+                              const isUserAnswer = option === currentQuestion.userAnswer;
+                              
+                              return (
+                                <div 
+                                  key={index} 
+                                  className={`p-3 rounded-lg border-2 ${
+                                    isCorrectAnswer 
+                                      ? 'border-green-500 bg-green-50' 
+                                      : isUserAnswer 
+                                        ? 'border-red-500 bg-red-50'
+                                        : 'border-gray-200 bg-gray-50'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
+                                      isCorrectAnswer 
+                                        ? 'bg-green-500 text-white' 
+                                        : isUserAnswer 
+                                          ? 'bg-red-500 text-white'
+                                          : 'bg-gray-300 text-gray-700'
+                                    }`}>
+                                      {letter}
+                                    </span>
+                                    <span className="text-gray-800 leading-relaxed flex-1">{option}</span>
+                                    {isCorrectAnswer && (
+                                      <span className="text-green-600 font-medium text-sm">✓ Correct Answer</span>
+                                    )}
+                                    {isUserAnswer && !isCorrectAnswer && (
+                                      <span className="text-red-600 font-medium text-sm">✗ Your Answer</span>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
 
-                  {/* Explanation */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Explanation:</h3>
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                      <p className="text-gray-700 leading-relaxed">{currentQuestion.explanation}</p>
+                        {/* Result */}
+                        <div className={`p-4 rounded-lg ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-lg ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                              {isCorrect ? '✓' : '✗'}
+                            </span>
+                            <span className={`font-semibold ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
+                              {isCorrect ? 'Correct!' : 'Incorrect'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Explanation */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-3">Explanation:</h3>
+                          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <p className="text-gray-800 leading-relaxed">{currentQuestion.explanation}</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
