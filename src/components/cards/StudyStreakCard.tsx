@@ -15,7 +15,7 @@ const StudyStreakCard = () => {
   const [tempDailyGoal, setTempDailyGoal] = useState(dailyGoal);
   const [tempStreakGoal, setTempStreakGoal] = useState(streakGoal);
   
-  const completedSessions = 3;
+  const completedSessions = 0; // Changed to 0
   const streakDays = 4;
   
   // Create streak dots array based on current goal
@@ -180,6 +180,11 @@ const StudyStreakCard = () => {
                 </div>
                 <span className="text-xs text-gray-500">{completedSessions}/{dailyGoal} questions</span>
               </div>
+              {completedSessions === 0 && (
+                <div className="mt-2 text-sm text-[#009dff] font-medium">
+                  🚀 Start Now! Complete your daily goal today!
+                </div>
+              )}
             </div>
           </div>
           
