@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Flame, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -20,8 +20,8 @@ const StudyCalendarHeatmap = () => {
     { date: '2025-06-02', questionsCompleted: 8, testsCompleted: 1, examsCompleted: 0 },
     { date: '2025-06-03', questionsCompleted: 12, testsCompleted: 0, examsCompleted: 0 },
     { date: '2025-06-04', questionsCompleted: 0, testsCompleted: 0, examsCompleted: 0 },
-    { date: '2025-06-05', questionsCompleted: 15, testsCompleted: 1, examsCompleted: 0 },
-    { date: '2025-06-06', questionsCompleted: 20, testsCompleted: 2, examsCompleted: 1 },
+    { date: '2025-06-05', questionsCompleted: 35, testsCompleted: 1, examsCompleted: 0 },
+    { date: '2025-06-06', questionsCompleted: 75, testsCompleted: 2, examsCompleted: 1 },
     { date: '2025-06-07', questionsCompleted: 18, testsCompleted: 1, examsCompleted: 0 },
     { date: '2025-06-08', questionsCompleted: 0, testsCompleted: 0, examsCompleted: 0 },
     { date: '2025-06-09', questionsCompleted: 25, testsCompleted: 1, examsCompleted: 0 },
@@ -29,21 +29,16 @@ const StudyCalendarHeatmap = () => {
     { date: '2025-06-11', questionsCompleted: 16, testsCompleted: 1, examsCompleted: 1 },
   ];
 
-  const getActivityLevel = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
-    const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
-    
-    if (totalActivity === 0) return 'bg-gray-100 border border-gray-200 hover:bg-gray-200';
-    if (totalActivity <= 8) return 'bg-[#009dff]/20 border border-[#009dff]/30 hover:bg-[#009dff]/30';
-    if (totalActivity <= 20) return 'bg-[#009dff]/60 border border-[#009dff]/70 hover:bg-[#009dff]/70';
+  const getActivityLevel = (questionsCompleted: number): string => {
+    if (questionsCompleted === 0) return 'bg-gray-100 border border-gray-200 hover:bg-gray-200';
+    if (questionsCompleted <= 30) return 'bg-[#009dff]/30 border border-[#009dff]/40 hover:bg-[#009dff]/40';
+    if (questionsCompleted <= 70) return 'bg-[#009dff]/70 border border-[#009dff]/80 hover:bg-[#009dff]/80';
     return 'bg-[#009dff] border border-[#009dff] hover:bg-[#009dff]/90';
   };
 
-  const getTextColor = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
-    const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
-    
-    if (totalActivity === 0) return 'text-gray-600';
-    if (totalActivity <= 8) return 'text-[#009dff]';
-    if (totalActivity <= 20) return 'text-white';
+  const getTextColor = (questionsCompleted: number): string => {
+    if (questionsCompleted === 0) return 'text-gray-600';
+    if (questionsCompleted <= 30) return 'text-[#009dff]';
     return 'text-white';
   };
 
@@ -133,7 +128,7 @@ const StudyCalendarHeatmap = () => {
         {/* Week Days Header */}
         <div className="grid grid-cols-7 gap-0.5 mb-1">
           {weekDays.map(day => (
-            <div key={day} className="text-xs text-gray-500 text-center py-1 font-medium">
+            <div key={day} className="text-xs text-gray-600 text-center py-1 font-semibold">
               {day}
             </div>
           ))}
@@ -149,15 +144,24 @@ const StudyCalendarHeatmap = () => {
                     <div
                       className={`
                         w-10 h-10 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-sm font-medium
-                        ${getActivityLevel(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
-                        ${getTextColor(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
+                        ${getActivityLevel(dayData.questionsCompleted)}
+                        ${getTextColor(dayData.questionsCompleted)}
                         ${isToday(dayData.date) ? 'ring-2 ring-[#009dff] ring-offset-1' : ''}
                       `}
                     >
                       {dayData.day}
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="bg-white border border-gray-200 shadow-lg">
+                  <TooltipContent 
+                    side="top" 
+                    className="bg-white border border-gray-200 shadow-lg z-[9999] fixed"
+                    avoidCollisions={true}
+                    collisionPadding={16}
+                    sideOffset={8}
+                    align="center"
+                    alignOffset={0}
+                    sticky="always"
+                  >
                     <div className="text-sm">
                       <div className="font-semibold mb-1 text-gray-900">
                         {new Date(dayData.date).toLocaleDateString('en-US', { 
@@ -182,6 +186,18 @@ const StudyCalendarHeatmap = () => {
               )}
             </div>
           ))}
+        </div>
+
+        {/* Activity Level Legend */}
+        <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
+          <span>Less</span>
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded bg-gray-100 border border-gray-200"></div>
+            <div className="w-3 h-3 rounded bg-[#009dff]/30 border border-[#009dff]/40"></div>
+            <div className="w-3 h-3 rounded bg-[#009dff]/70 border border-[#009dff]/80"></div>
+            <div className="w-3 h-3 rounded bg-[#009dff] border border-[#009dff]"></div>
+          </div>
+          <span>More</span>
         </div>
       </div>
     </TooltipProvider>

@@ -104,10 +104,13 @@ const AchievementsGrid = () => {
       </TooltipTrigger>
       <TooltipContent 
         side="top" 
-        className="bg-white border border-gray-200 shadow-lg max-w-[280px] w-auto z-50" 
+        className="bg-white border border-gray-200 shadow-lg max-w-[280px] w-auto z-[9999] fixed" 
         avoidCollisions={true} 
-        collisionPadding={20}
+        collisionPadding={16}
         sideOffset={8}
+        align="center"
+        alignOffset={0}
+        sticky="always"
       >
         <div className="text-sm p-2">
           <div className="font-semibold mb-2 text-gray-900">{achievement.title}</div>

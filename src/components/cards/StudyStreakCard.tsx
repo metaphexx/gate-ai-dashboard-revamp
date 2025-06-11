@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Award, TrendingUp, Settings } from 'lucide-react';
+import { Award, TrendingUp, Settings, Flame, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -132,11 +132,17 @@ const StudyStreakCard = () => {
           <StudyCalendarHeatmap />
           <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
             <div className="text-center p-3 bg-gray-50 rounded-md">
-              <div className="text-lg font-bold text-[#009dff]">{streakDays} Days</div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Flame size={16} className="text-[#009dff]" />
+                <div className="text-lg font-bold text-[#009dff]">{streakDays} Days</div>
+              </div>
               <div className="text-xs text-gray-600">Current Streak</div>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-md">
-              <div className="text-lg font-bold text-gray-700">12 Days</div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Zap size={16} className="text-gray-700" />
+                <div className="text-lg font-bold text-gray-700">12 Days</div>
+              </div>
               <div className="text-xs text-gray-600">Longest Streak</div>
             </div>
           </div>
@@ -179,11 +185,17 @@ const StudyStreakCard = () => {
           
           <div className="grid grid-cols-2 gap-2 pt-4 border-t border-gray-100">
             <div className="text-center p-3 bg-gray-50 rounded-md">
-              <div className="text-lg font-bold text-[#009dff]">{streakDays} Days</div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Flame size={16} className="text-[#009dff]" />
+                <div className="text-lg font-bold text-[#009dff]">{streakDays} Days</div>
+              </div>
               <div className="text-xs text-gray-600">Current Streak</div>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-md">
-              <div className="text-lg font-bold text-gray-700">12 Days</div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Zap size={16} className="text-gray-700" />
+                <div className="text-lg font-bold text-gray-700">12 Days</div>
+              </div>
               <div className="text-xs text-gray-600">Longest Streak</div>
             </div>
           </div>
