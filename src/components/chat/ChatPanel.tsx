@@ -1,4 +1,5 @@
 
+
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -221,7 +222,7 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
       : "fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
     }>
       <div className={isSidePanel 
-        ? "h-full flex flex-col relative" 
+        ? "h-full flex flex-col relative overflow-hidden" 
         : "bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col"
       }>
         {/* Header */}
@@ -242,9 +243,9 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </div>
         )}
 
-        {/* Messages - with fixed height to leave space for input */}
-        <div className={`flex-1 ${isSidePanel ? 'h-0' : ''}`} style={{ minHeight: 0 }}>
-          <ScrollArea className="h-full py-4 px-4" style={{ height: isSidePanel ? 'calc(100vh - 120px)' : '100%' }}>
+        {/* Messages - with proper height calculation to leave space for input */}
+        <div className={`flex-1 overflow-hidden ${isSidePanel ? 'pb-20' : ''}`}>
+          <ScrollArea className="h-full py-4 px-4">
             <div className="space-y-4">
               {messages.map(message => (
                 <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -323,8 +324,8 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </ScrollArea>
         </div>
 
-        {/* Input - fixed at bottom within the chat panel */}
-        <div className={`${isSidePanel ? 'absolute bottom-0 left-0 right-0 z-20' : ''} border-t border-gray-200 p-3 bg-white shadow-lg`}>
+        {/* Input - absolutely positioned at bottom of chat panel */}
+        <div className={`${isSidePanel ? 'absolute bottom-0 left-0 right-0' : 'relative'} border-t border-gray-200 p-3 bg-white shadow-lg`}>
           <div className="flex gap-2">
             <Input
               value={inputValue}
