@@ -102,10 +102,10 @@ const AchievementsGrid = () => {
           </p>
         </div>
       </TooltipTrigger>
-      <TooltipContent side="top" className="bg-white border border-gray-200 shadow-lg max-w-xs">
+      <TooltipContent side="top" className="bg-white border border-gray-200 shadow-lg max-w-sm">
         <div className="text-sm">
           <div className="font-semibold mb-1 text-gray-900">{achievement.title}</div>
-          <div className={achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'}>
+          <div className={`${achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'} break-words`}>
             {achievement.isUnlocked ? achievement.description : `Locked - ${achievement.description}`}
           </div>
         </div>
