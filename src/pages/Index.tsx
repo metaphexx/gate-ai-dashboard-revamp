@@ -24,7 +24,7 @@ const Index = () => {
       
       <main className="flex-1 p-6 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-6 flex justify-between items-center">
+          <header className="mb-4 flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold mb-2">GATE AI Online Question Bank</h1>
               <p className="text-gray-500">Track your GATE exam preparation progress on the Dashboard!</p>
@@ -33,7 +33,7 @@ const Index = () => {
           </header>
           
           {/* Welcome Banner and Video Tutorial - At the top */}
-          <section className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+          <section className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
             <div className="lg:col-span-3">
               <WelcomeBanner />
             </div>
@@ -43,17 +43,17 @@ const Index = () => {
           </section>
           
           {/* Tier Summary */}
-          <section className="mb-6">
+          <section className="mb-4">
             <TierSummary />
           </section>
 
           {/* Chat Banner - Above Performance Overview */}
-          <section className="mb-6">
+          <section className="mb-4">
             <ChatBanner onOpenChat={() => setIsChatOpen(true)} />
           </section>
           
           {/* Performance Overview & Study Streak */}
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             <div className="lg:col-span-2">
               <PerformanceOverview />
             </div>
@@ -61,18 +61,18 @@ const Index = () => {
           </section>
           
           {/* Recent Activity & Smart Recommendations */}
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
             <RecentActivityCard />
             <SmartRecommendations />
           </section>
           
           {/* Accuracy Trend Chart */}
-          <section className="mb-6">
+          <section className="mb-4">
             <AccuracyTrendChart />
           </section>
           
           {/* Question Bank Status */}
-          <section className="mb-6">
+          <section className="mb-4">
             <QuestionBankStatus />
           </section>
         </div>
