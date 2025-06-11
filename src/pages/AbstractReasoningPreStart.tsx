@@ -14,7 +14,7 @@ const AbstractReasoningPreStart = () => {
   };
 
   const handleBackToHome = () => {
-    navigate('/practice');
+    navigate('/');
   };
 
   return (
@@ -32,7 +32,7 @@ const AbstractReasoningPreStart = () => {
               className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
               <ArrowLeft className="h-5 w-5 mr-1" />
-              <span>Back to Practice</span>
+              <span>Back to Home</span>
             </button>
           </div>
         </div>
@@ -100,7 +100,7 @@ const AbstractReasoningPreStart = () => {
                     <Button 
                       onClick={handleBackToHome}
                       variant="outline"
-                      className="border-gray-200 text-gray-600 hover:bg-gray-50 px-8 py-3 rounded-xl text-lg font-medium"
+                      className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors"
                     >
                       Back To Home
                     </Button>
