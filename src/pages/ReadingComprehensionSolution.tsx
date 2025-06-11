@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowLeft, MessageCircle, X } from 'lucide-react';
+import { ArrowLeft, MessageCircle, X, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import ChatPanel from '@/components/chat/ChatPanel';
 
@@ -49,6 +49,21 @@ const ReadingComprehensionSolution = () => {
 
   const currentQuestion = mockQuestions[currentQuestionIndex];
   const isCorrect = currentQuestion.userAnswer === currentQuestion.correctAnswer;
+  const progress = ((currentQuestionIndex + 1) / mockQuestions.length) * 100;
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        handlePreviousQuestion();
+      } else if (e.key === 'ArrowRight') {
+        handleNextQuestion();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentQuestionIndex]);
 
   const handleBackToResults = () => {
     navigate('/abstract-reasoning-results');
@@ -64,6 +79,17 @@ const ReadingComprehensionSolution = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
+  };
+
+  const getQuestionStatus = (index: number) => {
+    const question = mockQuestions[index];
+    if (question.userAnswer === question.correctAnswer) return 'correct';
+    if (question.userAnswer === null) return 'unanswered';
+    return 'incorrect';
+  };
+
+  const handleJumpToQuestion = (index: number) => {
+    setCurrentQuestionIndex(index);
   };
 
   return (
@@ -88,7 +114,7 @@ const ReadingComprehensionSolution = () => {
       </div>
 
       {/* Main content with side-by-side layout */}
-      <div className="flex flex-1 pt-16">
+      <div className="flex flex-1 pt-16 pb-20">
         {/* Left side - Questions content */}
         <div className={`${isChatOpen ? 'w-2/3' : 'w-full'} transition-all duration-300 overflow-y-auto`}>
           <div className="container mx-auto px-4 py-8">
@@ -101,6 +127,65 @@ const ReadingComprehensionSolution = () => {
                 <p className="text-lg text-gray-600">
                   Review your answers and understand the explanations
                 </p>
+              </div>
+
+              {/* Progress bar */}
+              <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
+                <div 
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+
+              {/* Question tracker */}
+              <div className="mb-8 overflow-visible">
+                <div className="flex space-x-3 overflow-visible">
+                  {mockQuestions.map((question, index) => {
+                    const status = getQuestionStatus(index);
+                    return (
+                      <button
+                        key={question.id}
+                        onClick={() => handleJumpToQuestion(index)}
+                        className={`w-10 h-10 flex items-center justify-center rounded-full transition-all relative overflow-visible ${
+                          index === currentQuestionIndex
+                            ? 'bg-gradient-to-r from-[#009dff] to-[#80dfff] text-white shadow-lg shadow-blue-200' 
+                            : status === 'correct'
+                              ? 'bg-green-100 text-green-700' 
+                              : status === 'incorrect'
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-gray-100 text-gray-600'
+                        }`}
+                        aria-label={`Question ${index + 1}`}
+                      >
+                        {index + 1}
+                        {status === 'correct' && index !== currentQuestionIndex && (
+                          <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center z-10">
+                            <CheckCircle className="w-3 h-3 text-white" />
+                          </span>
+                        )}
+                        {status === 'incorrect' && index !== currentQuestionIndex && (
+                          <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center z-10">
+                            <XCircle className="w-3 h-3 text-white" />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-500">
+                  <div className="flex items-center">
+                    <span className="w-3 h-3 rounded-full bg-green-100 mr-1"></span>
+                    <span>Correct</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-3 h-3 rounded-full bg-red-100 mr-1"></span>
+                    <span>Incorrect</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-3 h-3 rounded-full bg-gray-100 mr-1"></span>
+                    <span>Not answered</span>
+                  </div>
+                </div>
               </div>
 
               {/* Chat with Elliot Prompt */}
@@ -251,6 +336,13 @@ const ReadingComprehensionSolution = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Keyboard shortcuts info */}
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-500">
+                  Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -281,11 +373,45 @@ const ReadingComprehensionSolution = () => {
         )}
       </div>
 
+      {/* Fixed bottom navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <Button 
+            variant="outline"
+            onClick={handlePreviousQuestion}
+            disabled={currentQuestionIndex === 0}
+            className="border-gray-200 hover:bg-gray-50"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Previous
+          </Button>
+          
+          <div className="flex items-center space-x-2">
+            {currentQuestionIndex < mockQuestions.length - 1 ? (
+              <Button
+                onClick={handleNextQuestion}
+                className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+              >
+                Next
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            ) : (
+              <Button
+                onClick={handleBackToResults}
+                className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+              >
+                Back to Results
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Floating Chat Button (only show when chat is closed) */}
       {!isChatOpen && (
         <Button
           onClick={() => setIsChatOpen(true)}
-          className="fixed bottom-6 right-6 bg-[#009dff] hover:bg-[#0080ff] text-white rounded-full w-14 h-14 shadow-lg z-40 flex items-center justify-center"
+          className="fixed bottom-24 right-6 bg-[#009dff] hover:bg-[#0080ff] text-white rounded-full w-14 h-14 shadow-lg z-40 flex items-center justify-center"
           size="icon"
         >
           <img 
