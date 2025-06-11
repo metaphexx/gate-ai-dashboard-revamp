@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Trophy, Target, Zap, Calendar, Clock, TrendingUp, 
@@ -22,7 +21,6 @@ interface Achievement {
 const AchievementsGrid = () => {
   const [showAllModal, setShowAllModal] = useState(false);
 
-  // Mock data - in real app this would come from API/user progress
   const achievements: Achievement[] = [
     // Practice Milestones
     { id: '1', title: 'Question Grinder', description: 'Complete 500 Questions in total.', icon: <Target size={16} />, category: 'practice', isUnlocked: true },
@@ -75,86 +73,86 @@ const AchievementsGrid = () => {
   }, {} as Record<string, Achievement[]>);
 
   const AchievementItem = ({ achievement }: { achievement: Achievement }) => (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div
-            className={`
-              p-2 rounded-md text-center transition-all duration-200 hover:scale-105 cursor-pointer
-              ${achievement.isUnlocked 
-                ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100' 
-                : 'bg-gray-50 border border-gray-200 opacity-60 hover:bg-gray-100'
-              }
-            `}
-          >
-            <div className={`
-              inline-flex items-center justify-center w-6 h-6 rounded-full mb-1
-              ${achievement.isUnlocked 
-                ? `bg-white ${getCategoryColor(achievement.category)}` 
-                : 'bg-gray-200 text-gray-400'
-              }
-            `}>
-              {achievement.icon}
-            </div>
-            <p className={`
-              text-xs font-medium leading-tight
-              ${achievement.isUnlocked ? 'text-gray-900' : 'text-gray-400'}
-            `}>
-              {achievement.title}
-            </p>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          className={`
+            p-2 rounded-md text-center transition-all duration-200 hover:scale-105 cursor-pointer
+            ${achievement.isUnlocked 
+              ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100' 
+              : 'bg-gray-50 border border-gray-200 opacity-60 hover:bg-gray-100'
+            }
+          `}
+        >
+          <div className={`
+            inline-flex items-center justify-center w-6 h-6 rounded-full mb-1
+            ${achievement.isUnlocked 
+              ? `bg-white ${getCategoryColor(achievement.category)}` 
+              : 'bg-gray-200 text-gray-400'
+            }
+          `}>
+            {achievement.icon}
           </div>
-        </TooltipTrigger>
-        <TooltipContent className="bg-white border border-gray-200 shadow-lg max-w-xs">
-          <div className="text-sm">
-            <div className="font-semibold mb-1 text-gray-900">{achievement.title}</div>
-            <div className={achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'}>
-              {achievement.isUnlocked ? achievement.description : `Locked - ${achievement.description}`}
-            </div>
+          <p className={`
+            text-xs font-medium leading-tight
+            ${achievement.isUnlocked ? 'text-gray-900' : 'text-gray-400'}
+          `}>
+            {achievement.title}
+          </p>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="bg-white border border-gray-200 shadow-lg max-w-xs">
+        <div className="text-sm">
+          <div className="font-semibold mb-1 text-gray-900">{achievement.title}</div>
+          <div className={achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'}>
+            {achievement.isUnlocked ? achievement.description : `Locked - ${achievement.description}`}
           </div>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        </div>
+      </TooltipContent>
+    </Tooltip>
   );
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-3 gap-2">
-        {achievements.slice(0, 12).map((achievement) => (
-          <AchievementItem key={achievement.id} achievement={achievement} />
-        ))}
-      </div>
-      
-      {achievements.length > 12 && (
-        <div className="text-center">
-          <Dialog open={showAllModal} onOpenChange={setShowAllModal}>
-            <DialogTrigger asChild>
-              <button className="text-xs text-blue-600 hover:text-blue-500 font-medium transition-colors">
-                View all {achievements.length} achievements
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>All Achievements</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-6 mt-4">
-                {Object.entries(groupedAchievements).map(([category, categoryAchievements]) => (
-                  <div key={category}>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                      {getCategoryName(category)}
-                    </h3>
-                    <div className="grid grid-cols-4 gap-3">
-                      {categoryAchievements.map((achievement) => (
-                        <AchievementItem key={achievement.id} achievement={achievement} />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </DialogContent>
-          </Dialog>
+    <TooltipProvider delayDuration={200}>
+      <div className="space-y-3">
+        <div className="grid grid-cols-3 gap-2">
+          {achievements.slice(0, 12).map((achievement) => (
+            <AchievementItem key={achievement.id} achievement={achievement} />
+          ))}
         </div>
-      )}
-    </div>
+        
+        {achievements.length > 12 && (
+          <div className="text-center">
+            <Dialog open={showAllModal} onOpenChange={setShowAllModal}>
+              <DialogTrigger asChild>
+                <button className="text-xs text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                  View all {achievements.length} achievements
+                </button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>All Achievements</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-6 mt-4">
+                  {Object.entries(groupedAchievements).map(([category, categoryAchievements]) => (
+                    <div key={category}>
+                      <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                        {getCategoryName(category)}
+                      </h3>
+                      <div className="grid grid-cols-4 gap-3">
+                        {categoryAchievements.map((achievement) => (
+                          <AchievementItem key={achievement.id} achievement={achievement} />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
+      </div>
+    </TooltipProvider>
   );
 };
 

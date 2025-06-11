@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -32,10 +31,10 @@ const StudyCalendarHeatmap = () => {
   const getActivityLevel = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
     const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
     
-    if (totalActivity === 0) return 'bg-gray-100 hover:bg-gray-200';
-    if (totalActivity <= 8) return 'bg-blue-100 hover:bg-blue-200';
-    if (totalActivity <= 20) return 'bg-blue-300 hover:bg-blue-400';
-    return 'bg-blue-500 hover:bg-blue-600';
+    if (totalActivity === 0) return 'bg-gray-100 border border-gray-200 hover:bg-gray-200';
+    if (totalActivity <= 8) return 'bg-blue-100 border border-blue-200 hover:bg-blue-200';
+    if (totalActivity <= 20) return 'bg-blue-300 border border-blue-400 hover:bg-blue-400';
+    return 'bg-blue-500 border border-blue-600 hover:bg-blue-600';
   };
 
   const getTextColor = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
@@ -106,7 +105,7 @@ const StudyCalendarHeatmap = () => {
   const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={200}>
       <div className="w-full">
         <div className="flex items-center justify-between mb-3">
           <h4 className="font-semibold text-sm text-gray-700">{formatMonthYear(currentDate)}</h4>
@@ -148,7 +147,7 @@ const StudyCalendarHeatmap = () => {
                   <TooltipTrigger asChild>
                     <div
                       className={`
-                        w-8 h-8 rounded-sm cursor-pointer transition-all duration-200 flex items-center justify-center
+                        w-7 h-7 rounded cursor-pointer transition-all duration-200 flex items-center justify-center
                         ${getActivityLevel(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
                         ${isToday(dayData.date) ? 'ring-2 ring-blue-400 ring-offset-1' : ''}
                       `}
@@ -160,7 +159,7 @@ const StudyCalendarHeatmap = () => {
                       </span>
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-white border border-gray-200 shadow-lg">
+                  <TooltipContent side="top" className="bg-white border border-gray-200 shadow-lg">
                     <div className="text-sm">
                       <div className="font-semibold mb-1 text-gray-900">
                         {new Date(dayData.date).toLocaleDateString('en-US', { 
@@ -169,11 +168,11 @@ const StudyCalendarHeatmap = () => {
                         })}
                       </div>
                       {hasActivity(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted) ? (
-                        <>
+                        <div className="space-y-0.5">
                           <div className="text-gray-700">Completed {dayData.questionsCompleted} questions</div>
                           <div className="text-gray-700">Completed {dayData.testsCompleted} tests</div>
                           <div className="text-gray-700">Completed {dayData.examsCompleted} exams</div>
-                        </>
+                        </div>
                       ) : (
                         <div className="text-gray-500">No activity on this date.</div>
                       )}
@@ -181,7 +180,7 @@ const StudyCalendarHeatmap = () => {
                   </TooltipContent>
                 </Tooltip>
               ) : (
-                <div className="w-8 h-8" />
+                <div className="w-7 h-7" />
               )}
             </div>
           ))}
