@@ -331,13 +331,7 @@ const WritingTest = () => {
                 <div className="flex items-start">
                   <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
                   <div className="space-y-2">
-                    <p className="text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
-                    {writingAnalytics.words > 0 && writingAnalytics.words < 120 && (
-                      <div className="flex items-center text-sm text-orange-600">
-                        <AlertCircle className="h-4 w-4 mr-1" />
-                        Need {120 - writingAnalytics.words} more words (minimum 120 words required)
-                      </div>
-                    )}
+                    <p className="text-gray-700 leading-relaxed">Look at the image above and write a creative piece inspired by what you see. You may choose any writing style - narrative, descriptive, persuasive, or analytical.</p>
                   </div>
                 </div>
               </div>
