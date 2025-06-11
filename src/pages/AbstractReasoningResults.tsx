@@ -93,6 +93,18 @@ const AbstractReasoningResults = () => {
   const incorrectPercentage = (incorrectQuestions / totalQuestions) * 100;
   const skippedPercentage = (skippedQuestions / totalQuestions) * 100;
 
+  // Create gradient stops based on actual percentages
+  const gradientStops = `
+    linear-gradient(to right, 
+      #22c55e 0%, 
+      #22c55e ${correctPercentage}%, 
+      #ef4444 ${correctPercentage}%, 
+      #ef4444 ${correctPercentage + incorrectPercentage}%, 
+      #f59e0b ${correctPercentage + incorrectPercentage}%, 
+      #f59e0b 100%
+    )
+  `;
+
   // Enhanced question report data with time spent and status for bar chart
   const questionReportData = Array.from({ length: 37 }, (_, i) => {
     const questionNum = i + 1;
@@ -321,18 +333,12 @@ const AbstractReasoningResults = () => {
                   <div className="text-gray-600">Skipped</div>
                 </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 flex overflow-hidden">
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                 <div 
-                  className="bg-green-500 h-2" 
-                  style={{width: `${correctPercentage}%`}}
-                ></div>
-                <div 
-                  className="bg-red-500 h-2" 
-                  style={{width: `${incorrectPercentage}%`}}
-                ></div>
-                <div 
-                  className="bg-orange-500 h-2" 
-                  style={{width: `${skippedPercentage}%`}}
+                  className="h-2 rounded-full w-full transition-all duration-500" 
+                  style={{
+                    background: gradientStops
+                  }}
                 ></div>
               </div>
               <div className="text-right text-sm text-gray-600 flex items-center justify-end">
