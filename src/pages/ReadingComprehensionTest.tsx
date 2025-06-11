@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -260,7 +259,7 @@ const ReadingComprehensionTest = () => {
           />
         </div>
         
-        {/* Main question card with side-by-side layout */}
+        {/* Main question card with improved layout */}
         <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
             {/* Category banner */}
@@ -268,16 +267,16 @@ const ReadingComprehensionTest = () => {
               <p className="text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
-            {/* Content area with side-by-side layout */}
+            {/* Content area with improved layout - 60% passage, 40% question */}
             <div className="p-6 md:p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Left side - Passage */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Passage:</h3>
-                  <ScrollArea className="h-[500px] w-full rounded-lg border border-gray-200 p-4 bg-gray-50">
+              <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+                {/* Left side - Passage (larger area - 3/5) */}
+                <div className="xl:col-span-3 space-y-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Passage:</h3>
+                  <ScrollArea className="h-[600px] w-full rounded-lg border border-gray-300 p-6 bg-white shadow-sm">
                     <div className="pr-4">
                       {currentQuestion.passage.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="text-gray-700 leading-relaxed mb-4 last:mb-0">
+                        <p key={index} className="text-gray-800 leading-relaxed text-base mb-6 last:mb-0 font-medium">
                           {paragraph}
                         </p>
                       ))}
@@ -285,12 +284,12 @@ const ReadingComprehensionTest = () => {
                   </ScrollArea>
                 </div>
 
-                {/* Right side - Question and Options */}
-                <div className="space-y-6">
+                {/* Right side - Question and Options (smaller area - 2/5) */}
+                <div className="xl:col-span-2 space-y-6">
                   {/* Question */}
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Question:</h3>
-                    <p className="text-gray-700 font-medium text-lg">{currentQuestion.prompt}</p>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Question:</h3>
+                    <p className="text-gray-800 font-medium text-lg leading-relaxed">{currentQuestion.prompt}</p>
                   </div>
                   
                   {/* Answer options */}
@@ -335,7 +334,7 @@ const ReadingComprehensionTest = () => {
                                       {optionLabel}
                                     </div>
                                     <div className="flex-1">
-                                      <p className="text-gray-700">{option}</p>
+                                      <p className="text-gray-800 leading-relaxed">{option}</p>
                                     </div>
                                   </div>
                                 </Label>
