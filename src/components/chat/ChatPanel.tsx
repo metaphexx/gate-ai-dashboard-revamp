@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -322,8 +323,8 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </ScrollArea>
         </div>
 
-        {/* Input - fixed at bottom */}
-        <div className={`${isSidePanel ? 'fixed bottom-0 left-0 right-0 z-20' : ''} border-t border-gray-200 p-3 bg-white shadow-lg`} style={{ width: isSidePanel ? '400px' : '100%' }}>
+        {/* Input - fixed at bottom within the chat panel */}
+        <div className={`${isSidePanel ? 'absolute bottom-0 left-0 right-0 z-20' : ''} border-t border-gray-200 p-3 bg-white shadow-lg`}>
           <div className="flex gap-2">
             <Input
               value={inputValue}
