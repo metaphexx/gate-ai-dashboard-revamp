@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -51,7 +52,7 @@ const WritingTest = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<(string | null)[]>(Array(mockQuestions.length).fill(null));
   const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>(Array(mockQuestions.length).fill(false));
-  const [time, setTime] = useState(2700); // 45 minutes in seconds for writing
+  const [time, setTime] = useState(1500); // 25 minutes in seconds for writing
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [writingAnalytics, setWritingAnalytics] = useState({
