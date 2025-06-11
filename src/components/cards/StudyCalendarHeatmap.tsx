@@ -32,10 +32,10 @@ const StudyCalendarHeatmap = () => {
   const getActivityLevel = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
     const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
     
-    if (totalActivity === 0) return 'bg-gray-100 border-gray-200';
-    if (totalActivity <= 8) return 'bg-blue-100 border-blue-200';
-    if (totalActivity <= 20) return 'bg-blue-300 border-blue-400';
-    return 'bg-primary border-primary';
+    if (totalActivity === 0) return 'bg-gray-100 border-gray-200 hover:bg-primary/10 hover:border-primary/30';
+    if (totalActivity <= 8) return 'bg-primary/20 border-primary/30 hover:bg-primary/30 hover:border-primary/50';
+    if (totalActivity <= 20) return 'bg-primary/60 border-primary/70 hover:bg-primary/70 hover:border-primary/80';
+    return 'bg-primary border-primary hover:bg-primary/90 hover:border-primary';
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -101,7 +101,7 @@ const StudyCalendarHeatmap = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6"
+              className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
               onClick={() => navigateMonth('prev')}
             >
               <ChevronLeft size={12} />
@@ -109,7 +109,7 @@ const StudyCalendarHeatmap = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6"
+              className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
               onClick={() => navigateMonth('next')}
             >
               <ChevronRight size={12} />
@@ -118,7 +118,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Week Days Header */}
-        <div className="grid grid-cols-7 gap-0.5 mb-1">
+        <div className="grid grid-cols-7 gap-1 mb-1">
           {weekDays.map(day => (
             <div key={day} className="text-xs text-gray-500 text-center py-1 font-medium">
               {day}
@@ -127,7 +127,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Calendar Grid */}
-        <div className="grid grid-cols-7 gap-0.5">
+        <div className="grid grid-cols-7 gap-1">
           {days.map((dayData, index) => (
             <div key={index} className="flex justify-center">
               {dayData ? (
@@ -135,12 +135,16 @@ const StudyCalendarHeatmap = () => {
                   <TooltipTrigger asChild>
                     <div
                       className={`
-                        w-7 h-7 rounded-full cursor-pointer transition-all duration-200 hover:scale-110 flex items-center justify-center border
+                        w-8 h-8 rounded-md cursor-pointer transition-all duration-200 hover:scale-105 flex items-center justify-center border-2
                         ${getActivityLevel(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
                         ${isToday(dayData.date) ? 'ring-2 ring-primary ring-offset-1' : ''}
                       `}
                     >
-                      <span className="text-xs font-medium text-gray-700">
+                      <span className={`text-xs font-medium ${
+                        dayData.questionsCompleted + dayData.testsCompleted + dayData.examsCompleted > 0 
+                          ? 'text-white' 
+                          : 'text-gray-600'
+                      }`}>
                         {dayData.day}
                       </span>
                     </div>
@@ -160,7 +164,7 @@ const StudyCalendarHeatmap = () => {
                   </TooltipContent>
                 </Tooltip>
               ) : (
-                <div className="w-7 h-7" />
+                <div className="w-8 h-8" />
               )}
             </div>
           ))}
