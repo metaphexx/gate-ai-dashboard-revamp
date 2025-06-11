@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,10 +8,14 @@ import EverestLogo from '@/components/test/EverestLogo';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
 import AverageTimeSection from '@/components/results/AverageTimeSection';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
+import ChatPanel from '@/components/chat/ChatPanel';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
+import { useChatContext } from '@/contexts/ChatContext';
 
 const AbstractReasoningResults = () => {
   const navigate = useNavigate();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const { setMessages } = useChatContext();
 
   const handleProceedToFeedback = () => {
     navigate('/abstract-reasoning-feedback');
@@ -26,7 +30,17 @@ const AbstractReasoningResults = () => {
   };
 
   const handleOpenChat = () => {
-    navigate('/chat-with-elliot');
+    // Add test results context to chat
+    const resultsMessage = {
+      id: 'results-context',
+      type: 'assistant' as const,
+      content: "I can see you just completed your Abstract Reasoning test! You scored 16 out of 37 questions (43.2% accuracy) in 20 minutes. Your strongest areas are Pattern Recognition (62.5%) and Classification (57.1%). Matrix Reasoning, Series Completion, and Analogies need some work. How can I help you improve your performance?",
+      timestamp: new Date(),
+      quickReplies: ["How to improve Matrix Reasoning?", "Study tips for weak areas", "Practice recommendations"]
+    };
+    
+    setMessages(prev => [...prev, resultsMessage]);
+    setIsChatOpen(true);
   };
 
   // Get current date and time for completion
@@ -223,21 +237,21 @@ const AbstractReasoningResults = () => {
             </Card>
           </div>
 
-          {/* Action buttons moved to top */}
+          {/* Action buttons with swapped colors */}
           <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none mb-8">
             <CardContent className="p-8">
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   onClick={handleProceedToFeedback}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
+                  variant="outline"
+                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors flex-1"
                 >
                   <MessageSquare className="mr-2 h-5 w-5" />
                   Proceed to Feedback
                 </Button>
                 <Button 
                   onClick={handleViewSolution}
-                  variant="outline"
-                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors flex-1"
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
                 >
                   <Eye className="mr-2 h-5 w-5" />
                   View Solutions
@@ -380,6 +394,9 @@ const AbstractReasoningResults = () => {
 
       {/* Floating Chat Button */}
       <FloatingChatButton onClick={handleOpenChat} />
+
+      {/* Chat Panel */}
+      <ChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 };
