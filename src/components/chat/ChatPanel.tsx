@@ -4,6 +4,7 @@ import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useChatContext } from '@/contexts/ChatContext';
 
 interface Message {
   id: string;
@@ -19,15 +20,7 @@ interface ChatPanelProps {
 }
 
 const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      type: 'assistant',
-      content: "Hi! I am Elliot, the GATE AI virtual assistant. You can ask me anything about preparation, university admissions or the GATE online learning platform.\n\nPlease note: I am still in training, and I would appreciate any feedback that you can provide by selecting the upvote/downvote buttons below my responses.",
-      timestamp: new Date(),
-      quickReplies: ["Show my progress", "Practice recommendations", "Study tips"]
-    }
-  ]);
+  const { messages, setMessages } = useChatContext();
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -118,7 +111,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-              <div className="text-white text-lg">👦</div>
+              <div className="text-white text-lg">🤓</div>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Chat</h3>
@@ -138,7 +131,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
                   {message.type === 'assistant' && (
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                        <div className="text-white text-xs">👦</div>
+                        <div className="text-white text-xs">🤓</div>
                       </div>
                     </div>
                   )}
@@ -184,7 +177,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
               <div className="flex justify-start">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                    <div className="text-white text-xs">👦</div>
+                    <div className="text-white text-xs">🤓</div>
                   </div>
                   <div className="bg-gray-100 p-3 rounded-lg">
                     <div className="flex gap-1">

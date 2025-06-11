@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import DashboardSidebar from '@/components/DashboardSidebar';
+import { useChatContext } from '@/contexts/ChatContext';
 
 interface Message {
   id: string;
@@ -15,15 +16,7 @@ interface Message {
 }
 
 const ChatWithElliot = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      type: 'assistant',
-      content: "Hi! I am Elliot, the GATE AI virtual assistant. You can ask me anything about preparation, university admissions or the GATE online learning platform.\n\nPlease note: I am still in training, and I would appreciate any feedback that you can provide by selecting the upvote/downvote buttons below my responses.",
-      timestamp: new Date(),
-      quickReplies: ["Show my progress", "Practice recommendations", "Study tips"]
-    }
-  ]);
+  const { messages, setMessages } = useChatContext();
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -110,19 +103,19 @@ const ChatWithElliot = () => {
       <DashboardSidebar />
       
       <main className="flex-1 flex flex-col bg-white">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-              <div className="text-white text-2xl">👦</div>
+        {/* Header - Centered with large avatar and name */}
+        <div className="flex items-center justify-center p-8 border-b border-gray-200 bg-gradient-to-r from-[#009dff]/5 to-[#33a9ff]/5">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
+              <div className="text-white text-4xl">🤓</div>
             </div>
-            <div>
-              <h1 className="text-xl font-semibold text-gray-900">Chat</h1>
-              <p className="text-sm text-gray-500">with Elliot</p>
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-gray-900">Hey, I'm Elliot, your virtual assistant</h1>
+              <p className="text-lg text-gray-500 mt-1">You can ask me anything related to your exam preparation.</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => window.history.back()}>
-            <X size={20} />
+          <Button variant="ghost" size="icon" className="absolute top-6 right-6" onClick={() => window.history.back()}>
+            <X size={24} />
           </Button>
         </div>
 
@@ -136,7 +129,7 @@ const ChatWithElliot = () => {
                     {message.type === 'assistant' && (
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                          <div className="text-white text-lg">👦</div>
+                          <div className="text-white text-lg">🤓</div>
                         </div>
                         <span className="text-sm font-medium text-gray-600">Elliot</span>
                       </div>
@@ -186,7 +179,7 @@ const ChatWithElliot = () => {
                   <div className="max-w-[70%]">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                        <div className="text-white text-lg">👦</div>
+                        <div className="text-white text-lg">🤓</div>
                       </div>
                       <span className="text-sm font-medium text-gray-600">Elliot</span>
                     </div>
