@@ -112,7 +112,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
               <img 
-                src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
                 alt="Elliot Avatar" 
                 className="w-8 h-8 rounded-full"
               />
@@ -136,7 +136,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
                         <img 
-                          src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                          src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
                           alt="Elliot Avatar" 
                           className="w-6 h-6 rounded-full"
                         />
@@ -186,7 +186,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
                     <img 
-                      src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                      src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
                       alt="Elliot Avatar" 
                       className="w-6 h-6 rounded-full"
                     />

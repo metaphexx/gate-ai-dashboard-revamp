@@ -15,7 +15,7 @@ const FloatingChatButton = ({ onClick }: FloatingChatButtonProps) => {
       size="icon"
     >
       <img 
-        src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+        src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
         alt="Elliot Avatar" 
         className="w-8 h-8 rounded-full"
       />
