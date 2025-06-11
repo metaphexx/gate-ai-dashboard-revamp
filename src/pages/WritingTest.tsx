@@ -38,7 +38,7 @@ const mockQuestions = [
     prompt: "Use this idea as the basis for a piece of writing. You may write in any style.",
     category: "Creative Writing",
     image: "/writing-test.jpg",
-    instruction: "Look at the image above and write a creative piece inspired by what you see. You may choose any writing style - narrative, descriptive, persuasive, or analytical. Your response should be between 200-300 words.",
+    instruction: "Look at the image above and write a creative piece inspired by what you see. You may choose any writing style - narrative, descriptive, persuasive, or analytical.",
     minWords: 200,
     maxWords: 300,
     answer: null
@@ -48,7 +48,7 @@ const mockQuestions = [
 const WritingTest = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<(string | null)[]>(Array(mockQuestions.length).fill(null));
   const [flaggedQuestions, setFlaggedQuestions] = useState<boolean[]>(Array(mockQuestions.length).fill(false));
@@ -65,79 +65,93 @@ const WritingTest = () => {
   const currentQuestion = mockQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / mockQuestions.length) * 100;
 
-  // Calculate writing analytics
-  const calculateAnalytics = (text: string) => {
-    if (!text) {
+  // Calculate writing analytics from HTML content
+  const calculateAnalytics = (htmlContent: string) => {
+    if (!htmlContent) {
       return { words: 0, characters: 0, sentences: 0, paragraphs: 0 };
     }
 
-    const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
-    const characters = text.length;
-    const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0).length;
-    const paragraphs = text.split(/\n\s*\n/).filter(paragraph => paragraph.trim().length > 0).length;
+    // Create a temporary div to extract text content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    const textContent = tempDiv.textContent || tempDiv.innerText || '';
+
+    const words = textContent.trim().split(/\s+/).filter(word => word.length > 0).length;
+    const characters = textContent.length;
+    const sentences = textContent.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0).length;
+    const paragraphs = htmlContent.split(/<\/p>|<br\s*\/?>/i).filter(paragraph => {
+      const tempP = document.createElement('div');
+      tempP.innerHTML = paragraph;
+      return (tempP.textContent || tempP.innerText || '').trim().length > 0;
+    }).length;
 
     return { words, characters, sentences, paragraphs };
   };
 
-  // Text formatting functions
+  // Text formatting functions using document.execCommand
   const applyFormat = (command: string, value?: string) => {
-    if (!textareaRef.current) return;
+    if (!editorRef.current) return;
     
-    const textarea = textareaRef.current;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    const beforeText = textarea.value.substring(0, start);
-    const afterText = textarea.value.substring(end);
+    editorRef.current.focus();
     
-    let newText = '';
-    let newCursorPos = start;
-    
-    switch (command) {
-      case 'bold':
-        newText = `${beforeText}**${selectedText}**${afterText}`;
-        newCursorPos = selectedText ? end + 4 : start + 2;
-        break;
-      case 'italic':
-        newText = `${beforeText}_${selectedText}_${afterText}`;
-        newCursorPos = selectedText ? end + 2 : start + 1;
-        break;
-      case 'underline':
-        newText = `${beforeText}<u>${selectedText}</u>${afterText}`;
-        newCursorPos = selectedText ? end + 7 : start + 3;
-        break;
-      case 'strikethrough':
-        newText = `${beforeText}~~${selectedText}~~${afterText}`;
-        newCursorPos = selectedText ? end + 4 : start + 2;
-        break;
-      case 'quote':
-        newText = `${beforeText}> ${selectedText}${afterText}`;
-        newCursorPos = selectedText ? end + 2 : start + 2;
-        break;
-      case 'bulletList':
-        newText = `${beforeText}• ${selectedText}${afterText}`;
-        newCursorPos = selectedText ? end + 2 : start + 2;
-        break;
-      case 'numberedList':
-        newText = `${beforeText}1. ${selectedText}${afterText}`;
-        newCursorPos = selectedText ? end + 3 : start + 3;
-        break;
-      default:
-        return;
-    }
-    
-    handleAnswerChange(newText);
-    
-    // Restore cursor position
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-        textareaRef.current.focus();
+    try {
+      switch (command) {
+        case 'bold':
+          document.execCommand('bold', false);
+          break;
+        case 'italic':
+          document.execCommand('italic', false);
+          break;
+        case 'underline':
+          document.execCommand('underline', false);
+          break;
+        case 'strikethrough':
+          document.execCommand('strikeThrough', false);
+          break;
+        case 'quote':
+          document.execCommand('formatBlock', false, 'blockquote');
+          break;
+        case 'bulletList':
+          document.execCommand('insertUnorderedList', false);
+          break;
+        case 'numberedList':
+          document.execCommand('insertOrderedList', false);
+          break;
+        case 'alignLeft':
+          document.execCommand('justifyLeft', false);
+          break;
+        case 'alignCenter':
+          document.execCommand('justifyCenter', false);
+          break;
+        case 'alignRight':
+          document.execCommand('justifyRight', false);
+          break;
+        default:
+          break;
       }
-    }, 0);
+      
+      // Update analytics after formatting
+      handleEditorChange();
+    } catch (error) {
+      console.log('Formatting command not supported:', command);
+    }
   };
 
-  // Handle keyboard navigation - removed flag and clear shortcuts
+  // Handle editor content changes
+  const handleEditorChange = () => {
+    if (!editorRef.current) return;
+    
+    const htmlContent = editorRef.current.innerHTML;
+    const newAnswers = [...answers];
+    newAnswers[currentQuestionIndex] = htmlContent;
+    setAnswers(newAnswers);
+    
+    // Update analytics
+    const analytics = calculateAnalytics(htmlContent);
+    setWritingAnalytics(analytics);
+  };
+
+  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
@@ -169,12 +183,17 @@ const WritingTest = () => {
     return () => clearInterval(timer);
   }, [isTestCompleted]);
 
-  // Update analytics when answer changes
+  // Update editor content when question changes
   useEffect(() => {
-    const currentAnswer = answers[currentQuestionIndex] || '';
-    const analytics = calculateAnalytics(currentAnswer);
-    setWritingAnalytics(analytics);
-  }, [answers, currentQuestionIndex]);
+    if (editorRef.current) {
+      const currentAnswer = answers[currentQuestionIndex] || '';
+      editorRef.current.innerHTML = currentAnswer;
+      
+      // Update analytics
+      const analytics = calculateAnalytics(currentAnswer);
+      setWritingAnalytics(analytics);
+    }
+  }, [currentQuestionIndex]);
 
   const handleTimeUp = () => {
     toast({
@@ -183,12 +202,6 @@ const WritingTest = () => {
       variant: "destructive",
     });
     handleSubmitTest();
-  };
-
-  const handleAnswerChange = (value: string) => {
-    const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = value;
-    setAnswers(newAnswers);
   };
 
   const goToPreviousQuestion = () => {
@@ -222,10 +235,20 @@ const WritingTest = () => {
   };
 
   const checkForUnansweredQuestions = () => {
-    const unanswered = answers.filter(answer => answer === null || answer.trim() === '').length;
+    const unanswered = answers.filter(answer => {
+      if (!answer) return true;
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = answer;
+      const textContent = tempDiv.textContent || tempDiv.innerText || '';
+      return textContent.trim() === '';
+    }).length;
+    
     const hasShortAnswers = answers.some((answer, index) => {
       if (!answer) return false;
-      const words = answer.trim().split(/\s+/).filter(word => word.length > 0);
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = answer;
+      const textContent = tempDiv.textContent || tempDiv.innerText || '';
+      const words = textContent.trim().split(/\s+/).filter(word => word.length > 0);
       return words.length < mockQuestions[index].minWords;
     });
     
@@ -349,19 +372,16 @@ const WritingTest = () => {
                     }`}>
                       Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
                     </div>
-                    {writingAnalytics.words > 0 && writingAnalytics.words < 120 && (
+                    {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
                       <div className="flex items-center text-sm text-orange-600">
                         <AlertCircle className="h-4 w-4 mr-1" />
-                        Need {120 - writingAnalytics.words} more words (120 minimum)
+                        Need {currentQuestion.minWords - writingAnalytics.words} more words
                       </div>
                     )}
-                    {writingAnalytics.words >= 120 && !canSubmit && (
+                    {writingAnalytics.words > currentQuestion.maxWords && (
                       <div className="flex items-center text-sm text-orange-600">
                         <AlertCircle className="h-4 w-4 mr-1" />
-                        {writingAnalytics.words < currentQuestion.minWords 
-                          ? `Need ${currentQuestion.minWords - writingAnalytics.words} more words`
-                          : `${writingAnalytics.words - currentQuestion.maxWords} words over limit`
-                        }
+                        {writingAnalytics.words - currentQuestion.maxWords} words over limit
                       </div>
                     )}
                   </div>
@@ -432,6 +452,36 @@ const WritingTest = () => {
                     <Button
                       variant="ghost"
                       size="sm"
+                      onClick={() => applyFormat('alignLeft')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Align Left"
+                    >
+                      <AlignLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('alignCenter')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Align Center"
+                    >
+                      <AlignCenter className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('alignRight')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Align Right"
+                    >
+                      <AlignRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => applyFormat('bulletList')}
                       className="h-8 w-8 p-0 hover:bg-gray-200"
                       title="Bullet List"
@@ -462,16 +512,18 @@ const WritingTest = () => {
                   </div>
                 </div>
                 
-                <textarea
-                  ref={textareaRef}
-                  value={answers[currentQuestionIndex] || ""}
-                  onChange={(e) => handleAnswerChange(e.target.value)}
-                  placeholder="Write something here..."
-                  className="min-h-[400px] w-full text-base leading-relaxed resize-none focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0"
+                <div
+                  ref={editorRef}
+                  contentEditable
+                  onInput={handleEditorChange}
+                  className="min-h-[400px] w-full text-base leading-relaxed focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0 focus:outline-none"
+                  style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
+                  suppressContentEditableWarning={true}
+                  data-placeholder="Write something here..."
                 />
               </div>
               
-              {/* Flag button only - removed clear option */}
+              {/* Flag button */}
               <div className="flex items-center justify-start space-x-2">
                 <Button 
                   variant="outline"
@@ -486,7 +538,7 @@ const WritingTest = () => {
           </CardContent>
         </Card>
         
-        {/* Keyboard shortcuts info - removed flag and clear shortcuts */}
+        {/* Keyboard shortcuts info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
             Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate
@@ -540,6 +592,36 @@ const WritingTest = () => {
           />
         )}
       </div>
+
+      <style jsx>{`
+        [contenteditable]:empty:before {
+          content: attr(data-placeholder);
+          color: #9CA3AF;
+          pointer-events: none;
+        }
+        
+        [contenteditable] blockquote {
+          border-left: 4px solid #009dff;
+          padding-left: 1rem;
+          margin-left: 0;
+          font-style: italic;
+          color: #6B7280;
+        }
+        
+        [contenteditable] ul {
+          list-style-type: disc;
+          margin-left: 1.5rem;
+        }
+        
+        [contenteditable] ol {
+          list-style-type: decimal;
+          margin-left: 1.5rem;
+        }
+        
+        [contenteditable] li {
+          margin: 0.25rem 0;
+        }
+      `}</style>
     </div>
   );
 };
