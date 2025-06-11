@@ -242,8 +242,8 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </div>
         )}
 
-        {/* Messages - adjusted to account for sticky input */}
-        <div className={`flex-1 overflow-y-auto ${isSidePanel ? 'pb-20' : 'pb-4'}`}>
+        {/* Messages - adjusted to account for sticky input with proper height calculation */}
+        <div className={`flex-1 overflow-hidden ${isSidePanel ? 'pb-0' : 'pb-0'}`} style={{ height: isSidePanel ? 'calc(100% - 80px)' : 'auto' }}>
           <ScrollArea className="h-full py-4 px-4">
             <div className="space-y-4">
               {messages.map(message => (
@@ -323,8 +323,8 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </ScrollArea>
         </div>
 
-        {/* Input - now sticky at bottom */}
-        <div className={`${isSidePanel ? 'absolute bottom-0 left-0 right-0' : ''} border-t border-gray-200 p-3 bg-white`}>
+        {/* Input - always visible at bottom with fixed positioning */}
+        <div className={`${isSidePanel ? 'absolute bottom-0 left-0 right-0 z-10' : ''} border-t border-gray-200 p-3 bg-white shadow-lg`}>
           <div className="flex gap-2">
             <Input
               value={inputValue}
