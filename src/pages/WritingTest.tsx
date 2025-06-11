@@ -172,13 +172,6 @@ const WritingTest = () => {
     return () => clearInterval(timer);
   }, [isTestCompleted]);
 
-  // Count words in current answer
-  useEffect(() => {
-    const currentAnswer = answers[currentQuestionIndex] || '';
-    const words = currentAnswer.trim().split(/\s+/).filter(word => word.length > 0);
-    setWordCount(words.length);
-  }, [answers, currentQuestionIndex]);
-
   // Update analytics when answer changes
   useEffect(() => {
     const currentAnswer = answers[currentQuestionIndex] || '';
