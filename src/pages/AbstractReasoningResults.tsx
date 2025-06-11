@@ -82,6 +82,17 @@ const AbstractReasoningResults = () => {
     { subType: 'Analogies', performance: 1, correct: 1, incorrect: 1, skipped: 4, percentage: 16.7, status: 'Needs Work' }
   ];
 
+  // Question stats for progress bar calculation
+  const totalQuestions = 37;
+  const correctQuestions = 16;
+  const incorrectQuestions = 5;
+  const skippedQuestions = 16;
+
+  // Calculate percentages for progress bar
+  const correctPercentage = (correctQuestions / totalQuestions) * 100;
+  const incorrectPercentage = (incorrectQuestions / totalQuestions) * 100;
+  const skippedPercentage = (skippedQuestions / totalQuestions) * 100;
+
   // Enhanced question report data with time spent and status for bar chart
   const questionReportData = Array.from({ length: 37 }, (_, i) => {
     const questionNum = i + 1;
@@ -294,24 +305,35 @@ const AbstractReasoningResults = () => {
               <CardTitle className="text-xl font-medium">Question Report</CardTitle>
               <div className="grid grid-cols-4 gap-4 text-center text-sm">
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">37</div>
+                  <div className="text-2xl font-bold text-gray-900">{totalQuestions}</div>
                   <div className="text-gray-600">Questions</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-green-600">16</div>
+                  <div className="text-2xl font-bold text-green-600">{correctQuestions}</div>
                   <div className="text-gray-600">Correct</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-red-600">5</div>
+                  <div className="text-2xl font-bold text-red-600">{incorrectQuestions}</div>
                   <div className="text-gray-600">Incorrect</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-orange-600">16</div>
+                  <div className="text-2xl font-bold text-orange-600">{skippedQuestions}</div>
                   <div className="text-gray-600">Skipped</div>
                 </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-gradient-to-r from-green-500 via-red-500 to-orange-500 h-2 rounded-full" style={{width: '100%'}}></div>
+              <div className="w-full bg-gray-200 rounded-full h-2 flex overflow-hidden">
+                <div 
+                  className="bg-green-500 h-2" 
+                  style={{width: `${correctPercentage}%`}}
+                ></div>
+                <div 
+                  className="bg-red-500 h-2" 
+                  style={{width: `${incorrectPercentage}%`}}
+                ></div>
+                <div 
+                  className="bg-orange-500 h-2" 
+                  style={{width: `${skippedPercentage}%`}}
+                ></div>
               </div>
               <div className="text-right text-sm text-gray-600 flex items-center justify-end">
                 <Clock className="h-4 w-4 mr-1" />
