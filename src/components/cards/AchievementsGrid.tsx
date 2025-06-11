@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Trophy, Target, Zap, Calendar, Clock, TrendingUp, 
@@ -46,7 +47,7 @@ const AchievementsGrid = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'practice': return 'text-blue-600';
+      case 'practice': return 'text-[#009dff]';
       case 'performance': return 'text-green-600';
       case 'consistency': return 'text-orange-600';
       case 'special': return 'text-purple-600';
@@ -79,7 +80,7 @@ const AchievementsGrid = () => {
           className={`
             p-2 rounded-md text-center transition-all duration-200 hover:scale-105 cursor-pointer
             ${achievement.isUnlocked 
-              ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100' 
+              ? 'bg-[#009dff]/10 border border-[#009dff]/20 hover:bg-[#009dff]/20' 
               : 'bg-gray-50 border border-gray-200 opacity-60 hover:bg-gray-100'
             }
           `}
@@ -125,7 +126,7 @@ const AchievementsGrid = () => {
           <div className="text-center">
             <Dialog open={showAllModal} onOpenChange={setShowAllModal}>
               <DialogTrigger asChild>
-                <button className="text-xs text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                <button className="text-xs text-[#009dff] hover:text-[#009dff]/80 font-medium transition-colors">
                   View all {achievements.length} achievements
                 </button>
               </DialogTrigger>

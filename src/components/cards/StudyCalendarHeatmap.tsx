@@ -32,16 +32,16 @@ const StudyCalendarHeatmap = () => {
     const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
     
     if (totalActivity === 0) return 'bg-gray-100 border border-gray-200 hover:bg-gray-200';
-    if (totalActivity <= 8) return 'bg-blue-100 border border-blue-200 hover:bg-blue-200';
-    if (totalActivity <= 20) return 'bg-blue-300 border border-blue-400 hover:bg-blue-400';
-    return 'bg-blue-500 border border-blue-600 hover:bg-blue-600';
+    if (totalActivity <= 8) return 'bg-[#009dff]/20 border border-[#009dff]/30 hover:bg-[#009dff]/30';
+    if (totalActivity <= 20) return 'bg-[#009dff]/60 border border-[#009dff]/70 hover:bg-[#009dff]/70';
+    return 'bg-[#009dff] border border-[#009dff] hover:bg-[#009dff]/90';
   };
 
   const getTextColor = (questionsCompleted: number, testsCompleted: number, examsCompleted: number): string => {
     const totalActivity = questionsCompleted + (testsCompleted * 5) + (examsCompleted * 10);
     
     if (totalActivity === 0) return 'text-gray-600';
-    if (totalActivity <= 8) return 'text-blue-800';
+    if (totalActivity <= 8) return 'text-[#009dff]';
     if (totalActivity <= 20) return 'text-white';
     return 'text-white';
   };
@@ -113,7 +113,7 @@ const StudyCalendarHeatmap = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 hover:bg-blue-100 hover:text-blue-600"
+              className="h-6 w-6 hover:bg-[#009dff]/10 hover:text-[#009dff]"
               onClick={() => navigateMonth('prev')}
             >
               <ChevronLeft size={12} />
@@ -121,7 +121,7 @@ const StudyCalendarHeatmap = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 hover:bg-blue-100 hover:text-blue-600"
+              className="h-6 w-6 hover:bg-[#009dff]/10 hover:text-[#009dff]"
               onClick={() => navigateMonth('next')}
             >
               <ChevronRight size={12} />
@@ -147,16 +147,13 @@ const StudyCalendarHeatmap = () => {
                   <TooltipTrigger asChild>
                     <div
                       className={`
-                        w-7 h-7 rounded cursor-pointer transition-all duration-200 flex items-center justify-center
+                        w-8 h-8 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-xs font-medium
                         ${getActivityLevel(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
-                        ${isToday(dayData.date) ? 'ring-2 ring-blue-400 ring-offset-1' : ''}
+                        ${getTextColor(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)}
+                        ${isToday(dayData.date) ? 'ring-2 ring-[#009dff] ring-offset-1' : ''}
                       `}
                     >
-                      <span className={`text-xs font-medium ${
-                        getTextColor(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted)
-                      }`}>
-                        {dayData.day}
-                      </span>
+                      {dayData.day}
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="top" className="bg-white border border-gray-200 shadow-lg">
@@ -180,7 +177,7 @@ const StudyCalendarHeatmap = () => {
                   </TooltipContent>
                 </Tooltip>
               ) : (
-                <div className="w-7 h-7" />
+                <div className="w-8 h-8" />
               )}
             </div>
           ))}
