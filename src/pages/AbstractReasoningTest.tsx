@@ -399,5 +399,3 @@ const AbstractReasoningTest = () => {
 };
 
 export default AbstractReasoningTest;
-
-}
