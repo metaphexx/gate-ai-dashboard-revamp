@@ -357,10 +357,10 @@ const WritingTest = () => {
                     {writingAnalytics.words > 0 && writingAnalytics.words < 120 && (
                       <div className="flex items-center text-sm text-orange-600">
                         <AlertCircle className="h-4 w-4 mr-1" />
-                        Need {120 - writingAnalytics.words} more words (minimum 120 words)
+                        Need {120 - writingAnalytics.words} more words (120 minimum)
                       </div>
                     )}
-                    {!canSubmit && writingAnalytics.words >= 120 && (
+                    {writingAnalytics.words >= 120 && !canSubmit && (
                       <div className="flex items-center text-sm text-orange-600">
                         <AlertCircle className="h-4 w-4 mr-1" />
                         {writingAnalytics.words < currentQuestion.minWords 
