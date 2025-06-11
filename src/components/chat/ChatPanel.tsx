@@ -29,23 +29,30 @@ interface Message {
 interface ChatPanelProps {
   isOpen: boolean;
   onClose: () => void;
-  questions: Question[];
-  currentQuestionIndex: number;
-  type: 'abstract-reasoning' | 'reading-comprehension';
+  questions?: Question[];
+  currentQuestionIndex?: number;
+  type?: 'abstract-reasoning' | 'reading-comprehension';
 }
 
-const ChatPanel = ({ isOpen, onClose, questions, currentQuestionIndex, type }: ChatPanelProps) => {
+const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, type }: ChatPanelProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'assistant',
-      content: `Hi! I'm Elliot, your AI study assistant. I have access to all the ${type === 'reading-comprehension' ? 'reading comprehension passages, questions' : 'abstract reasoning questions'}, answers, and explanations from your test. Feel free to ask me about any question, explanation, or concept you'd like to understand better!`,
+      content: type 
+        ? `Hi! I'm Elliot, your AI study assistant. I have access to all the ${type === 'reading-comprehension' ? 'reading comprehension passages, questions' : 'abstract reasoning questions'}, answers, and explanations from your test. Feel free to ask me about any question, explanation, or concept you'd like to understand better!`
+        : "Hi! I'm Elliot, your AI study assistant. I'm here to help you with your studies and answer any questions you might have about your preparation!",
       timestamp: new Date(),
-      quickReplies: [
+      quickReplies: type ? [
         "Explain current question",
         "Why is this answer correct?",
-        "Help with passage analysis",
+        type === 'reading-comprehension' ? "Help with passage analysis" : "Pattern recognition tips",
         "Study tips"
+      ] : [
+        "Study tips",
+        "How can I improve?",
+        "Practice recommendations",
+        "General help"
       ]
     }
   ]);
@@ -61,6 +68,11 @@ const ChatPanel = ({ isOpen, onClose, questions, currentQuestionIndex, type }: C
   }, [messages]);
 
   const generateElliotResponse = (userMessage: string) => {
+    // If no questions data provided, give general responses
+    if (!questions.length || !type) {
+      return generateGeneralResponse(userMessage);
+    }
+
     const currentQuestion = questions[currentQuestionIndex];
     const lowerMessage = userMessage.toLowerCase();
 
@@ -110,6 +122,26 @@ const ChatPanel = ({ isOpen, onClose, questions, currentQuestionIndex, type }: C
     return responses[Math.floor(Math.random() * responses.length)];
   };
 
+  const generateGeneralResponse = (userMessage: string) => {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    if (lowerMessage.includes('study tips') || lowerMessage.includes('how to improve')) {
+      return `Here are some general study tips for GATE preparation:\n\n1. Create a structured study schedule\n2. Focus on understanding concepts rather than memorization\n3. Practice regularly with timed tests\n4. Review your mistakes and learn from them\n5. Take breaks to maintain focus\n\nWhat specific area would you like help with?`;
+    }
+    
+    if (lowerMessage.includes('practice') || lowerMessage.includes('recommendation')) {
+      return `For effective practice, I recommend:\n\n1. Start with Skills Trainer to build fundamentals\n2. Take Practice Tests to identify weak areas\n3. Use Mini Mock Exams for timed practice\n4. Take Full Mock Exams to simulate real conditions\n\nWould you like more specific recommendations for any particular subject?`;
+    }
+    
+    const generalResponses = [
+      "I'm here to help with your GATE preparation! Feel free to ask me about study strategies, practice recommendations, or any specific topics you're struggling with.",
+      "That's a great question! I can assist you with various aspects of your exam preparation. What would you like to focus on today?",
+      "I'd be happy to help you with that! Whether it's study tips, practice strategies, or understanding concepts, I'm here to support your learning journey."
+    ];
+    
+    return generalResponses[Math.floor(Math.random() * generalResponses.length)];
+  };
+
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
@@ -133,11 +165,16 @@ const ChatPanel = ({ isOpen, onClose, questions, currentQuestionIndex, type }: C
         type: 'assistant',
         content: response,
         timestamp: new Date(),
-        quickReplies: [
+        quickReplies: type ? [
           "Explain another question",
           "More study tips",
           type === 'reading-comprehension' ? "Help with passage analysis" : "Pattern recognition tips",
           "Next question explanation"
+        ] : [
+          "Study strategies",
+          "Practice recommendations",
+          "General tips",
+          "Subject help"
         ]
       };
       
@@ -288,7 +325,7 @@ const ChatPanel = ({ isOpen, onClose, questions, currentQuestionIndex, type }: C
             </Button>
           </div>
           <p className="text-xs text-gray-500 mt-2 text-center">
-            Elliot has access to all questions, answers, and explanations from your test.
+            {type ? `Elliot has access to all questions, answers, and explanations from your test.` : `Elliot is here to help with your studies and exam preparation.`}
           </p>
         </div>
       </div>
