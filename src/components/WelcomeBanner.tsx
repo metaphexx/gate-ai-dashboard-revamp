@@ -37,7 +37,7 @@ const WelcomeBanner = () => {
         <div className="flex-1">
           <h2 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, {userName}!</h2>
           <p className="text-base opacity-90 mb-3">
-            Your next GATE exam is in {daysRemaining} days. Ready to continue your preparation?
+            The next GATE exam is in {daysRemaining} days. Ready to continue your preparation?
           </p>
           <div className="flex gap-3">
             <Button variant="secondary" className="rounded-md text-[#009dff] text-base px-5 py-2">
