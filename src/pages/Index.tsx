@@ -42,12 +42,12 @@ const Index = () => {
             </div>
           </section>
           
-          {/* Tier Summary - Moved above Performance Overview */}
+          {/* Tier Summary */}
           <section className="mb-6">
             <TierSummary />
           </section>
 
-          {/* Chat Banner - Added below Tier Summary */}
+          {/* Chat Banner - Moved above Performance Overview */}
           <section className="mb-6">
             <ChatBanner onOpenChat={() => setIsChatOpen(true)} />
           </section>

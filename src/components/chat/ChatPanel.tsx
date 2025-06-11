@@ -52,7 +52,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response
+    // Simulate AI response with 3-dot loading
     setTimeout(() => {
       const responses = [
         "Great question! Based on your current progress, I'd recommend focusing on your weaker areas. You've been doing well in Quantitative Reasoning, but Abstract Reasoning could use some work.",
@@ -72,7 +72,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
 
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
-    }, 1500);
+    }, 2000);
   };
 
   const handleQuickReply = (reply: string) => {
@@ -84,6 +84,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
     };
 
     setMessages(prev => [...prev, newMessage]);
+    setIsTyping(true);
     
     // Handle quick reply responses
     setTimeout(() => {
@@ -104,7 +105,8 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
       };
 
       setMessages(prev => [...prev, aiMessage]);
-    }, 1000);
+      setIsTyping(false);
+    }, 1500);
   };
 
   if (!isOpen) return null;
@@ -115,8 +117,8 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center text-white font-bold">
-              E
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+              <div className="text-white text-lg">👦</div>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Chat</h3>
@@ -135,8 +137,8 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
                 <div className="max-w-[80%]">
                   {message.type === 'assistant' && (
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center text-white text-xs font-bold">
-                        E
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                        <div className="text-white text-xs">👦</div>
                       </div>
                     </div>
                   )}
@@ -181,8 +183,8 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center text-white text-xs font-bold">
-                    E
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                    <div className="text-white text-xs">👦</div>
                   </div>
                   <div className="bg-gray-100 p-3 rounded-lg">
                     <div className="flex gap-1">
@@ -207,7 +209,7 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               className="flex-1"
             />
-            <Button onClick={handleSendMessage} size="icon" className="bg-[#EF4444] hover:bg-[#DC2626]">
+            <Button onClick={handleSendMessage} size="icon" className="bg-[#009dff] hover:bg-[#0080ff]">
               <Send size={16} />
             </Button>
           </div>

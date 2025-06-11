@@ -12,8 +12,8 @@ const ChatBanner = ({ onOpenChat }: ChatBannerProps) => {
     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 max-w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center text-white font-bold text-lg">
-            E
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+            <div className="text-white text-2xl">👦</div>
           </div>
           <div className="flex-1">
             <h3 className="font-bold text-lg text-gray-900">Hey, I'm Elliot, your virtual assistant</h3>
@@ -22,7 +22,7 @@ const ChatBanner = ({ onOpenChat }: ChatBannerProps) => {
         </div>
         <Button 
           onClick={onOpenChat}
-          className="bg-[#EF4444] hover:bg-[#DC2626] text-white px-6 py-2 rounded-md font-medium"
+          className="bg-[#009dff] hover:bg-[#0080ff] text-white px-6 py-2 rounded-md font-medium"
         >
           ASK ELLIOT
         </Button>
