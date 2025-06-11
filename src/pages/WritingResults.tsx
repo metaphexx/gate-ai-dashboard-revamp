@@ -28,7 +28,7 @@ const writingResults = {
   structure: { score: 7, total: 15 },
   grammar: { score: 2, total: 10 },
   overall: { score: 24, total: 50 },
-  timeSpent: "00 Hr 25 M 0 S",
+  timeSpent: "25 Min 00 Sec",
   feedback: {
     creativity: "The piece has a hint of originality with the metaphor of the tunnel as a journey of persistence. However, it lacks depth and engagement beyond surface-level reflections.",
     structure: "The response has a basic structure with an introduction and conclusion. However, the flow is disrupted by abrupt transitions and lack of coherence.",
@@ -145,24 +145,24 @@ const WritingResults = () => {
       {/* Results Content */}
       <div className="container mx-auto px-4 py-8">
         {/* Overall Score Section */}
-        <Card className="mb-8 bg-gradient-to-r from-[#009dff] to-[#0080cc] text-white rounded-2xl border-none shadow-lg overflow-hidden">
+        <Card className="mb-8 bg-[#009dff] text-white rounded-2xl border-none shadow-lg overflow-hidden">
           <CardContent className="p-8">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <h2 className="text-3xl font-bold mb-2">Overall Score</h2>
-                <p className="text-lg opacity-90 mb-4">
+                <p className="text-lg opacity-90 mb-6">
                   You scored {writingResults.overall.score} out of {writingResults.overall.total} points
                 </p>
-                <div className="flex items-center space-x-2 mb-4">
-                  <Clock className="h-5 w-5" />
-                  <span className="text-sm">Time taken: {writingResults.timeSpent}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  {getStarRating(overallPercentage)}
+                <div className="flex items-center space-x-3 mb-4 bg-white/10 rounded-lg px-4 py-3">
+                  <Clock className="h-6 w-6" />
+                  <div>
+                    <span className="text-base font-semibold">Time taken:</span>
+                    <span className="text-lg font-bold ml-2">{writingResults.timeSpent}</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center justify-center">
-                <div className="relative w-32 h-32">
+              <div className="flex flex-col items-center justify-center">
+                <div className="relative w-32 h-32 mb-4">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <div className="text-4xl font-bold">{Math.round(overallPercentage)}%</div>
@@ -188,6 +188,9 @@ const WritingResults = () => {
                       strokeLinecap="round"
                     />
                   </svg>
+                </div>
+                <div className="flex items-center space-x-1">
+                  {getStarRating(overallPercentage)}
                 </div>
               </div>
             </div>
