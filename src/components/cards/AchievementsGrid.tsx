@@ -104,7 +104,7 @@ const AchievementsGrid = () => {
       </TooltipTrigger>
       <TooltipContent 
         side="top" 
-        className="bg-white border border-gray-200 shadow-lg max-w-[280px] w-auto z-[9999] fixed" 
+        className="bg-white border border-gray-200 shadow-lg min-w-[250px] max-w-[350px] w-auto z-[9999] fixed" 
         avoidCollisions={true} 
         collisionPadding={16}
         sideOffset={8}
@@ -114,7 +114,7 @@ const AchievementsGrid = () => {
       >
         <div className="text-sm p-2">
           <div className="font-semibold mb-2 text-gray-900">{achievement.title}</div>
-          <div className={`${achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'} leading-relaxed`}>
+          <div className={`${achievement.isUnlocked ? 'text-gray-700' : 'text-gray-500'} leading-relaxed whitespace-nowrap`}>
             {achievement.isUnlocked ? achievement.description : `Locked - ${achievement.description}`}
           </div>
         </div>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Flame, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -92,6 +93,10 @@ const StudyCalendarHeatmap = () => {
     return dateString === today;
   };
 
+  const isGateExamDate = (dateString: string) => {
+    return dateString === '2026-03-14';
+  };
+
   const hasActivity = (questionsCompleted: number, testsCompleted: number, examsCompleted: number) => {
     return questionsCompleted > 0 || testsCompleted > 0 || examsCompleted > 0;
   };
@@ -125,7 +130,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Week Days Header */}
-        <div className="grid grid-cols-7 gap-0.5 mb-1">
+        <div className="grid grid-cols-7 gap-x-0.5 gap-y-1 mb-1">
           {weekDays.map(day => (
             <div key={day} className="text-xs text-gray-700 text-center py-1 font-semibold">
               {day}
@@ -134,7 +139,7 @@ const StudyCalendarHeatmap = () => {
         </div>
 
         {/* Calendar Grid */}
-        <div className="grid grid-cols-7 gap-0.5">
+        <div className="grid grid-cols-7 gap-x-0.5 gap-y-1">
           {days.map((dayData, index) => (
             <div key={index} className="flex justify-center">
               {dayData ? (
@@ -143,9 +148,12 @@ const StudyCalendarHeatmap = () => {
                     <div
                       className={`
                         w-10 h-10 rounded cursor-pointer transition-all duration-200 flex items-center justify-center text-sm
-                        ${getActivityLevel(dayData.questionsCompleted)}
-                        ${getTextColor(dayData.questionsCompleted)}
-                        ${isToday(dayData.date) ? 'ring-2 ring-orange-400 ring-offset-1' : ''}
+                        ${isGateExamDate(dayData.date) 
+                          ? 'bg-green-500 border border-green-600 hover:bg-green-600 text-white font-bold' 
+                          : getActivityLevel(dayData.questionsCompleted)
+                        }
+                        ${!isGateExamDate(dayData.date) ? getTextColor(dayData.questionsCompleted) : ''}
+                        ${isToday(dayData.date) ? 'ring-2 ring-blue-600 ring-offset-1' : ''}
                       `}
                     >
                       {dayData.day}
@@ -168,7 +176,9 @@ const StudyCalendarHeatmap = () => {
                           day: 'numeric' 
                         })}
                       </div>
-                      {hasActivity(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted) ? (
+                      {isGateExamDate(dayData.date) ? (
+                        <div className="text-green-600 font-semibold whitespace-nowrap">GATE Exam 2026</div>
+                      ) : hasActivity(dayData.questionsCompleted, dayData.testsCompleted, dayData.examsCompleted) ? (
                         <div className="space-y-0.5 whitespace-nowrap">
                           <div className="text-gray-700">Completed {dayData.questionsCompleted} questions</div>
                           <div className="text-gray-700">Completed {dayData.testsCompleted} tests</div>
