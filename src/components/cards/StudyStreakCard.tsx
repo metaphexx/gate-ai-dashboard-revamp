@@ -1,23 +1,99 @@
 
 import React, { useState } from 'react';
-import { Award, TrendingUp } from 'lucide-react';
+import { Award, TrendingUp, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import StudyCalendarHeatmap from './StudyCalendarHeatmap';
 import AchievementsGrid from './AchievementsGrid';
 
 const StudyStreakCard = () => {
   const [activeTab, setActiveTab] = useState<'calendar' | 'streak' | 'achievements'>('calendar');
-  const dailyGoal = 5;
+  const [dailyGoal, setDailyGoal] = useState(5);
+  const [streakGoal, setStreakGoal] = useState(5);
+  const [isGoalDialogOpen, setIsGoalDialogOpen] = useState(false);
+  const [tempDailyGoal, setTempDailyGoal] = useState(dailyGoal);
+  const [tempStreakGoal, setTempStreakGoal] = useState(streakGoal);
+  
   const completedSessions = 3;
   const streakDays = 4;
   
-  // Create streak dots array
-  const streakDots = Array.from({ length: 5 }, (_, i) => i < streakDays);
+  // Create streak dots array based on current goal
+  const streakDots = Array.from({ length: streakGoal }, (_, i) => i < streakDays);
+
+  const handleUpdateGoals = () => {
+    setDailyGoal(tempDailyGoal);
+    setStreakGoal(tempStreakGoal);
+    setIsGoalDialogOpen(false);
+  };
+
+  const handleCancelGoals = () => {
+    setTempDailyGoal(dailyGoal);
+    setTempStreakGoal(streakGoal);
+    setIsGoalDialogOpen(false);
+  };
   
   return (
     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Study Progress</h3>
+        <Dialog open={isGoalDialogOpen} onOpenChange={setIsGoalDialogOpen}>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="p-2 hover:bg-[#009dff]/10 hover:text-[#009dff]"
+            >
+              <Settings size={16} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Update Goals</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <label htmlFor="daily-goal" className="text-sm font-medium">
+                  Daily Question Goal
+                </label>
+                <Input
+                  id="daily-goal"
+                  type="number"
+                  min="1"
+                  max="50"
+                  value={tempDailyGoal}
+                  onChange={(e) => setTempDailyGoal(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="streak-goal" className="text-sm font-medium">
+                  Streak Goal (days)
+                </label>
+                <Input
+                  id="streak-goal"
+                  type="number"
+                  min="3"
+                  max="30"
+                  value={tempStreakGoal}
+                  onChange={(e) => setTempStreakGoal(Math.max(3, parseInt(e.target.value) || 3))}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button variant="outline" onClick={handleCancelGoals}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleUpdateGoals}
+                  className="bg-[#009dff] hover:bg-[#009dff]/90"
+                >
+                  Update Goals
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
       
       {/* Tab Navigation */}
@@ -72,7 +148,8 @@ const StudyStreakCard = () => {
           <div className="flex flex-col items-center p-4 bg-[#009dff]/10 rounded-lg">
             <Award size={28} className="text-[#009dff] mb-2" />
             <div className="text-xl font-bold text-center">{streakDays}-Day Streak</div>
-            <div className="flex items-center gap-1.5 mt-2">
+            <div className="text-xs text-gray-600 mb-2">Goal: {streakGoal} days</div>
+            <div className="flex items-center gap-1.5">
               {streakDots.map((isActive, idx) => (
                 <div 
                   key={idx} 
