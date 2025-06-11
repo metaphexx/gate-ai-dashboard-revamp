@@ -13,7 +13,11 @@ const ChatBanner = ({ onOpenChat }: ChatBannerProps) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-            <div className="text-white text-2xl">🤓</div>
+            <img 
+              src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+              alt="Elliot Avatar" 
+              className="w-10 h-10 rounded-full"
+            />
           </div>
           <div className="flex-1">
             <h3 className="font-bold text-lg text-gray-900">Hey, I'm Elliot, your virtual assistant</h3>

@@ -111,7 +111,11 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-              <div className="text-white text-lg">🤓</div>
+              <img 
+                src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                alt="Elliot Avatar" 
+                className="w-8 h-8 rounded-full"
+              />
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Chat</h3>
@@ -131,7 +135,11 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
                   {message.type === 'assistant' && (
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                        <div className="text-white text-xs">🤓</div>
+                        <img 
+                          src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                          alt="Elliot Avatar" 
+                          className="w-6 h-6 rounded-full"
+                        />
                       </div>
                     </div>
                   )}
@@ -177,7 +185,11 @@ const ChatPanel = ({ isOpen, onClose }: ChatPanelProps) => {
               <div className="flex justify-start">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                    <div className="text-white text-xs">🤓</div>
+                    <img 
+                      src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                      alt="Elliot Avatar" 
+                      className="w-6 h-6 rounded-full"
+                    />
                   </div>
                   <div className="bg-gray-100 p-3 rounded-lg">
                     <div className="flex gap-1">

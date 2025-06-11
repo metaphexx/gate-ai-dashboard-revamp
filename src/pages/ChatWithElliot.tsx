@@ -107,7 +107,11 @@ const ChatWithElliot = () => {
         <div className="flex items-center justify-center p-8 border-b border-gray-200 bg-gradient-to-r from-[#009dff]/5 to-[#33a9ff]/5">
           <div className="flex flex-col items-center gap-4">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
-              <div className="text-white text-4xl">🤓</div>
+              <img 
+                src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                alt="Elliot Avatar" 
+                className="w-16 h-16 rounded-full"
+              />
             </div>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Hey, I'm Elliot, your virtual assistant</h1>
@@ -129,7 +133,11 @@ const ChatWithElliot = () => {
                     {message.type === 'assistant' && (
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                          <div className="text-white text-lg">🤓</div>
+                          <img 
+                            src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                            alt="Elliot Avatar" 
+                            className="w-8 h-8 rounded-full"
+                          />
                         </div>
                         <span className="text-sm font-medium text-gray-600">Elliot</span>
                       </div>
@@ -179,7 +187,11 @@ const ChatWithElliot = () => {
                   <div className="max-w-[70%]">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
-                        <div className="text-white text-lg">🤓</div>
+                        <img 
+                          src="/lovable-uploads/b80d39a7-ee92-4e7d-a5da-e750a26c7b1f.png" 
+                          alt="Elliot Avatar" 
+                          className="w-8 h-8 rounded-full"
+                        />
                       </div>
                       <span className="text-sm font-medium text-gray-600">Elliot</span>
                     </div>
