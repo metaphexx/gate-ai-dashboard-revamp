@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Award, TrendingUp, Trophy, Star } from 'lucide-react';
+import { Award, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import StudyCalendarHeatmap from './StudyCalendarHeatmap';
+import AchievementsGrid from './AchievementsGrid';
 
 const StudyStreakCard = () => {
   const [activeTab, setActiveTab] = useState<'calendar' | 'streak' | 'achievements'>('calendar');
@@ -113,28 +114,7 @@ const StudyStreakCard = () => {
       )}
 
       {activeTab === 'achievements' && (
-        <div className="space-y-2">
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2 bg-primary-light rounded-md text-center">
-              <span className="text-lg">🎯</span>
-              <p className="text-xs font-medium mt-1">First Mock</p>
-            </div>
-            <div className="p-2 bg-primary-light rounded-md text-center">
-              <span className="text-lg">⏱️</span>
-              <p className="text-xs font-medium mt-1">Speed Master</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2 bg-primary-light rounded-md text-center">
-              <Trophy size={18} className="inline-block text-primary" />
-              <p className="text-xs font-medium mt-1">Top Scorer</p>
-            </div>
-            <div className="p-2 bg-primary-light rounded-md text-center">
-              <Star size={18} className="inline-block text-accent" />
-              <p className="text-xs font-medium mt-1">Perfect Quiz</p>
-            </div>
-          </div>
-        </div>
+        <AchievementsGrid />
       )}
     </div>
   );
