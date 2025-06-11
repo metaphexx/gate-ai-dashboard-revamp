@@ -1,17 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { 
-  Bold, 
-  Italic, 
-  Underline, 
-  Strikethrough, 
-  List, 
-  Quote, 
-  AlignLeft, 
-  AlignCenter, 
-  AlignRight,
   Clock,
   FileText,
   ArrowRight,
@@ -23,7 +16,6 @@ const WritingTest = () => {
   const [wordCount, setWordCount] = useState(0);
   const [timeLeft, setTimeLeft] = useState(1500); // 25 minutes in seconds
   const [isRunning, setIsRunning] = useState(true);
-  const editorRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,20 +42,6 @@ const WritingTest = () => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const handleEditorChange = (e: React.ChangeEvent<HTMLDivElement>) => {
-    if (editorRef.current) {
-      setText(editorRef.current.innerText);
-    }
-  };
-
-  const formatText = (command: string) => {
-    document.execCommand(command, false, '');
-  };
-
-  const insertQuote = () => {
-    document.execCommand('insertText', false, '""');
   };
 
   const handleSubmit = () => {
@@ -161,105 +139,16 @@ const WritingTest = () => {
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Formatting Toolbar */}
-                <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg border">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('bold')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Bold className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('italic')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Italic className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('underline')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Underline className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('strikethrough')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Strikethrough className="h-4 w-4" />
-                  </Button>
-                  <div className="w-px h-6 bg-gray-300 mx-1" />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('insertUnorderedList')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => insertQuote()}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Quote className="h-4 w-4" />
-                  </Button>
-                  <div className="w-px h-6 bg-gray-300 mx-1" />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('justifyLeft')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <AlignLeft className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('justifyCenter')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <AlignCenter className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => formatText('justifyRight')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <AlignRight className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {/* Rich Text Editor */}
-                <div
-                  ref={editorRef}
-                  contentEditable
-                  onInput={handleEditorChange}
+              <CardContent>
+                <Textarea
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  placeholder="Begin writing your response here..."
                   className="min-h-[400px] p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009dff] focus:border-transparent resize-none"
                   style={{
                     lineHeight: '1.6',
                     fontSize: '16px'
                   }}
-                  suppressContentEditableWarning={true}
                 />
               </CardContent>
             </Card>
