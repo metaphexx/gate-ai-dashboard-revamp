@@ -42,14 +42,14 @@ const Index = () => {
             </div>
           </section>
           
+          {/* Chat Banner - Above Your Progress */}
+          <section className="mb-4">
+            <ChatBanner onOpenChat={() => setIsChatOpen(true)} />
+          </section>
+
           {/* Tier Summary */}
           <section className="mb-4">
             <TierSummary />
-          </section>
-
-          {/* Chat Banner - Above Performance Overview */}
-          <section className="mb-4">
-            <ChatBanner onOpenChat={() => setIsChatOpen(true)} />
           </section>
           
           {/* Performance Overview & Study Streak */}
