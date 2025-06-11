@@ -8,7 +8,7 @@ import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
 import AverageTimeSection from '@/components/results/AverageTimeSection';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 
 const AbstractReasoningResults = () => {
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ const AbstractReasoningResults = () => {
     } else {
       status = 'Skipped';
       timeSpent = Math.floor(Math.random() * 30) + 5; // 5-35 seconds for skipped
-      fill = '#9ca3af'; // Grey
+      fill = '#f59e0b'; // Orange
     }
     
     return {
@@ -156,11 +156,11 @@ const AbstractReasoningResults = () => {
                   <div className="text-6xl font-bold text-[#009dff] mb-2">16</div>
                   <p className="text-lg text-gray-600 mb-4">Out of 37</p>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-base font-medium">
+                    <div className="flex justify-between text-lg font-medium">
                       <span>Accuracy</span>
                       <span className="font-bold">43.2%</span>
                     </div>
-                    <div className="flex justify-between text-base font-medium">
+                    <div className="flex justify-between text-lg font-medium">
                       <span>Time Taken</span>
                       <span className="font-bold flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
@@ -203,19 +203,19 @@ const AbstractReasoningResults = () => {
             <CardContent className="p-8">
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
-                  onClick={handleViewSolution}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
-                >
-                  <Eye className="mr-2 h-5 w-5" />
-                  View Solutions
-                </Button>
-                <Button 
                   onClick={handleProceedToFeedback}
-                  variant="outline"
-                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors flex-1"
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
                 >
                   <MessageSquare className="mr-2 h-5 w-5" />
                   Proceed to Feedback
+                </Button>
+                <Button 
+                  onClick={handleViewSolution}
+                  variant="outline"
+                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors flex-1"
+                >
+                  <Eye className="mr-2 h-5 w-5" />
+                  View Solutions
                 </Button>
               </div>
             </CardContent>
@@ -239,12 +239,12 @@ const AbstractReasoningResults = () => {
                   <div className="text-gray-600">Incorrect</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-600">16</div>
+                  <div className="text-2xl font-bold text-orange-600">16</div>
                   <div className="text-gray-600">Skipped</div>
                 </div>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-gradient-to-r from-green-500 via-red-500 to-gray-500 h-2 rounded-full" style={{width: '100%'}}></div>
+                <div className="bg-gradient-to-r from-green-500 via-red-500 to-orange-500 h-2 rounded-full" style={{width: '100%'}}></div>
               </div>
               <div className="text-right text-sm text-gray-600 flex items-center justify-end">
                 <Clock className="h-4 w-4 mr-1" />
@@ -269,9 +269,12 @@ const AbstractReasoningResults = () => {
                     <Tooltip content={<CustomTooltip />} />
                     <Bar 
                       dataKey="timeSpent" 
-                      fill={(entry: any) => entry.fill}
                       radius={[2, 2, 0, 0]}
-                    />
+                    >
+                      {questionReportData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -287,7 +290,7 @@ const AbstractReasoningResults = () => {
                   <span>Incorrect</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-4 h-4 bg-gray-400 rounded mr-2"></div>
+                  <div className="w-4 h-4 bg-orange-500 rounded mr-2"></div>
                   <span>Skipped</span>
                 </div>
               </div>
