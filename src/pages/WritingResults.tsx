@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -12,7 +11,10 @@ import {
   ArrowLeft, 
   Home, 
   Clock,
-  Star
+  Star,
+  Lightbulb,
+  FileText,
+  CheckCircle
 } from 'lucide-react';
 import { 
   ChartContainer, 
@@ -153,7 +155,7 @@ const WritingResults = () => {
                 <p className="text-lg opacity-90 mb-6">
                   You scored {writingResults.overall.score} out of {writingResults.overall.total} points
                 </p>
-                <div className="inline-flex items-center space-x-3 mb-4 bg-white/10 rounded-lg px-4 py-3">
+                <div className="inline-flex items-center space-x-3 bg-white/10 rounded-lg px-4 py-3">
                   <Clock className="h-6 w-6" />
                   <div>
                     <span className="text-base font-semibold">Time taken:</span>
@@ -201,49 +203,34 @@ const WritingResults = () => {
           {/* Detailed Breakdown */}
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Breakdown</h3>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="space-y-4">
               {/* Creativity */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="relative w-16 h-16">
-                        <svg className="w-16 h-16 transform -rotate-90">
-                          <circle
-                            cx="32"
-                            cy="32"
-                            r="28"
-                            stroke="#E5E7EB"
-                            strokeWidth="4"
-                            fill="transparent"
-                          />
-                          <circle
-                            cx="32"
-                            cy="32"
-                            r="28"
-                            stroke="#38C172"
-                            strokeWidth="4"
-                            fill="transparent"
-                            strokeDasharray={`${((writingResults.creativity.score / writingResults.creativity.total) * 100 / 100) * 176} 176`}
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-sm font-bold text-gray-900">{writingResults.creativity.score}</div>
-                            <div className="text-xs text-gray-600">/{writingResults.creativity.total}</div>
-                          </div>
-                        </div>
+                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <Lightbulb className="h-6 w-6 text-green-600" />
                       </div>
-                      <div>
-                        <div className="flex items-center space-x-2 mb-1">
-                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                          <h4 className="font-semibold text-gray-900">Creativity</h4>
-                        </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-lg mb-1">Creativity</h4>
                         <p className="text-sm text-gray-600">
                           {((writingResults.creativity.score / writingResults.creativity.total) * 100).toFixed(1)}%
                         </p>
                       </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-gray-900">{writingResults.creativity.score}</div>
+                      <div className="text-sm text-gray-600">out of {writingResults.creativity.total}</div>
+                    </div>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="mt-4">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-green-500 h-2 rounded-full" 
+                        style={{ width: `${(writingResults.creativity.score / writingResults.creativity.total) * 100}%` }}
+                      ></div>
                     </div>
                   </div>
                 </CardContent>
@@ -254,43 +241,28 @@ const WritingResults = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="relative w-16 h-16">
-                        <svg className="w-16 h-16 transform -rotate-90">
-                          <circle
-                            cx="32"
-                            cy="32"
-                            r="28"
-                            stroke="#E5E7EB"
-                            strokeWidth="4"
-                            fill="transparent"
-                          />
-                          <circle
-                            cx="32"
-                            cy="32"
-                            r="28"
-                            stroke="#F59E0B"
-                            strokeWidth="4"
-                            fill="transparent"
-                            strokeDasharray={`${((writingResults.structure.score / writingResults.structure.total) * 100 / 100) * 176} 176`}
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-sm font-bold text-gray-900">{writingResults.structure.score}</div>
-                            <div className="text-xs text-gray-600">/{writingResults.structure.total}</div>
-                          </div>
-                        </div>
+                      <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <FileText className="h-6 w-6 text-orange-600" />
                       </div>
-                      <div>
-                        <div className="flex items-center space-x-2 mb-1">
-                          <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                          <h4 className="font-semibold text-gray-900">Structure</h4>
-                        </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-lg mb-1">Structure</h4>
                         <p className="text-sm text-gray-600">
                           {((writingResults.structure.score / writingResults.structure.total) * 100).toFixed(1)}%
                         </p>
                       </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-gray-900">{writingResults.structure.score}</div>
+                      <div className="text-sm text-gray-600">out of {writingResults.structure.total}</div>
+                    </div>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="mt-4">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-orange-500 h-2 rounded-full" 
+                        style={{ width: `${(writingResults.structure.score / writingResults.structure.total) * 100}%` }}
+                      ></div>
                     </div>
                   </div>
                 </CardContent>
@@ -301,43 +273,28 @@ const WritingResults = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="relative w-16 h-16">
-                        <svg className="w-16 h-16 transform -rotate-90">
-                          <circle
-                            cx="32"
-                            cy="32"
-                            r="28"
-                            stroke="#E5E7EB"
-                            strokeWidth="4"
-                            fill="transparent"
-                          />
-                          <circle
-                            cx="32"
-                            cy="32"
-                            r="28"
-                            stroke="#EF4444"
-                            strokeWidth="4"
-                            fill="transparent"
-                            strokeDasharray={`${((writingResults.grammar.score / writingResults.grammar.total) * 100 / 100) * 176} 176`}
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-sm font-bold text-gray-900">{writingResults.grammar.score}</div>
-                            <div className="text-xs text-gray-600">/{writingResults.grammar.total}</div>
-                          </div>
-                        </div>
+                      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <CheckCircle className="h-6 w-6 text-red-600" />
                       </div>
-                      <div>
-                        <div className="flex items-center space-x-2 mb-1">
-                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                          <h4 className="font-semibold text-gray-900">Grammar</h4>
-                        </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-lg mb-1">Grammar</h4>
                         <p className="text-sm text-gray-600">
                           {((writingResults.grammar.score / writingResults.grammar.total) * 100).toFixed(1)}%
                         </p>
                       </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-gray-900">{writingResults.grammar.score}</div>
+                      <div className="text-sm text-gray-600">out of {writingResults.grammar.total}</div>
+                    </div>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="mt-4">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-red-500 h-2 rounded-full" 
+                        style={{ width: `${(writingResults.grammar.score / writingResults.grammar.total) * 100}%` }}
+                      ></div>
                     </div>
                   </div>
                 </CardContent>
