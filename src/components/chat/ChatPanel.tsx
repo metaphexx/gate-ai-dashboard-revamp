@@ -221,7 +221,7 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
       : "fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
     }>
       <div className={isSidePanel 
-        ? "h-full flex flex-col" 
+        ? "h-full flex flex-col relative" 
         : "bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col"
       }>
         {/* Header */}
@@ -242,8 +242,8 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </div>
         )}
 
-        {/* Messages - this now takes flex-1 (grows to fill space) but has min-height to prevent collapse */}
-        <div className="flex-1 overflow-y-auto min-h-0">
+        {/* Messages - adjusted to account for sticky input */}
+        <div className={`flex-1 overflow-y-auto ${isSidePanel ? 'pb-20' : 'pb-4'}`}>
           <ScrollArea className="h-full py-4 px-4">
             <div className="space-y-4">
               {messages.map(message => (
@@ -323,8 +323,8 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </ScrollArea>
         </div>
 
-        {/* Input - fixed at bottom with reduced padding */}
-        <div className="border-t border-gray-200 p-3 bg-white">
+        {/* Input - now sticky at bottom */}
+        <div className={`${isSidePanel ? 'absolute bottom-0 left-0 right-0' : ''} border-t border-gray-200 p-3 bg-white`}>
           <div className="flex gap-2">
             <Input
               value={inputValue}
