@@ -7,6 +7,7 @@ import RecentActivityCard from '@/components/cards/RecentActivityCard';
 import SmartRecommendations from '@/components/cards/SmartRecommendations';
 import PerformanceOverview from '@/components/cards/PerformanceOverview';
 import StudyStreakCard from '@/components/cards/StudyStreakCard';
+import StudyCalendarHeatmap from '@/components/cards/StudyCalendarHeatmap';
 import QuestionBankStatus from '@/components/cards/QuestionBankStatus';
 import VideoTutorialCard from '@/components/cards/VideoTutorialCard';
 import AccuracyTrendChart from '@/components/charts/AccuracyTrendChart';
@@ -52,12 +53,15 @@ const Index = () => {
             <TierSummary />
           </section>
           
-          {/* Performance Overview & Study Streak */}
+          {/* Performance Overview & Study Progress Section */}
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             <div className="lg:col-span-2">
               <PerformanceOverview />
             </div>
-            <StudyStreakCard />
+            <div className="space-y-4">
+              <StudyCalendarHeatmap />
+              <StudyStreakCard />
+            </div>
           </section>
           
           {/* Recent Activity & Smart Recommendations */}
