@@ -12,9 +12,7 @@ import {
   ArrowLeft, 
   Home, 
   Clock,
-  Target,
-  Award,
-  TrendingUp
+  Star
 } from 'lucide-react';
 import { 
   ChartContainer, 
@@ -22,6 +20,7 @@ import {
   ChartTooltipContent 
 } from '@/components/ui/chart';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import EverestLogo from '@/components/test/EverestLogo';
 
 // Mock data for the writing results
 const writingResults = {
@@ -49,16 +48,16 @@ const chartConfig = {
   },
 };
 
-const ScoreChart = ({ score, total, title }: { score: number; total: number; title: string }) => {
+const ScoreChart = ({ score, total, color }: { score: number; total: number; color: string }) => {
   const percentage = (score / total) * 100;
   const data = [
-    { name: 'Score', value: score, fill: '#38C172' },
+    { name: 'Score', value: score, fill: color },
     { name: 'Remaining', value: total - score, fill: '#E5E7EB' }
   ];
 
   return (
-    <div className="flex flex-col items-center space-y-4">
-      <div className="relative w-32 h-32">
+    <div className="flex flex-col items-center space-y-2">
+      <div className="relative w-24 h-24">
         <ChartContainer config={chartConfig} className="w-full h-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -66,8 +65,8 @@ const ScoreChart = ({ score, total, title }: { score: number; total: number; tit
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={35}
-                outerRadius={60}
+                innerRadius={25}
+                outerRadius={45}
                 startAngle={90}
                 endAngle={450}
                 dataKey="value"
@@ -83,13 +82,14 @@ const ScoreChart = ({ score, total, title }: { score: number; total: number; tit
         </ChartContainer>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-900">Total: {total}</div>
+            <div className="text-lg font-bold text-gray-900">{score}</div>
+            <div className="text-xs text-gray-600">/{total}</div>
           </div>
         </div>
       </div>
       <div className="text-center">
-        <p className="text-sm font-medium text-gray-900">
-          You have scored <span className="text-[#009dff] font-bold">{score}</span> out of <span className="font-bold">{total}</span>
+        <p className="text-xs text-gray-600">
+          {percentage.toFixed(1)}%
         </p>
       </div>
     </div>
@@ -98,193 +98,243 @@ const ScoreChart = ({ score, total, title }: { score: number; total: number; tit
 
 const WritingResults = () => {
   const navigate = useNavigate();
+  const overallPercentage = (writingResults.overall.score / writingResults.overall.total) * 100;
+
+  // Generate star rating based on percentage
+  const getStarRating = (percentage: number) => {
+    const stars = Math.round(percentage / 20); // Convert to 5-star scale
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-5 w-5 ${i < stars ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+      />
+    ));
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-[#009dff]">Writing Report</h1>
+              <EverestLogo />
+              <div className="flex items-center space-x-2">
+                <button 
+                  onClick={() => navigate(-1)}
+                  className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-1" />
+                  <span className="text-sm">Back to Test</span>
+                </button>
+                <span className="text-gray-300">|</span>
+                <h1 className="text-xl font-bold text-[#009dff]">Writing Assessment Results</h1>
+              </div>
             </div>
-            <div className="flex items-center space-x-3">
-              <Button
-                variant="outline"
-                onClick={() => navigate('/writing-test')}
-                className="border-gray-200 hover:bg-gray-50"
-              >
-                View solution
-              </Button>
-              <Button
-                onClick={() => navigate('/')}
-                className="bg-[#009dff] hover:bg-[#008ae6] text-white"
-              >
-                <Home className="mr-2 h-4 w-4" />
-                Back to Home
-              </Button>
-            </div>
+            <Button
+              onClick={() => navigate('/')}
+              className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+            >
+              <Home className="mr-2 h-4 w-4" />
+              Home
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Results Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Scores Section */}
-          <div className="space-y-6">
-            {/* Creativity */}
-            <Card className="bg-white rounded-2xl border-none shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-gray-900">Creativity</CardTitle>
-                  <Award className="h-5 w-5 text-[#009dff]" />
+        {/* Overall Score Section */}
+        <Card className="mb-8 bg-gradient-to-r from-[#009dff] to-[#0080cc] text-white rounded-2xl border-none shadow-lg overflow-hidden">
+          <CardContent className="p-8">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold mb-2">Overall Score</h2>
+                <p className="text-lg opacity-90 mb-4">
+                  You scored {writingResults.overall.score} out of {writingResults.overall.total} points
+                </p>
+                <div className="flex items-center space-x-2 mb-4">
+                  <Clock className="h-5 w-5" />
+                  <span className="text-sm">Time taken: {writingResults.timeSpent}</span>
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <ScoreChart 
-                  score={writingResults.creativity.score} 
-                  total={writingResults.creativity.total}
-                  title="Creativity"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Structure */}
-            <Card className="bg-white rounded-2xl border-none shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-gray-900">Structure</CardTitle>
-                  <Target className="h-5 w-5 text-[#009dff]" />
+                <div className="flex items-center space-x-1">
+                  {getStarRating(overallPercentage)}
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <ScoreChart 
-                  score={writingResults.structure.score} 
-                  total={writingResults.structure.total}
-                  title="Structure"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Grammar */}
-            <Card className="bg-white rounded-2xl border-none shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-gray-900">Grammar</CardTitle>
-                  <TrendingUp className="h-5 w-5 text-[#009dff]" />
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <ScoreChart 
-                  score={writingResults.grammar.score} 
-                  total={writingResults.grammar.total}
-                  title="Grammar"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Overall Score */}
-            <Card className="bg-gradient-to-r from-[#009dff] to-[#80dfff] text-white rounded-2xl border-none shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">Overall</CardTitle>
-                  <Award className="h-5 w-5" />
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="relative w-32 h-32">
-                    <ChartContainer config={chartConfig} className="w-full h-full">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { name: 'Score', value: writingResults.overall.score, fill: '#FFFFFF' },
-                              { name: 'Remaining', value: writingResults.overall.total - writingResults.overall.score, fill: 'rgba(255,255,255,0.3)' }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={35}
-                            outerRadius={60}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                            strokeWidth={0}
-                          >
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </ChartContainer>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <div className="text-lg font-bold">Total: {writingResults.overall.total}</div>
-                      </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="relative w-32 h-32">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold">{Math.round(overallPercentage)}%</div>
                     </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm font-medium">
-                      You have scored <span className="font-bold">{writingResults.overall.score}</span> out of <span className="font-bold">{writingResults.overall.total}</span>
+                  <svg className="w-32 h-32 transform -rotate-90">
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r="50"
+                      stroke="rgba(255,255,255,0.2)"
+                      strokeWidth="8"
+                      fill="transparent"
+                    />
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r="50"
+                      stroke="white"
+                      strokeWidth="8"
+                      fill="transparent"
+                      strokeDasharray={`${(overallPercentage / 100) * 314} 314`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Detailed Breakdown */}
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Breakdown</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {/* Creativity */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-4 text-center">
+                  <ScoreChart 
+                    score={writingResults.creativity.score} 
+                    total={writingResults.creativity.total}
+                    color="#38C172"
+                  />
+                  <div className="mt-3">
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <h4 className="font-semibold text-gray-900 text-sm">Creativity</h4>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {((writingResults.creativity.score / writingResults.creativity.total) * 100).toFixed(1)}%
                     </p>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Time Taken */}
-            <Card className="bg-white rounded-2xl border-none shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-center space-x-3">
-                  <Clock className="h-5 w-5 text-[#009dff]" />
-                  <span className="text-lg font-semibold text-gray-900">
-                    Total Time Taken: {writingResults.timeSpent}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Structure */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-4 text-center">
+                  <ScoreChart 
+                    score={writingResults.structure.score} 
+                    total={writingResults.structure.total}
+                    color="#F59E0B"
+                  />
+                  <div className="mt-3">
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      <h4 className="font-semibold text-gray-900 text-sm">Structure</h4>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {((writingResults.structure.score / writingResults.structure.total) * 100).toFixed(1)}%
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Grammar */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-4 text-center">
+                  <ScoreChart 
+                    score={writingResults.grammar.score} 
+                    total={writingResults.grammar.total}
+                    color="#EF4444"
+                  />
+                  <div className="mt-3">
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <h4 className="font-semibold text-gray-900 text-sm">Grammar</h4>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {((writingResults.grammar.score / writingResults.grammar.total) * 100).toFixed(1)}%
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
-          {/* Feedback Section */}
-          <div className="space-y-6">
-            <Card className="bg-white rounded-2xl border-none shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">Feedback</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Creativity Feedback */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Creativity</h4>
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    {writingResults.feedback.creativity}
-                  </p>
-                </div>
-
-                {/* Structure Feedback */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Structure</h4>
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    {writingResults.feedback.structure}
-                  </p>
-                </div>
-
-                {/* Grammar Feedback */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Grammar</h4>
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    {writingResults.feedback.grammar}
-                  </p>
-                </div>
-
-                {/* Overall Feedback */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Overall</h4>
-                  <p className="text-gray-700 text-sm leading-relaxed">
+          {/* Detailed Feedback */}
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Feedback</h3>
+            <div className="space-y-4">
+              {/* Overall Feedback - Moved to top */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <Star className="h-5 w-5 text-[#009dff]" />
+                    <h4 className="font-semibold text-gray-900 text-lg">Overall</h4>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-base">
                     {writingResults.feedback.overall}
                   </p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              {/* Creativity Feedback */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                    <h4 className="font-semibold text-gray-900 text-lg">Creativity</h4>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-base">
+                    {writingResults.feedback.creativity}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Structure Feedback */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+                    <h4 className="font-semibold text-gray-900 text-lg">Structure</h4>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-base">
+                    {writingResults.feedback.structure}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Grammar Feedback */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                    <h4 className="font-semibold text-gray-900 text-lg">Grammar</h4>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-base">
+                    {writingResults.feedback.grammar}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-center space-x-4 mt-8">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/writing-test')}
+            className="border-gray-300 hover:bg-gray-50"
+          >
+            Review Test
+          </Button>
+          <Button
+            onClick={() => navigate('/writing-test')}
+            className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+          >
+            Take Another Test
+          </Button>
         </div>
       </div>
     </div>

@@ -593,7 +593,7 @@ const WritingTest = () => {
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         [contenteditable]:empty:before {
           content: attr(data-placeholder);
           color: #9CA3AF;
