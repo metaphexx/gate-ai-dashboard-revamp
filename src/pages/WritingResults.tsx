@@ -153,7 +153,7 @@ const WritingResults = () => {
                 <p className="text-lg opacity-90 mb-6">
                   You scored {writingResults.overall.score} out of {writingResults.overall.total} points
                 </p>
-                <div className="flex items-center space-x-3 mb-4 bg-white/10 rounded-lg px-4 py-3">
+                <div className="inline-flex items-center space-x-3 mb-4 bg-white/10 rounded-lg px-4 py-3">
                   <Clock className="h-6 w-6" />
                   <div>
                     <span className="text-base font-semibold">Time taken:</span>
@@ -201,63 +201,144 @@ const WritingResults = () => {
           {/* Detailed Breakdown */}
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Breakdown</h3>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-6">
               {/* Creativity */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-4 text-center">
-                  <ScoreChart 
-                    score={writingResults.creativity.score} 
-                    total={writingResults.creativity.total}
-                    color="#38C172"
-                  />
-                  <div className="mt-3">
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <h4 className="font-semibold text-gray-900 text-sm">Creativity</h4>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative w-16 h-16">
+                        <svg className="w-16 h-16 transform -rotate-90">
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="28"
+                            stroke="#E5E7EB"
+                            strokeWidth="4"
+                            fill="transparent"
+                          />
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="28"
+                            stroke="#38C172"
+                            strokeWidth="4"
+                            fill="transparent"
+                            strokeDasharray={`${((writingResults.creativity.score / writingResults.creativity.total) * 100 / 100) * 176} 176`}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-gray-900">{writingResults.creativity.score}</div>
+                            <div className="text-xs text-gray-600">/{writingResults.creativity.total}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                          <h4 className="font-semibold text-gray-900">Creativity</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {((writingResults.creativity.score / writingResults.creativity.total) * 100).toFixed(1)}%
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      {((writingResults.creativity.score / writingResults.creativity.total) * 100).toFixed(1)}%
-                    </p>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Structure */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-4 text-center">
-                  <ScoreChart 
-                    score={writingResults.structure.score} 
-                    total={writingResults.structure.total}
-                    color="#F59E0B"
-                  />
-                  <div className="mt-3">
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                      <h4 className="font-semibold text-gray-900 text-sm">Structure</h4>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative w-16 h-16">
+                        <svg className="w-16 h-16 transform -rotate-90">
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="28"
+                            stroke="#E5E7EB"
+                            strokeWidth="4"
+                            fill="transparent"
+                          />
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="28"
+                            stroke="#F59E0B"
+                            strokeWidth="4"
+                            fill="transparent"
+                            strokeDasharray={`${((writingResults.structure.score / writingResults.structure.total) * 100 / 100) * 176} 176`}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-gray-900">{writingResults.structure.score}</div>
+                            <div className="text-xs text-gray-600">/{writingResults.structure.total}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                          <h4 className="font-semibold text-gray-900">Structure</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {((writingResults.structure.score / writingResults.structure.total) * 100).toFixed(1)}%
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      {((writingResults.structure.score / writingResults.structure.total) * 100).toFixed(1)}%
-                    </p>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Grammar */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-4 text-center">
-                  <ScoreChart 
-                    score={writingResults.grammar.score} 
-                    total={writingResults.grammar.total}
-                    color="#EF4444"
-                  />
-                  <div className="mt-3">
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                      <h4 className="font-semibold text-gray-900 text-sm">Grammar</h4>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative w-16 h-16">
+                        <svg className="w-16 h-16 transform -rotate-90">
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="28"
+                            stroke="#E5E7EB"
+                            strokeWidth="4"
+                            fill="transparent"
+                          />
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="28"
+                            stroke="#EF4444"
+                            strokeWidth="4"
+                            fill="transparent"
+                            strokeDasharray={`${((writingResults.grammar.score / writingResults.grammar.total) * 100 / 100) * 176} 176`}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-gray-900">{writingResults.grammar.score}</div>
+                            <div className="text-xs text-gray-600">/{writingResults.grammar.total}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                          <h4 className="font-semibold text-gray-900">Grammar</h4>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {((writingResults.grammar.score / writingResults.grammar.total) * 100).toFixed(1)}%
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      {((writingResults.grammar.score / writingResults.grammar.total) * 100).toFixed(1)}%
-                    </p>
                   </div>
                 </CardContent>
               </Card>
