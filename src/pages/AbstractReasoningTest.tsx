@@ -185,8 +185,11 @@ const AbstractReasoningTest = () => {
       variant: "default",
     });
     
-    // For demo purposes, just close the dialog
+    // Close the dialog and navigate to results
     setShowSubmitDialog(false);
+    
+    // Navigate to results page
+    navigate('/abstract-reasoning-results');
   };
 
   const handleCancel = () => {
@@ -396,3 +399,5 @@ const AbstractReasoningTest = () => {
 };
 
 export default AbstractReasoningTest;
+
+}
