@@ -23,6 +23,7 @@ import AbstractReasoningFeedback from "./pages/AbstractReasoningFeedback";
 import AbstractReasoningSolution from "./pages/AbstractReasoningSolution";
 import ReadingComprehensionTest from "./pages/ReadingComprehensionTest";
 import ReadingComprehensionSolution from "./pages/ReadingComprehensionSolution";
+import WritingTest from "./pages/WritingTest";
 import ChatWithElliot from "./pages/ChatWithElliot";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => {
               <Route path="/abstract-reasoning-solution" element={<AbstractReasoningSolution />} />
               <Route path="/reading-comprehension-test" element={<ReadingComprehensionTest />} />
               <Route path="/reading-comprehension-solution" element={<ReadingComprehensionSolution />} />
+              <Route path="/writing-test" element={<WritingTest />} />
               <Route path="/mini-mock" element={<MiniMockExam />} />
               <Route path="/mock" element={<MockExam />} />
               <Route path="/progress" element={<ExamInProgress />} />
