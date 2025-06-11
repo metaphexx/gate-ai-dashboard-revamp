@@ -5,7 +5,29 @@ import { Button } from '@/components/ui/button';
 
 const WelcomeBanner = () => {
   const userName = "Hari"; // This would come from user context in a real app
-  const daysRemaining = 47;
+  
+  // Calculate days remaining until March 14th, 2026 in GMT+8 timezone
+  const calculateDaysRemaining = () => {
+    const now = new Date();
+    // Convert current time to GMT+8
+    const gmt8Offset = 8 * 60; // GMT+8 in minutes
+    const localOffset = now.getTimezoneOffset(); // Local timezone offset in minutes
+    const gmt8Time = new Date(now.getTime() + (localOffset + gmt8Offset) * 60 * 1000);
+    
+    // GATE exam date: March 14th, 2026 at 00:00 GMT+8
+    const gateExamDate = new Date('2026-03-14T00:00:00+08:00');
+    
+    // Calculate difference in milliseconds
+    const timeDiff = gateExamDate.getTime() - gmt8Time.getTime();
+    
+    // Convert to days and round down
+    const daysRemaining = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    
+    return Math.max(0, daysRemaining); // Ensure it doesn't go negative
+  };
+  
+  const daysRemaining = calculateDaysRemaining();
+  
   // Sample weekly tip content
   const weeklyTip = "Focus on Abstract Reasoning this week - your scores show room for improvement";
   
