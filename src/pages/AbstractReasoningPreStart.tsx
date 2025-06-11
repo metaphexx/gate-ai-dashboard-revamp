@@ -13,8 +13,8 @@ const AbstractReasoningPreStart = () => {
     navigate('/abstract-reasoning-test');
   };
 
-  const handleBackToHome = () => {
-    navigate('/');
+  const handleBackToPractice = () => {
+    navigate('/practice');
   };
 
   return (
@@ -28,18 +28,18 @@ const AbstractReasoningPreStart = () => {
           
           <div className="flex items-center space-x-4">
             <button 
-              onClick={handleBackToHome}
+              onClick={handleBackToPractice}
               className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
               <ArrowLeft className="h-5 w-5 mr-1" />
-              <span>Back to Home</span>
+              <span>Back To Practice Tests</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="container mx-auto pt-20 px-4 pb-8">
+      <div className="container mx-auto pt-24 px-4 pb-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
@@ -98,11 +98,11 @@ const AbstractReasoningPreStart = () => {
                       Start Test
                     </Button>
                     <Button 
-                      onClick={handleBackToHome}
+                      onClick={handleBackToPractice}
                       variant="outline"
                       className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors"
                     >
-                      Back To Home
+                      Back To Practice Tests
                     </Button>
                   </div>
                 </CardContent>
