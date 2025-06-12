@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -230,7 +231,7 @@ const WritingSolution = () => {
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
                       <div 
                         className="text-base leading-relaxed whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{ __html: highlightErrors(userText) }}
+                        dangerouslySetInnerHTML={{ __html: highlightErrorsWithTooltips(userText) }}
                       />
                     </div>
 
@@ -390,9 +391,11 @@ const WritingSolution = () => {
         {!isChatOpen && (
           <FloatingChatButton onClick={handleOpenChat} />
         )}
-
-        {/* CSS for error highlighting */}
-        <style jsx>{`
+      </div>
+      
+      {/* CSS for error highlighting using a style element */}
+      <style>
+        {`
           .error-highlight {
             background-color: rgb(254 226 226);
             color: rgb(153 27 27);
@@ -404,8 +407,8 @@ const WritingSolution = () => {
           .error-highlight:hover {
             background-color: rgb(252 165 165);
           }
-        `}</style>
-      </div>
+        `}
+      </style>
     </TooltipProvider>
   );
 };
