@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -322,6 +321,7 @@ const WritingSolution = () => {
               <ChatPanel 
                 isOpen={true} 
                 onClose={() => setIsChatOpen(false)} 
+                type="writing-solution"
               />
             </div>
           </div>
