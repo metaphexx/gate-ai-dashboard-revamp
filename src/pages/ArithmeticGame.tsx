@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -28,7 +28,6 @@ interface GameState {
   userAnswer: string;
   showFeedback: boolean;
   isCorrect: boolean;
-  gameStarted: boolean;
 }
 
 interface GameSettings {
@@ -36,37 +35,36 @@ interface GameSettings {
   minValue: number;
   maxValue: number;
   timeLimit: number;
-  questionCount: number;
 }
 
 const ArithmeticGame = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   
-  const [settings, setSettings] = useState<GameSettings>({
+  // Get settings from the Skills Trainer page
+  const settings: GameSettings = location.state || {
     operation: 'addition',
     minValue: 1,
     maxValue: 10,
-    timeLimit: 60,
-    questionCount: 10
-  });
+    timeLimit: 60
+  };
 
   const [gameState, setGameState] = useState<GameState>({
     isPlaying: false,
     isPaused: false,
     isComplete: false,
     currentQuestion: 0,
-    totalQuestions: 10,
+    totalQuestions: 20, // Fixed number of questions
     score: 0,
     correctAnswers: 0,
-    timeLeft: 60,
-    totalTime: 60,
+    timeLeft: settings.timeLimit,
+    totalTime: settings.timeLimit,
     streak: 0,
     maxStreak: 0,
     currentProblem: null,
     userAnswer: '',
     showFeedback: false,
-    isCorrect: false,
-    gameStarted: false
+    isCorrect: false
   });
 
   const operations = {
@@ -103,14 +101,14 @@ const ArithmeticGame = () => {
     return { num1, num2, operation, answer };
   }, [settings]);
 
-  const startGame = () => {
+  const startGame = useCallback(() => {
     const newProblem = generateProblem();
     setGameState({
       isPlaying: true,
       isPaused: false,
       isComplete: false,
       currentQuestion: 1,
-      totalQuestions: settings.questionCount,
+      totalQuestions: 20,
       score: 0,
       correctAnswers: 0,
       timeLeft: settings.timeLimit,
@@ -120,10 +118,14 @@ const ArithmeticGame = () => {
       currentProblem: newProblem,
       userAnswer: '',
       showFeedback: false,
-      isCorrect: false,
-      gameStarted: true
+      isCorrect: false
     });
-  };
+  }, [generateProblem, settings.timeLimit]);
+
+  // Start the game automatically when component mounts
+  useEffect(() => {
+    startGame();
+  }, [startGame]);
 
   const submitAnswer = () => {
     if (!gameState.currentProblem || !gameState.userAnswer.trim()) return;
@@ -175,21 +177,7 @@ const ArithmeticGame = () => {
   };
 
   const restartGame = () => {
-    setGameState(prev => ({
-      ...prev,
-      isPlaying: false,
-      isPaused: false,
-      isComplete: false,
-      gameStarted: false,
-      currentQuestion: 0,
-      score: 0,
-      correctAnswers: 0,
-      streak: 0,
-      maxStreak: 0,
-      currentProblem: null,
-      userAnswer: '',
-      showFeedback: false
-    }));
+    startGame();
   };
 
   // Timer effect
@@ -220,9 +208,7 @@ const ArithmeticGame = () => {
       switch (e.key) {
         case 'Enter':
           e.preventDefault();
-          if (!gameState.gameStarted) {
-            startGame();
-          } else if (gameState.isPlaying && !gameState.isPaused) {
+          if (gameState.isPlaying && !gameState.isPaused) {
             submitAnswer();
           } else if (gameState.isComplete) {
             restartGame();
@@ -244,27 +230,6 @@ const ArithmeticGame = () => {
             setGameState(prev => ({ ...prev, userAnswer: '' }));
           }
           break;
-        case '+':
-          if (!gameState.isPlaying) {
-            setSettings(prev => ({ ...prev, operation: 'addition' }));
-          }
-          break;
-        case '-':
-          if (!gameState.isPlaying) {
-            setSettings(prev => ({ ...prev, operation: 'subtraction' }));
-          }
-          break;
-        case '*':
-          if (!gameState.isPlaying) {
-            setSettings(prev => ({ ...prev, operation: 'multiplication' }));
-          }
-          break;
-        case '/':
-          if (!gameState.isPlaying) {
-            e.preventDefault();
-            setSettings(prev => ({ ...prev, operation: 'division' }));
-          }
-          break;
         default:
           // Handle number input
           if (/^[0-9]$/.test(e.key) && gameState.isPlaying && !gameState.isPaused) {
@@ -279,7 +244,7 @@ const ArithmeticGame = () => {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [gameState, settings]);
+  }, [gameState]);
 
   const currentOp = operations[settings.operation as keyof typeof operations];
   const progressPercentage = gameState.totalTime > 0 ? (gameState.timeLeft / gameState.totalTime) * 100 : 0;
@@ -326,138 +291,6 @@ const ArithmeticGame = () => {
               </div>
             )}
           </div>
-
-          {/* Game Setup */}
-          {!gameState.gameStarted && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className={`border-0 shadow-xl ${currentOp.bgColor} backdrop-blur-sm`}>
-                <CardContent className="p-8">
-                  <h2 className="text-2xl font-bold mb-6 text-gray-800">Game Settings</h2>
-                  
-                  {/* Operation Selection */}
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Operation Type
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {Object.entries(operations).map(([key, op]) => (
-                        <button
-                          key={key}
-                          onClick={() => setSettings(prev => ({ ...prev, operation: key }))}
-                          className={`p-4 rounded-xl border-2 transition-all hover:scale-105 ${
-                            settings.operation === key
-                              ? `${op.color} text-white border-transparent shadow-lg`
-                              : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <div className="text-2xl font-bold mb-1">{op.symbol}</div>
-                          <div className="text-sm">{op.name}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Number Range */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Min Value
-                      </label>
-                      <Input
-                        type="number"
-                        value={settings.minValue}
-                        onChange={(e) => setSettings(prev => ({ ...prev, minValue: parseInt(e.target.value) || 1 }))}
-                        className="bg-white/70 backdrop-blur-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Max Value
-                      </label>
-                      <Input
-                        type="number"
-                        value={settings.maxValue}
-                        onChange={(e) => setSettings(prev => ({ ...prev, maxValue: parseInt(e.target.value) || 10 }))}
-                        className="bg-white/70 backdrop-blur-sm"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Game Duration */}
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Time Limit
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {[30, 60, 120, 180].map((time) => (
-                        <button
-                          key={time}
-                          onClick={() => setSettings(prev => ({ ...prev, timeLimit: time }))}
-                          className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                            settings.timeLimit === time
-                              ? 'bg-primary text-white'
-                              : 'bg-white text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          {time}s
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Question Count */}
-                  <div className="mb-8">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Number of Questions
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {[10, 15, 20, 25].map((count) => (
-                        <button
-                          key={count}
-                          onClick={() => setSettings(prev => ({ ...prev, questionCount: count }))}
-                          className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                            settings.questionCount === count
-                              ? 'bg-primary text-white'
-                              : 'bg-white text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          {count}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Button onClick={startGame} className="w-full text-lg py-6">
-                    <Play className="h-5 w-5 mr-2" />
-                    Start Training (Enter)
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Keyboard Shortcuts */}
-              <Card className="border-0 shadow-xl bg-white/60 backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <h3 className="text-xl font-bold mb-6 text-gray-800">Keyboard Shortcuts</h3>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div className="space-y-3">
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">Enter</kbd> Start/Submit</div>
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">Esc</kbd> Pause</div>
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">R</kbd> Restart</div>
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">0-9</kbd> Number Input</div>
-                      </div>
-                      <div className="space-y-3">
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">+</kbd> Addition</div>
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">-</kbd> Subtraction</div>
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">*</kbd> Multiplication</div>
-                        <div><kbd className="bg-gray-100 px-2 py-1 rounded">/</kbd> Division</div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
 
           {/* Game Playing */}
           {gameState.isPlaying && !gameState.isComplete && (
@@ -530,6 +363,7 @@ const ArithmeticGame = () => {
                           className="text-4xl text-center font-bold w-48 h-16 bg-white/90 backdrop-blur-sm border-2"
                           placeholder="?"
                           disabled={gameState.showFeedback}
+                          autoFocus
                         />
                         <Button 
                           onClick={submitAnswer} 
@@ -559,6 +393,19 @@ const ArithmeticGame = () => {
                       )}
                     </div>
                   )}
+                </CardContent>
+              </Card>
+
+              {/* Keyboard Shortcuts Help */}
+              <Card className="bg-white/60 backdrop-blur-sm">
+                <CardContent className="p-4">
+                  <div className="text-center text-sm text-gray-600">
+                    <span className="font-medium">Shortcuts:</span>{' '}
+                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Enter</kbd> Submit{' '}
+                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Esc</kbd> Pause{' '}
+                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">R</kbd> Restart{' '}
+                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">0-9</kbd> Number Input
+                  </div>
                 </CardContent>
               </Card>
             </div>
