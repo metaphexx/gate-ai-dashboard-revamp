@@ -365,16 +365,16 @@ const WritingResults = () => {
         <div className="flex justify-center space-x-4 mt-8">
           <Button
             variant="outline"
-            onClick={() => navigate('/writing-test')}
+            onClick={() => navigate('/')}
             className="border-gray-300 hover:bg-gray-50"
           >
-            Review Test
+            Back to Home
           </Button>
           <Button
             onClick={() => navigate('/writing-test')}
             className="bg-[#009dff] hover:bg-[#008ae6] text-white"
           >
-            Take Another Test
+            View Solution
           </Button>
         </div>
       </div>
