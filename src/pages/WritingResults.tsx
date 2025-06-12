@@ -366,7 +366,7 @@ const WritingResults = () => {
           <Button
             variant="outline"
             onClick={() => navigate('/')}
-            className="border-gray-300 hover:bg-gray-50"
+            className="border-gray-300 hover:bg-gray-50 hover:text-gray-900"
           >
             Back to Home
           </Button>
