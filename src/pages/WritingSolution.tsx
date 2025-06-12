@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import ChatPanel from '@/components/chat/ChatPanel';
+import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import { useChatContext } from '@/contexts/ChatContext';
 
 // Mock data - writing prompt
@@ -325,6 +326,11 @@ const WritingSolution = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Floating Chat Button - Only show when chat is closed */}
+      {!isChatOpen && (
+        <FloatingChatButton onClick={handleOpenChat} />
       )}
     </div>
   );
