@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Play, Plus, Minus, Divide, X } from 'lucide-react';
 
 const SkillsTrainer = () => {
+  const navigate = useNavigate();
+  
   // State for arithmetic game
   const [selectedOperation, setSelectedOperation] = useState<string>('addition');
   const [minValue, setMinValue] = useState<number>(1);
@@ -210,7 +213,10 @@ const SkillsTrainer = () => {
                 </div>
                 
                 {/* Start Button */}
-                <Button className="w-full">
+                <Button 
+                  className="w-full"
+                  onClick={() => navigate('/memory-game')}
+                >
                   <Play size={18} className="mr-2" />
                   Start Memory Challenge
                 </Button>

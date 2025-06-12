@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChatProvider } from "@/contexts/ChatContext";
 import Index from "./pages/Index";
 import SkillsTrainer from "./pages/SkillsTrainer";
+import MemoryGame from "./pages/MemoryGame";
 import PracticeTest from "./pages/PracticeTest";
 import MiniMockExam from "./pages/MiniMockExam";
 import MockExam from "./pages/MockExam";
@@ -39,6 +40,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/skills-trainer" element={<SkillsTrainer />} />
+              <Route path="/memory-game" element={<MemoryGame />} />
               <Route path="/practice" element={<PracticeTest />} />
               <Route path="/abstract-reasoning-prestart" element={<AbstractReasoningPreStart />} />
               <Route path="/abstract-reasoning-test" element={<AbstractReasoningTest />} />
