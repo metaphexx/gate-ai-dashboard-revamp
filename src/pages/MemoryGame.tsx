@@ -243,7 +243,7 @@ const MemoryGame = () => {
       <main className="flex-1 p-6 overflow-y-auto">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center mb-6">
             <button 
               onClick={() => navigate('/skills-trainer')}
               className="flex items-center text-gray-600 hover:text-primary transition-colors"
@@ -252,35 +252,37 @@ const MemoryGame = () => {
               Back to Skills Trainer
             </button>
             
-            <div className="flex-1 text-center mx-8">
+            <div className="flex-1 text-center">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Memory Challenge
               </h1>
               <p className="text-gray-600">Round {gameState.currentRound}: {currentRoundData.title}</p>
             </div>
             
-            {(gameState.isPlaying || gameState.isComplete) && (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Target className="h-4 w-4" />
-                  <span className="font-bold">Score: {gameState.score}</span>
+            <div className="w-48">
+              {(gameState.isPlaying || gameState.isComplete) && (
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                    <Target className="h-4 w-4" />
+                    <span className="font-bold">Score: {gameState.score}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                    <XCircle className="h-4 w-4" />
+                    <span className="font-bold">Mistakes: {gameState.mistakes}</span>
+                  </div>
+                  {gameState.isPlaying && (
+                    <>
+                      <Button variant="outline" size="sm" onClick={() => setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }))}>
+                        <Pause className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={resetGame}>
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <XCircle className="h-4 w-4" />
-                  <span className="font-bold">Mistakes: {gameState.mistakes}</span>
-                </div>
-                {gameState.isPlaying && (
-                  <>
-                    <Button variant="outline" size="sm" onClick={() => setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }))}>
-                      <Pause className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={resetGame}>
-                      <RotateCcw className="h-4 w-4" />
-                    </Button>
-                  </>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Round Selection */}
