@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Play, Pause, RotateCcw, CheckCircle, XCircle, Clock, Target, Zap } from 'lucide-react';
+import DashboardSidebar from '@/components/DashboardSidebar';
 
 interface GameState {
   currentRound: number;
@@ -44,23 +45,23 @@ const MemoryGame = () => {
     {
       title: "Number Memory",
       description: "Memorize the number sequence",
-      color: "bg-amber-400",
-      bgColor: "bg-amber-50",
-      borderColor: "border-amber-200",
+      color: "bg-green-500",
+      bgColor: "bg-green-50",
+      borderColor: "border-green-200",
     },
     {
       title: "Letter Memory", 
       description: "Memorize the letter sequence",
-      color: "bg-blue-400",
+      color: "bg-blue-500",
       bgColor: "bg-blue-50",
       borderColor: "border-blue-200",
     },
     {
       title: "Word Order Memory",
       description: "Memorize the word sequence",
-      color: "bg-red-400",
-      bgColor: "bg-red-50", 
-      borderColor: "border-red-200",
+      color: "bg-purple-500",
+      bgColor: "bg-purple-50", 
+      borderColor: "border-purple-200",
     },
   ];
 
@@ -175,25 +176,22 @@ const MemoryGame = () => {
       if (gameState.showingSequence) return;
 
       switch (e.key) {
-        case 'Enter': // Enter to start/restart/submit
+        case 'Enter':
           e.preventDefault();
           if (!gameState.isPlaying && !gameState.isComplete) {
-            // Start game
             startRound(gameState.currentRound);
           } else if (gameState.isPlaying && !gameState.showingSequence) {
-            // Submit answer
             handleSubmit();
           } else if (gameState.isComplete) {
-            // Restart game
             startRound(gameState.currentRound);
           }
           break;
-        case 'Escape': // Escape to pause
+        case 'Escape':
           if (gameState.isPlaying) {
             setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }));
           }
           break;
-        case 'Backspace': // Clear input
+        case 'Backspace':
           if (gameState.isPlaying && !gameState.showingSequence) {
             setGameState(prev => ({ ...prev, userInput: '' }));
           }
@@ -239,226 +237,240 @@ const MemoryGame = () => {
     ((30 - gameState.timeLeft) / 30) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/skills-trainer')}
-                className="hover:bg-gray-100"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Skills
-              </Button>
-              <div>
-                <h1 className="text-xl font-bold">Memory Challenge</h1>
-                <p className="text-sm text-gray-600">Round {gameState.currentRound}: {currentRoundData.title}</p>
-              </div>
+    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <DashboardSidebar />
+      
+      <main className="flex-1 p-6 overflow-y-auto">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <button 
+              onClick={() => navigate('/skills-trainer')}
+              className="flex items-center text-gray-600 hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="h-5 w-5 mr-1" />
+              Back to Skills Trainer
+            </button>
+            
+            <div className="flex-1 text-center mx-8">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Memory Challenge
+              </h1>
+              <p className="text-gray-600">Round {gameState.currentRound}: {currentRoundData.title}</p>
             </div>
             
-            {/* Score Display */}
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <Target className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-medium">Score: {gameState.score}</span>
+            {(gameState.isPlaying || gameState.isComplete) && (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Target className="h-4 w-4" />
+                  <span className="font-bold">Score: {gameState.score}</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <XCircle className="h-4 w-4" />
+                  <span className="font-bold">Mistakes: {gameState.mistakes}</span>
+                </div>
+                {gameState.isPlaying && (
+                  <>
+                    <Button variant="outline" size="sm" onClick={() => setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }))}>
+                      <Pause className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={resetGame}>
+                      <RotateCcw className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
               </div>
-              <div className="flex items-center gap-2">
-                <XCircle className="h-4 w-4 text-red-500" />
-                <span className="text-sm font-medium">Mistakes: {gameState.mistakes}</span>
-              </div>
-            </div>
+            )}
           </div>
-        </div>
-      </div>
 
-      <div className="max-w-4xl mx-auto p-6">
-        {/* Round Selection */}
-        {!gameState.isPlaying && !gameState.isComplete && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {rounds.map((round, index) => (
-              <Card 
-                key={index}
-                className={`cursor-pointer transition-all duration-200 hover:scale-105 border-2 ${
-                  gameState.currentRound === index + 1 ? round.borderColor : 'border-gray-200'
-                }`}
-                onClick={() => setGameState(prev => ({ ...prev, currentRound: index + 1 }))}
-              >
-                <CardContent className={`p-6 ${round.bgColor}`}>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className={`w-8 h-8 rounded-full ${round.color} flex items-center justify-center text-white font-bold text-sm`}>
-                      {index + 1}
-                    </div>
-                    <h3 className="font-semibold">{round.title}</h3>
-                  </div>
-                  <p className="text-sm text-gray-600">{round.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {/* Game Area */}
-        <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-xl">
-          <CardContent className="p-8">
-            {/* Progress Bar */}
-            {(gameState.isPlaying || gameState.showingSequence) && (
-              <div className="mb-6">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{gameState.showingSequence ? 'Memorize Sequence' : 'Enter Answer'}</span>
-                  <span>{gameState.showingSequence ? 'Watch carefully...' : `${gameState.timeLeft}s remaining`}</span>
-                </div>
-                <Progress value={progress} className="h-2" />
-              </div>
-            )}
-
-            {/* Sequence Display */}
-            {gameState.showingSequence && (
-              <div className="text-center py-12">
-                <div className="text-6xl font-bold text-gray-800 mb-4 animate-scale-in">
-                  {getCurrentDisplay()}
-                </div>
-                <p className="text-gray-600">Memorize this sequence</p>
-              </div>
-            )}
-
-            {/* Input Phase */}
-            {gameState.isPlaying && !gameState.showingSequence && (
-              <div className="text-center py-12">
-                <div className="max-w-md mx-auto">
-                  <h3 className="text-xl font-semibold mb-4">Enter the sequence you saw:</h3>
-                  <Input
-                    type="text"
-                    value={gameState.userInput}
-                    onChange={(e) => setGameState(prev => ({ ...prev, userInput: e.target.value }))}
-                    placeholder={gameState.currentRound === 3 ? "Enter words separated by spaces" : "Enter the sequence"}
-                    className="text-center text-lg py-3 mb-4"
-                    autoFocus
-                  />
-                  <div className="flex gap-3 justify-center">
-                    <Button onClick={handleSubmit} className="px-6">
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Submit (Enter)
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }))}
-                    >
-                      <Pause className="h-4 w-4 mr-2" />
-                      Pause (Esc)
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Results */}
-            {gameState.isComplete && (
-              <div className="text-center py-12">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
-                  gameState.userInput.trim().toUpperCase() === gameState.correctAnswer.toUpperCase() 
-                    ? 'bg-green-100 text-green-600' 
-                    : 'bg-red-100 text-red-600'
-                }`}>
-                  {gameState.userInput.trim().toUpperCase() === gameState.correctAnswer.toUpperCase() ? 
-                    <CheckCircle className="h-8 w-8" /> : 
-                    <XCircle className="h-8 w-8" />
-                  }
-                </div>
-                
-                <h3 className="text-xl font-semibold mb-2">
-                  {gameState.userInput.trim().toUpperCase() === gameState.correctAnswer.toUpperCase() ? 
-                    'Correct!' : 'Incorrect'}
-                </h3>
-                
-                <p className="text-gray-600 mb-4">
-                  Correct answer: <span className="font-mono font-semibold">{gameState.correctAnswer}</span>
-                </p>
-                
-                <div className="flex gap-3 justify-center">
-                  <Button onClick={() => startRound(gameState.currentRound)}>
-                    <Play className="h-4 w-4 mr-2" />
-                    Try Again (Enter)
-                  </Button>
-                  {gameState.currentRound < 3 && (
-                    <Button 
-                      variant="outline"
-                      onClick={() => {
-                        setGameState(prev => ({ 
-                          ...prev, 
-                          currentRound: prev.currentRound + 1, 
-                          isComplete: false 
-                        }));
-                      }}
-                    >
-                      <Zap className="h-4 w-4 mr-2" />
-                      Next Round
-                    </Button>
-                  )}
-                  <Button variant="outline" onClick={resetGame}>
-                    <RotateCcw className="h-4 w-4 mr-2" />
-                    Reset Game
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Start Game */}
-            {!gameState.isPlaying && !gameState.isComplete && (
-              <div className="text-center py-12">
-                <div className={`w-16 h-16 rounded-full ${currentRoundData.color} flex items-center justify-center mx-auto mb-6`}>
-                  <span className="text-white font-bold text-2xl">{gameState.currentRound}</span>
-                </div>
-                
-                <h3 className="text-2xl font-bold mb-2">{currentRoundData.title}</h3>
-                <p className="text-gray-600 mb-6">{currentRoundData.description}</p>
-                
-                <Button 
-                  size="lg" 
-                  onClick={() => startRound(gameState.currentRound)}
-                  className="px-8"
+          {/* Round Selection */}
+          {!gameState.isPlaying && !gameState.isComplete && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {rounds.map((round, index) => (
+                <Card 
+                  key={index}
+                  className={`cursor-pointer transition-all duration-200 hover:scale-105 border-2 bg-white/70 backdrop-blur-sm ${
+                    gameState.currentRound === index + 1 ? round.borderColor : 'border-gray-200'
+                  }`}
+                  onClick={() => setGameState(prev => ({ ...prev, currentRound: index + 1 }))}
                 >
-                  <Play className="h-5 w-5 mr-2" />
-                  Start Round (Enter)
-                </Button>
-              </div>
-            )}
+                  <CardContent className={`p-6 ${round.bgColor}`}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`w-8 h-8 rounded-full ${round.color} flex items-center justify-center text-white font-bold text-sm`}>
+                        {index + 1}
+                      </div>
+                      <h3 className="font-semibold">{round.title}</h3>
+                    </div>
+                    <p className="text-sm text-gray-600">{round.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
-            {/* Pause Overlay */}
-            {gameState.isPaused && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                <Card className="bg-white p-6">
-                  <div className="text-center">
-                    <Pause className="h-12 w-12 mx-auto mb-4 text-gray-600" />
-                    <h3 className="text-xl font-semibold mb-2">Game Paused</h3>
-                    <Button onClick={() => setGameState(prev => ({ ...prev, isPaused: false }))}>
-                      Continue
+          {/* Game Area */}
+          <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-xl">
+            <CardContent className="p-8">
+              {/* Progress Bar */}
+              {(gameState.isPlaying || gameState.showingSequence) && (
+                <div className="mb-6">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>{gameState.showingSequence ? 'Memorize Sequence' : 'Enter Answer'}</span>
+                    <span>{gameState.showingSequence ? 'Watch carefully...' : `${gameState.timeLeft}s remaining`}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-1000 ${
+                        progress > 60 ? 'bg-gradient-to-r from-green-400 to-green-500' :
+                        progress > 30 ? 'bg-gradient-to-r from-yellow-400 to-orange-500' :
+                        'bg-gradient-to-r from-red-400 to-red-500'
+                      }`}
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Sequence Display */}
+              {gameState.showingSequence && (
+                <div className="text-center py-12">
+                  <div className="text-6xl font-bold text-gray-800 mb-4 animate-scale-in font-mono">
+                    {getCurrentDisplay()}
+                  </div>
+                  <p className="text-gray-600">Memorize this sequence</p>
+                </div>
+              )}
+
+              {/* Input Phase */}
+              {gameState.isPlaying && !gameState.showingSequence && (
+                <div className="text-center py-12">
+                  {gameState.isPaused ? (
+                    <div className="space-y-6">
+                      <h2 className="text-4xl font-bold text-gray-700">Game Paused</h2>
+                      <Button onClick={() => setGameState(prev => ({ ...prev, isPaused: false }))} className="text-lg px-8 py-4">
+                        Resume Game
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-8">
+                      <h3 className="text-xl font-semibold">Enter the sequence you saw:</h3>
+                      <div className="flex items-center justify-center space-x-4">
+                        <Input
+                          type="text"
+                          value={gameState.userInput}
+                          onChange={(e) => setGameState(prev => ({ ...prev, userInput: e.target.value }))}
+                          placeholder={gameState.currentRound === 3 ? "Enter words separated by spaces" : "Enter the sequence"}
+                          className="text-4xl text-center font-bold w-96 h-16 bg-white/90 backdrop-blur-sm border-2 font-mono"
+                          autoFocus
+                        />
+                        <Button 
+                          onClick={handleSubmit} 
+                          className="h-16 px-8 text-lg"
+                          disabled={!gameState.userInput.trim()}
+                        >
+                          Submit (Enter)
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Results */}
+              {gameState.isComplete && (
+                <div className="text-center py-12">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                    gameState.userInput.trim().toUpperCase() === gameState.correctAnswer.toUpperCase() 
+                      ? 'bg-green-100 text-green-600' 
+                      : 'bg-red-100 text-red-600'
+                  }`}>
+                    {gameState.userInput.trim().toUpperCase() === gameState.correctAnswer.toUpperCase() ? 
+                      <CheckCircle className="h-8 w-8" /> : 
+                      <XCircle className="h-8 w-8" />
+                    }
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold mb-2 flex items-center justify-center space-x-2">
+                    {gameState.userInput.trim().toUpperCase() === gameState.correctAnswer.toUpperCase() ? 
+                      <>
+                        <CheckCircle className="h-6 w-6 text-green-600" />
+                        <span className="text-green-600">Correct! +100 points</span>
+                      </> : 
+                      <>
+                        <XCircle className="h-6 w-6 text-red-600" />
+                        <span className="text-red-600">Incorrect</span>
+                      </>
+                    }
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-6">
+                    Correct answer: <span className="font-mono font-semibold">{gameState.correctAnswer}</span>
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button onClick={() => startRound(gameState.currentRound)} className="text-lg px-8 py-4">
+                      <RotateCcw className="h-5 w-5 mr-2" />
+                      Try Again (Enter)
+                    </Button>
+                    {gameState.currentRound < 3 && (
+                      <Button 
+                        variant="outline"
+                        onClick={() => {
+                          setGameState(prev => ({ 
+                            ...prev, 
+                            currentRound: prev.currentRound + 1, 
+                            isComplete: false 
+                          }));
+                        }}
+                        className="text-lg px-8 py-4"
+                      >
+                        <Zap className="h-5 w-5 mr-2" />
+                        Next Round
+                      </Button>
+                    )}
+                    <Button variant="outline" onClick={resetGame} className="text-lg px-8 py-4">
+                      Back to Selection
                     </Button>
                   </div>
-                </Card>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                </div>
+              )}
 
-        {/* Keyboard Shortcuts Guide */}
-        <Card className="mt-6 bg-white/50 backdrop-blur-sm border-0">
-          <CardContent className="p-4">
-            <h4 className="font-semibold mb-2 flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              Keyboard Shortcuts
-            </h4>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-gray-600">
-              <div><kbd className="bg-gray-100 px-2 py-1 rounded">Enter</kbd> Start/Submit</div>
-              <div><kbd className="bg-gray-100 px-2 py-1 rounded">Esc</kbd> Pause</div>
-              <div><kbd className="bg-gray-100 px-2 py-1 rounded">Backspace</kbd> Clear</div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              {/* Start Game */}
+              {!gameState.isPlaying && !gameState.isComplete && (
+                <div className="text-center py-12">
+                  <div className={`w-16 h-16 rounded-full ${currentRoundData.color} flex items-center justify-center mx-auto mb-6`}>
+                    <span className="text-white font-bold text-2xl">{gameState.currentRound}</span>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold mb-2">{currentRoundData.title}</h3>
+                  <p className="text-gray-600 mb-6">{currentRoundData.description}</p>
+                  
+                  <Button 
+                    size="lg" 
+                    onClick={() => startRound(gameState.currentRound)}
+                    className="px-8 text-lg"
+                  >
+                    <Play className="h-5 w-5 mr-2" />
+                    Start Round (Enter)
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Keyboard Shortcuts Guide */}
+          <Card className="mt-6 bg-white/60 backdrop-blur-sm border-0">
+            <CardContent className="p-4">
+              <div className="text-center text-sm text-gray-600">
+                <span className="font-medium">Shortcuts:</span>{' '}
+                <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Enter</kbd> Start/Submit{' '}
+                <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Esc</kbd> Pause{' '}
+                <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Backspace</kbd> Clear Input
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
     </div>
   );
 };
