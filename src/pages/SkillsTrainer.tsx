@@ -25,6 +25,18 @@ const SkillsTrainer = () => {
     setSelectedTimeLimit(timeLimit);
   };
 
+  // Navigate to arithmetic game
+  const handleStartArithmeticGame = () => {
+    navigate('/arithmetic-game', {
+      state: {
+        operation: selectedOperation,
+        minValue,
+        maxValue,
+        timeLimit: selectedTimeLimit
+      }
+    });
+  };
+
   // Operation icons with clipart style
   const operationIcons = {
     addition: (
@@ -169,7 +181,7 @@ const SkillsTrainer = () => {
                 </div>
                 
                 {/* Start Button */}
-                <Button className="w-full">
+                <Button className="w-full" onClick={handleStartArithmeticGame}>
                   <Play size={18} className="mr-2" />
                   Start Arithmetic Training
                 </Button>

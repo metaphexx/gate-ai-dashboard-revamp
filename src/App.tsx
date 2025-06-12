@@ -8,6 +8,7 @@ import { ChatProvider } from "@/contexts/ChatContext";
 import Index from "./pages/Index";
 import SkillsTrainer from "./pages/SkillsTrainer";
 import MemoryGame from "./pages/MemoryGame";
+import ArithmeticGame from "./pages/ArithmeticGame";
 import PracticeTest from "./pages/PracticeTest";
 import MiniMockExam from "./pages/MiniMockExam";
 import MockExam from "./pages/MockExam";
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/skills-trainer" element={<SkillsTrainer />} />
               <Route path="/memory-game" element={<MemoryGame />} />
+              <Route path="/arithmetic-game" element={<ArithmeticGame />} />
               <Route path="/practice" element={<PracticeTest />} />
               <Route path="/abstract-reasoning-prestart" element={<AbstractReasoningPreStart />} />
               <Route path="/abstract-reasoning-test" element={<AbstractReasoningTest />} />
