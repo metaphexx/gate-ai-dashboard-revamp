@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -21,7 +22,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import EverestLogo from '@/components/test/EverestLogo';
 import ChatPanel from '@/components/chat/ChatPanel';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
-import ChatBanner from '@/components/chat/ChatBanner';
 import { useChatContext } from '@/contexts/ChatContext';
 
 // Mock data - writing prompt with image support
@@ -168,11 +168,11 @@ const WritingSolution = () => {
                   </div>
                 </div>
                 <Button
-                  onClick={handleOpenChat}
+                  onClick={handleBackToResults}
                   className="bg-[#009dff] hover:bg-[#008ae6] text-white flex items-center gap-2"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  Chat with Elliot
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Results
                 </Button>
               </div>
             </div>
@@ -190,18 +190,41 @@ const WritingSolution = () => {
               {/* Chat with Elliot Banner - Only show when chat is closed */}
               {!isChatOpen && (
                 <div className="mb-6">
-                  <ChatBanner onOpenChat={handleOpenChat} />
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-2xl border border-blue-200 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
+                          <img 
+                            src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
+                            alt="Elliot Avatar" 
+                            className="w-10 h-10 rounded-full"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-lg text-blue-900">Need help understanding any question?</h3>
+                          <p className="text-blue-700 text-sm">Chat with Elliot about your writing, errors, and explanations!</p>
+                        </div>
+                      </div>
+                      <Button 
+                        onClick={handleOpenChat}
+                        className="bg-[#009dff] hover:bg-[#0080ff] text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Chat with Elliot
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {/* Two-column layout for prompt and submission */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 {/* Writing Prompt */}
-                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100">
-                  <CardHeader>
+                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100/50">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
                     <CardTitle className="text-xl font-medium text-blue-900">Writing Prompt</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="p-6">
                     {writingPrompt.hasImage ? (
                       <div className="space-y-4">
                         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -224,8 +247,8 @@ const WritingSolution = () => {
                 </Card>
 
                 {/* User Submission with Error Summary */}
-                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100">
-                  <CardHeader>
+                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100/50">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-xl font-medium text-blue-900">Your Submission</CardTitle>
                       <div className="flex items-center gap-2 text-sm">
@@ -234,7 +257,7 @@ const WritingSolution = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="p-6">
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
                       <div 
                         className="text-base leading-relaxed whitespace-pre-wrap"
@@ -278,50 +301,50 @@ const WritingSolution = () => {
               </div>
 
               {/* AI Results with Tabs */}
-              <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100">
-                <CardHeader>
+              <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100/50">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
                   <CardTitle className="text-xl font-medium text-blue-900">AI-Enhanced Results</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-6">
                   <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 bg-blue-50">
-                      <TabsTrigger value="original" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white">Original</TabsTrigger>
-                      <TabsTrigger value="rewritten" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white">AI Rewrite</TabsTrigger>
-                      <TabsTrigger value="generated" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white">AI Generate</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-3 bg-blue-50 border border-blue-200">
+                      <TabsTrigger value="original" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg">Original</TabsTrigger>
+                      <TabsTrigger value="rewritten" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg">AI Rewrite</TabsTrigger>
+                      <TabsTrigger value="generated" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg">AI Generate</TabsTrigger>
                     </TabsList>
                     
-                    <TabsContent value="original" className="mt-4">
-                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <TabsContent value="original" className="mt-6">
+                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
                         <div className="text-base leading-relaxed whitespace-pre-wrap">
                           {userText}
                         </div>
                       </div>
-                      <div className="flex items-start space-x-2 text-sm text-gray-600 mt-3">
-                        <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start space-x-2 text-sm text-gray-600 mt-4 bg-orange-50 p-3 rounded-lg border border-orange-200">
+                        <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-orange-600" />
                         <p>Your original submission with {errorCount} highlighted errors to review and learn from.</p>
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="rewritten" className="mt-4">
-                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <TabsContent value="rewritten" className="mt-6">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-sm">
                         <div className="text-base leading-relaxed whitespace-pre-wrap">
                           {aiRewrittenText}
                         </div>
                       </div>
-                      <div className="flex items-start space-x-2 text-sm text-blue-600 mt-3">
-                        <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start space-x-2 text-sm text-blue-700 mt-4 bg-green-50 p-3 rounded-lg border border-green-200">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-600" />
                         <p>Your text rewritten by AI with corrections applied and improved flow while maintaining your original ideas.</p>
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="generated" className="mt-4">
-                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <TabsContent value="generated" className="mt-6">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-sm">
                         <div className="text-base leading-relaxed whitespace-pre-wrap">
                           {aiGeneratedText}
                         </div>
                       </div>
-                      <div className="flex items-start space-x-2 text-sm text-blue-600 mt-3">
-                        <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start space-x-2 text-sm text-blue-700 mt-4 bg-green-50 p-3 rounded-lg border border-green-200">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-600" />
                         <p>A completely new response generated by AI to show different approaches to the same prompt.</p>
                       </div>
                     </TabsContent>
@@ -337,20 +360,20 @@ const WritingSolution = () => {
               <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-3">
                 <Button 
                   onClick={() => setActiveTab("rewritten")}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-6 py-2 rounded-xl text-base font-medium flex-1"
+                  className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   View AI Rewrite
                 </Button>
                 <Button 
                   onClick={() => setActiveTab("generated")}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white px-6 py-2 rounded-xl text-base font-medium flex-1"
+                  className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   View AI Generate
                 </Button>
                 <Button 
                   onClick={() => navigate('/writing-results')}
                   variant="outline"
-                  className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-6 py-2 rounded-xl text-base font-medium flex-1"
+                  className="border-2 border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   Back to Results
                 </Button>
@@ -367,18 +390,18 @@ const WritingSolution = () => {
           <div className="fixed right-0 top-0 h-screen w-96 bg-white shadow-2xl border-l border-gray-200 z-50">
             <div className="h-full flex flex-col">
               {/* Chat Header */}
-              <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
                     <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-8 h-8 rounded-full" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-900">Chat with Elliot</h2>
-                    <p className="text-sm text-gray-500">Your AI study assistant</p>
+                    <h2 className="text-lg font-semibold text-blue-900">Chat with Elliot</h2>
+                    <p className="text-sm text-blue-700">Your AI writing assistant</p>
                   </div>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => setIsChatOpen(false)}>
-                  <ArrowLeft className="h-5 w-5" />
+                <Button variant="ghost" size="icon" onClick={() => setIsChatOpen(false)} className="hover:bg-blue-100">
+                  <ArrowLeft className="h-5 w-5 text-blue-700" />
                 </Button>
               </div>
               
@@ -410,9 +433,11 @@ const WritingSolution = () => {
             border-radius: 4px;
             font-weight: 600;
             cursor: help;
+            border: 1px solid rgb(252 165 165);
           }
           .error-highlight:hover {
             background-color: rgb(252 165 165);
+            box-shadow: 0 0 0 2px rgb(239 68 68);
           }
         `}
       </style>
