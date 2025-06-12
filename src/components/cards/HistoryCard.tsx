@@ -12,6 +12,8 @@ interface HistoryCardProps {
   attemptCount: number;
   examType: 'mock' | 'practice';
   isRetakeable?: boolean;
+  score?: number;
+  timeSpent?: string;
   onRetake?: (id: string, examType: 'mock' | 'practice') => void;
   onViewReport?: (id: string) => void;
 }
@@ -25,6 +27,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   attemptCount,
   examType,
   isRetakeable = true,
+  score,
+  timeSpent,
   onRetake,
   onViewReport
 }) => {
@@ -68,13 +72,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       {/* Title Row */}
       <div className="flex items-start justify-between">
         <h3 className="text-base font-semibold text-gray-900 leading-tight">{title}</h3>
-        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-          {isRetakeable && (
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-md whitespace-nowrap">
-              Retakeable
-            </span>
-          )}
-        </div>
       </div>
       
       {/* Date and Status */}
@@ -86,6 +83,22 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           {getFeedbackIcon()} {feedback}
         </span>
       </div>
+      
+      {/* Score and Time (for practice tests) */}
+      {(score !== undefined || timeSpent) && (
+        <div className="flex items-center gap-3 text-xs text-gray-600">
+          {score !== undefined && (
+            <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded-md">
+              Score: {score}%
+            </span>
+          )}
+          {timeSpent && (
+            <span className="bg-purple-50 text-purple-700 px-2 py-1 rounded-md">
+              Time: {timeSpent}
+            </span>
+          )}
+        </div>
+      )}
       
       {/* Description */}
       <p className="text-sm text-gray-600 leading-snug line-clamp-3">
