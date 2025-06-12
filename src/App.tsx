@@ -25,6 +25,7 @@ import ReadingComprehensionTest from "./pages/ReadingComprehensionTest";
 import ReadingComprehensionSolution from "./pages/ReadingComprehensionSolution";
 import WritingTest from "./pages/WritingTest";
 import WritingResults from "./pages/WritingResults";
+import WritingSolution from "./pages/WritingSolution";
 import ChatWithElliot from "./pages/ChatWithElliot";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/reading-comprehension-solution" element={<ReadingComprehensionSolution />} />
               <Route path="/writing-test" element={<WritingTest />} />
               <Route path="/writing-results" element={<WritingResults />} />
+              <Route path="/writing-solution" element={<WritingSolution />} />
               <Route path="/mini-mock" element={<MiniMockExam />} />
               <Route path="/mock" element={<MockExam />} />
               <Route path="/progress" element={<ExamInProgress />} />
