@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -22,6 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import EverestLogo from '@/components/test/EverestLogo';
 import ChatPanel from '@/components/chat/ChatPanel';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
+import ChatBanner from '@/components/chat/ChatBanner';
 import { useChatContext } from '@/contexts/ChatContext';
 
 // Mock data - writing prompt with image support
@@ -148,7 +148,7 @@ const WritingSolution = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gray-50 flex">
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex">
         {/* Main Content */}
         <div className={`flex-1 transition-all duration-300 ${isChatOpen ? 'mr-96' : ''}`}>
           {/* Header */}
@@ -160,7 +160,7 @@ const WritingSolution = () => {
                   <div className="flex items-center space-x-2">
                     <button 
                       onClick={() => navigate('/writing-test')}
-                      className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                      className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
                     >
                       <ArrowLeft className="h-4 w-4 mr-1" />
                       <span className="text-sm">Back to Test</span>
@@ -182,17 +182,24 @@ const WritingSolution = () => {
           <div className="container mx-auto px-4 py-6">
             <div className="max-w-7xl mx-auto">
               {/* Page Title */}
-              <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold text-[#009dff] mb-2">Writing - Solution Review</h1>
+              <div className="text-center mb-8">
+                <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Writing - Solution Review</h1>
                 <p className="text-lg text-gray-600">Review your writing and understand the AI feedback</p>
               </div>
+
+              {/* Chat with Elliot Banner - Only show when chat is closed */}
+              {!isChatOpen && (
+                <div className="mb-6">
+                  <ChatBanner onOpenChat={handleOpenChat} />
+                </div>
+              )}
 
               {/* Two-column layout for prompt and submission */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 {/* Writing Prompt */}
-                <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100">
                   <CardHeader>
-                    <CardTitle className="text-xl font-medium text-gray-900">Writing Prompt</CardTitle>
+                    <CardTitle className="text-xl font-medium text-blue-900">Writing Prompt</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {writingPrompt.hasImage ? (
@@ -217,10 +224,10 @@ const WritingSolution = () => {
                 </Card>
 
                 {/* User Submission with Error Summary */}
-                <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl font-medium text-gray-900">Your Submission</CardTitle>
+                      <CardTitle className="text-xl font-medium text-blue-900">Your Submission</CardTitle>
                       <div className="flex items-center gap-2 text-sm">
                         <AlertCircle className="h-4 w-4 text-red-500" />
                         <span className="text-red-600 font-medium">{errorCount} errors found</span>
@@ -238,7 +245,7 @@ const WritingSolution = () => {
                     {/* Collapsible Error Explanations */}
                     <Collapsible open={showExplanations} onOpenChange={setShowExplanations}>
                       <CollapsibleTrigger asChild>
-                        <Button variant="outline" className="w-full justify-between">
+                        <Button variant="outline" className="w-full justify-between border-[#009dff] text-[#009dff] hover:bg-blue-50">
                           <div className="flex items-center gap-2">
                             <AlertCircle className="h-4 w-4 text-red-500" />
                             <span>Error Explanations ({errorCount})</span>
@@ -271,16 +278,16 @@ const WritingSolution = () => {
               </div>
 
               {/* AI Results with Tabs */}
-              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+              <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100">
                 <CardHeader>
-                  <CardTitle className="text-xl font-medium text-[#009dff]">AI-Enhanced Results</CardTitle>
+                  <CardTitle className="text-xl font-medium text-blue-900">AI-Enhanced Results</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-3">
-                      <TabsTrigger value="original">Original</TabsTrigger>
-                      <TabsTrigger value="rewritten">AI Rewrite</TabsTrigger>
-                      <TabsTrigger value="generated">AI Generate</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-3 bg-blue-50">
+                      <TabsTrigger value="original" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white">Original</TabsTrigger>
+                      <TabsTrigger value="rewritten" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white">AI Rewrite</TabsTrigger>
+                      <TabsTrigger value="generated" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white">AI Generate</TabsTrigger>
                     </TabsList>
                     
                     <TabsContent value="original" className="mt-4">
@@ -296,7 +303,7 @@ const WritingSolution = () => {
                     </TabsContent>
                     
                     <TabsContent value="rewritten" className="mt-4">
-                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                         <div className="text-base leading-relaxed whitespace-pre-wrap">
                           {aiRewrittenText}
                         </div>
@@ -308,7 +315,7 @@ const WritingSolution = () => {
                     </TabsContent>
                     
                     <TabsContent value="generated" className="mt-4">
-                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                         <div className="text-base leading-relaxed whitespace-pre-wrap">
                           {aiGeneratedText}
                         </div>
