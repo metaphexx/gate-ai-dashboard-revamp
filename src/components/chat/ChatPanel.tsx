@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -321,7 +320,7 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
                           variant="outline"
                           size="sm"
                           onClick={() => handleQuickReply(reply)}
-                          className="text-xs bg-white hover:bg-gray-50 h-7"
+                          className="text-xs bg-white text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-gray-900 h-7"
                         >
                           {reply}
                         </Button>
