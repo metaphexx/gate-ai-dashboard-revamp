@@ -15,9 +15,11 @@ import {
   MessageCircle
 } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
-import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatPanel from '@/components/chat/ChatPanel';
 import { useChatContext } from '@/contexts/ChatContext';
+
+// Mock data - writing prompt
+const writingPrompt = "Write a creative story about an archer standing before a mysterious portal. Your story should be between 150-200 words and include elements of adventure, mystery, and personal choice. Focus on creating vivid imagery and emotional depth in your narrative.";
 
 // Mock data - this would come from your actual test results
 const userText = `the archer stood still beneath the vast alien sky. A shimmering portal pulsed before them, swirling with unkown energy. Beyond it lay a world untouched, a place of either promise or peril. They had trained for this moment, yet notr aiming could calm their racling heart. With a slow breath, they drew an arrow, its tip gllowing faintly. Was this a weapon or a key? No one knew for certain. the portal whispered ancient truths only the brave would hear. Steppingn forward, bow raised, the archer made their choice. Not out of certainty, but out of courage. Sometimes the future isn't clear. Sometimes you must face it head on, trusting the strength you have built. With one final breath, the arrow flew. The journey had begun.`;
@@ -136,154 +138,194 @@ const WritingSolution = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <EverestLogo />
-              <div className="flex items-center space-x-2">
-                <button 
-                  onClick={handleBackToTest}
-                  className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-1" />
-                  <span className="text-sm">Back to Test</span>
-                </button>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Main Content */}
+      <div className={`flex-1 transition-all duration-300 ${isChatOpen ? 'mr-96' : ''}`}>
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b border-gray-200">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <EverestLogo />
+                <div className="flex items-center space-x-2">
+                  <button 
+                    onClick={handleBackToTest}
+                    className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-1" />
+                    <span className="text-sm">Back to Test</span>
+                  </button>
+                </div>
               </div>
+              <Button
+                onClick={handleOpenChat}
+                className="bg-[#009dff] hover:bg-[#008ae6] text-white flex items-center gap-2"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Chat with Elliot
+              </Button>
             </div>
-            <Button
-              onClick={handleOpenChat}
-              className="bg-[#009dff] hover:bg-[#008ae6] text-white flex items-center gap-2"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Chat with Elliot
-            </Button>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Page Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#009dff] mb-2">Writing - Solution Review</h1>
-            <p className="text-lg text-gray-600">Review your writing and understand the AI feedback</p>
-          </div>
+        {/* Main Content */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Page Title */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-[#009dff] mb-2">Writing - Solution Review</h1>
+              <p className="text-lg text-gray-600">Review your writing and understand the AI feedback</p>
+            </div>
 
-          {/* User Written Text with Highlighted Errors */}
-          <Card className="mb-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-medium text-gray-900">Your Submitted Text</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-                <div 
-                  className="text-base leading-relaxed whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: highlightErrors(userText) }}
-                />
-              </div>
-
-              {/* Error Explanations */}
-              <div className="border-t border-gray-200 pt-4">
-                <button
-                  onClick={() => setShowExplanations(!showExplanations)}
-                  className="flex items-center text-[#009dff] hover:text-[#008ae6] font-medium mb-4"
-                >
-                  {showExplanations ? <ChevronUp className="h-4 w-4 mr-1" /> : <ChevronDown className="h-4 w-4 mr-1" />}
-                  {showExplanations ? 'Hide' : 'Show'} Error Explanations
-                </button>
-
-                {showExplanations && (
-                  <div className="space-y-4">
-                    <h4 className="font-semibold text-gray-900 text-lg mb-3">Explanation of Highlighted Mistakes</h4>
-                    {errors.map((error, index) => (
-                      <Card key={index} className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                        <CardContent className="p-4">
-                          <div className="flex items-start space-x-3">
-                            <div className="w-4 h-4 bg-red-500 rounded-full mt-1 flex-shrink-0"></div>
-                            <div className="flex-1">
-                              <div className="mb-2">
-                                <span className="text-sm text-blue-600 font-medium">Highlighted Mistakes:</span>
-                                <span className="ml-2 bg-red-100 text-red-800 px-2 py-1 rounded font-semibold text-sm">
-                                  {error.word}
-                                </span>
-                              </div>
-                              <div className="mb-2">
-                                <span className="text-sm text-blue-600 font-medium">Correction:</span>
-                                <span className="ml-2 text-green-700 font-semibold">{error.correction}</span>
-                              </div>
-                              <div>
-                                <span className="text-sm text-blue-600 font-medium">Explanation:</span>
-                                <span className="ml-2 text-gray-700">{error.explanation}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            <Button 
-              onClick={handleAIRewrite}
-              className="bg-[#009dff] hover:bg-[#008ae6] text-white px-6 py-3 rounded-xl text-base font-medium flex-1"
-            >
-              AI Rewrite My Text
-            </Button>
-            <Button 
-              onClick={handleAIGenerate}
-              className="bg-[#009dff] hover:bg-[#008ae6] text-white px-6 py-3 rounded-xl text-base font-medium flex-1"
-            >
-              AI Generate New Text
-            </Button>
-            <Button 
-              onClick={handleBackToResults}
-              variant="outline"
-              className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-6 py-3 rounded-xl text-base font-medium flex-1"
-            >
-              Back to Results
-            </Button>
-          </div>
-
-          {/* AI-Generated Refined Version */}
-          {(showRewritten || showGenerated) && (
-            <Card className="mb-8 bg-white rounded-xl border border-gray-200 shadow-sm">
+            {/* Writing Prompt */}
+            <Card className="mb-6 bg-white rounded-xl border border-gray-200 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-xl font-medium text-[#009dff]">AI-Crafted Refined Version</CardTitle>
+                <CardTitle className="text-xl font-medium text-gray-900">Writing Prompt</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-                  <div className="text-base leading-relaxed whitespace-pre-wrap">
-                    {showRewritten ? aiRewrittenText : aiGeneratedText}
-                  </div>
-                </div>
-                <div className="flex items-start space-x-2 text-sm text-blue-600">
-                  <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-blue-600 font-bold text-xs">i</span>
-                  </div>
-                  <p>
-                    This AI-generated result provides a completely reimagined version of the text, tailored to the prompt and designed to meet high evaluation criteria.
-                  </p>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <p className="text-base leading-relaxed text-gray-800">{writingPrompt}</p>
                 </div>
               </CardContent>
             </Card>
-          )}
+
+            {/* User Written Text with Highlighted Errors */}
+            <Card className="mb-6 bg-white rounded-xl border border-gray-200 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-medium text-gray-900">Your Submitted Text</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
+                  <div 
+                    className="text-base leading-relaxed whitespace-pre-wrap"
+                    dangerouslySetInnerHTML={{ __html: highlightErrors(userText) }}
+                  />
+                </div>
+
+                {/* Error Explanations */}
+                <div className="border-t border-gray-200 pt-4">
+                  <button
+                    onClick={() => setShowExplanations(!showExplanations)}
+                    className="flex items-center text-[#009dff] hover:text-[#008ae6] font-medium mb-4"
+                  >
+                    {showExplanations ? <ChevronUp className="h-4 w-4 mr-1" /> : <ChevronDown className="h-4 w-4 mr-1" />}
+                    {showExplanations ? 'Hide' : 'Show'} Error Explanations
+                  </button>
+
+                  {showExplanations && (
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-gray-900 text-lg mb-3">Explanation of Highlighted Mistakes</h4>
+                      {errors.map((error, index) => (
+                        <Card key={index} className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                          <CardContent className="p-4">
+                            <div className="flex items-start space-x-3">
+                              <div className="w-4 h-4 bg-red-500 rounded-full mt-1 flex-shrink-0"></div>
+                              <div className="flex-1">
+                                <div className="mb-2">
+                                  <span className="text-sm text-blue-600 font-medium">Highlighted Mistakes:</span>
+                                  <span className="ml-2 bg-red-100 text-red-800 px-2 py-1 rounded font-semibold text-sm">
+                                    {error.word}
+                                  </span>
+                                </div>
+                                <div className="mb-2">
+                                  <span className="text-sm text-blue-600 font-medium">Correction:</span>
+                                  <span className="ml-2 text-green-700 font-semibold">{error.correction}</span>
+                                </div>
+                                <div>
+                                  <span className="text-sm text-blue-600 font-medium">Explanation:</span>
+                                  <span className="ml-2 text-gray-700">{error.explanation}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <Button 
+                onClick={handleAIRewrite}
+                className="bg-[#009dff] hover:bg-[#008ae6] text-white px-6 py-3 rounded-xl text-base font-medium flex-1"
+              >
+                AI Rewrite My Text
+              </Button>
+              <Button 
+                onClick={handleAIGenerate}
+                className="bg-[#009dff] hover:bg-[#008ae6] text-white px-6 py-3 rounded-xl text-base font-medium flex-1"
+              >
+                AI Generate New Text
+              </Button>
+              <Button 
+                onClick={handleBackToResults}
+                variant="outline"
+                className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-6 py-3 rounded-xl text-base font-medium flex-1"
+              >
+                Back to Results
+              </Button>
+            </div>
+
+            {/* AI-Generated Refined Version */}
+            {(showRewritten || showGenerated) && (
+              <Card className="mb-8 bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-xl font-medium text-[#009dff]">AI-Crafted Refined Version</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
+                    <div className="text-base leading-relaxed whitespace-pre-wrap">
+                      {showRewritten ? aiRewrittenText : aiGeneratedText}
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-2 text-sm text-blue-600">
+                    <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-blue-600 font-bold text-xs">i</span>
+                    </div>
+                    <p>
+                      This AI-generated result provides a completely reimagined version of the text, tailored to the prompt and designed to meet high evaluation criteria.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Floating Chat Button */}
-      <FloatingChatButton onClick={handleOpenChat} />
-
-      {/* Chat Panel */}
-      <ChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      {/* Chat Panel - Side Panel */}
+      {isChatOpen && (
+        <div className="fixed right-0 top-0 h-screen w-96 bg-white shadow-2xl border-l border-gray-200 z-50">
+          <div className="h-full flex flex-col">
+            {/* Chat Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                  <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-8 h-8 rounded-full" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">Chat with Elliot</h2>
+                  <p className="text-sm text-gray-500">Your AI study assistant</p>
+                </div>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsChatOpen(false)}>
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </div>
+            
+            {/* Chat Content */}
+            <div className="flex-1">
+              <ChatPanel 
+                isOpen={true} 
+                onClose={() => setIsChatOpen(false)} 
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
