@@ -175,12 +175,16 @@ const MemoryGame = () => {
       if (gameState.showingSequence) return;
 
       switch (e.key) {
-        case ' ': // Space to submit
+        case 'Enter': // Enter to start/restart/submit
           e.preventDefault();
-          handleSubmit();
-          break;
-        case 'Enter': // Enter to start/restart
-          if (!gameState.isPlaying) {
+          if (!gameState.isPlaying && !gameState.isComplete) {
+            // Start game
+            startRound(gameState.currentRound);
+          } else if (gameState.isPlaying && !gameState.showingSequence) {
+            // Submit answer
+            handleSubmit();
+          } else if (gameState.isComplete) {
+            // Restart game
             startRound(gameState.currentRound);
           }
           break;
@@ -190,7 +194,7 @@ const MemoryGame = () => {
           }
           break;
         case 'Backspace': // Clear input
-          if (!gameState.isPlaying && gameState.isComplete) {
+          if (gameState.isPlaying && !gameState.showingSequence) {
             setGameState(prev => ({ ...prev, userInput: '' }));
           }
           break;
@@ -337,7 +341,7 @@ const MemoryGame = () => {
                   <div className="flex gap-3 justify-center">
                     <Button onClick={handleSubmit} className="px-6">
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      Submit (Space)
+                      Submit (Enter)
                     </Button>
                     <Button 
                       variant="outline" 
@@ -447,9 +451,8 @@ const MemoryGame = () => {
               <Clock className="h-4 w-4" />
               Keyboard Shortcuts
             </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-gray-600">
-              <div><kbd className="bg-gray-100 px-2 py-1 rounded">Space</kbd> Submit</div>
-              <div><kbd className="bg-gray-100 px-2 py-1 rounded">Enter</kbd> Start/Restart</div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-gray-600">
+              <div><kbd className="bg-gray-100 px-2 py-1 rounded">Enter</kbd> Start/Submit</div>
               <div><kbd className="bg-gray-100 px-2 py-1 rounded">Esc</kbd> Pause</div>
               <div><kbd className="bg-gray-100 px-2 py-1 rounded">Backspace</kbd> Clear</div>
             </div>
