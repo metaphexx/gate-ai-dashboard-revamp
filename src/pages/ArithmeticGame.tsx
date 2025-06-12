@@ -340,7 +340,7 @@ const ArithmeticGame = () => {
               </div>
 
               {/* Question Display */}
-              <Card className={`border-0 shadow-2xl ${currentOp.bgColor} backdrop-blur-sm`}>
+              <Card className={`border-0 shadow-lg ${currentOp.bgColor} backdrop-blur-sm`}>
                 <CardContent className="p-12 text-center">
                   {gameState.isPaused ? (
                     <div className="space-y-6">
