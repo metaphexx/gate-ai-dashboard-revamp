@@ -371,7 +371,7 @@ const WritingResults = () => {
             Back to Home
           </Button>
           <Button
-            onClick={() => navigate('/writing-test')}
+            onClick={() => navigate('/writing-solution')}
             className="bg-[#009dff] hover:bg-[#008ae6] text-white"
           >
             View Solution
