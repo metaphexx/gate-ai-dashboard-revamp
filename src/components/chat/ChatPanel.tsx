@@ -31,31 +31,53 @@ interface ChatPanelProps {
   onClose: () => void;
   questions?: Question[];
   currentQuestionIndex?: number;
-  type?: 'abstract-reasoning' | 'reading-comprehension';
+  type?: 'abstract-reasoning' | 'reading-comprehension' | 'writing-solution';
 }
 
 const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, type }: ChatPanelProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      type: 'assistant',
-      content: type 
-        ? `Hi! I'm Elliot, your AI study assistant. I have access to all the ${type === 'reading-comprehension' ? 'reading comprehension passages, questions' : 'abstract reasoning questions'}, answers, and explanations from your test. Feel free to ask me about any question, explanation, or concept you'd like to understand better!`
-        : "Hi! I'm Elliot, your AI study assistant. I'm here to help you with your studies and answer any questions you might have about your preparation!",
-      timestamp: new Date(),
-      quickReplies: type ? [
-        "Explain current question",
-        "Why is this answer correct?",
-        type === 'reading-comprehension' ? "Help with passage analysis" : "Pattern recognition tips",
-        "Study tips"
-      ] : [
-        "Study tips",
-        "How can I improve?",
-        "Practice recommendations",
-        "General help"
-      ]
+  const getInitialMessage = () => {
+    if (type === 'writing-solution') {
+      return {
+        id: '1',
+        type: 'assistant' as const,
+        content: "Hi! I'm Elliot, your AI study assistant. I can see your writing submission and all the highlighted errors with corrections. I'm here to help you understand the mistakes, improve your writing skills, and provide personalized feedback on your text!",
+        timestamp: new Date(),
+        quickReplies: [
+          "Explain this mistake",
+          "How can I improve this text?",
+          "Study tips for writing"
+        ]
+      };
+    } else if (type) {
+      return {
+        id: '1',
+        type: 'assistant' as const,
+        content: `Hi! I'm Elliot, your AI study assistant. I have access to all the ${type === 'reading-comprehension' ? 'reading comprehension passages, questions' : 'abstract reasoning questions'}, answers, and explanations from your test. Feel free to ask me about any question, explanation, or concept you'd like to understand better!`,
+        timestamp: new Date(),
+        quickReplies: [
+          "Explain current question",
+          "Why is this answer correct?",
+          type === 'reading-comprehension' ? "Help with passage analysis" : "Pattern recognition tips",
+          "Study tips"
+        ]
+      };
+    } else {
+      return {
+        id: '1',
+        type: 'assistant' as const,
+        content: "Hi! I'm Elliot, your AI study assistant. I'm here to help you with your studies and answer any questions you might have about your preparation!",
+        timestamp: new Date(),
+        quickReplies: [
+          "Study tips",
+          "How can I improve?",
+          "Practice recommendations",
+          "General help"
+        ]
+      };
     }
-  ]);
+  };
+
+  const [messages, setMessages] = useState<Message[]>([getInitialMessage()]);
   
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -69,6 +91,11 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
   }, [messages]);
 
   const generateElliotResponse = (userMessage: string) => {
+    // Writing solution specific responses
+    if (type === 'writing-solution') {
+      return generateWritingSolutionResponse(userMessage);
+    }
+
     // If no questions data provided, give general responses
     if (!questions.length || !type) {
       return generateGeneralResponse(userMessage);
@@ -123,6 +150,31 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
     return responses[Math.floor(Math.random() * responses.length)];
   };
 
+  const generateWritingSolutionResponse = (userMessage: string) => {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    if (lowerMessage.includes('explain') && lowerMessage.includes('mistake')) {
+      return `I can see several highlighted errors in your text! Here are some key mistake patterns I noticed:\n\n**Common Issues:**\n• Capitalization errors at sentence beginnings\n• Spelling mistakes (like "unkown" → "unknown")\n• Typos affecting word formation\n\n**Specific Examples:**\n• "the" should be "The" at sentence starts\n• "racling" should be "racing"\n• "gllowing" should be "glowing"\n\nEach highlighted error shows the correction and explanation. Would you like me to focus on any specific type of mistake?`;
+    }
+    
+    if (lowerMessage.includes('improve') && lowerMessage.includes('text')) {
+      return `Great question! Here are specific ways to improve your writing:\n\n**Structure & Flow:**\n• Vary your sentence lengths for better rhythm\n• Use stronger transition words between ideas\n• Create clearer paragraph breaks\n\n**Vocabulary & Style:**\n• Replace common words with more vivid alternatives\n• Show emotions through actions, not just telling\n• Use sensory details to create atmosphere\n\n**Technical Improvements:**\n• Always proofread for spelling and grammar\n• Read your work aloud to catch flow issues\n• Check capitalization at sentence beginnings\n\nWould you like me to elaborate on any of these areas?`;
+    }
+    
+    if (lowerMessage.includes('study tips') || lowerMessage.includes('writing')) {
+      return `Here are effective study tips for writing improvement:\n\n**Daily Practice:**\n1. Write for 15 minutes daily on any topic\n2. Read diverse texts to expand vocabulary\n3. Keep a journal of interesting phrases you encounter\n\n**Revision Techniques:**\n4. Read your work aloud to catch errors\n5. Use spell-check but don't rely on it completely\n6. Focus on one type of error at a time when editing\n\n**Creative Development:**\n7. Practice descriptive writing with sensory details\n8. Experiment with different narrative perspectives\n9. Study how professional writers create atmosphere\n\nWhich area would you like to focus on most?`;
+    }
+    
+    // Default writing-focused responses
+    const responses = [
+      "I can help you understand your writing feedback better! I have access to all your highlighted errors and their corrections. What specific aspect would you like to work on?",
+      "Looking at your text, I can see you have good creative ideas! Let's focus on refining the technical aspects to make your writing even stronger. What would you like to improve?",
+      "Your story has great potential! I can help explain any of the highlighted mistakes or suggest ways to enhance your writing style. What interests you most?"
+    ];
+    
+    return responses[Math.floor(Math.random() * responses.length)];
+  };
+
   const generateGeneralResponse = (userMessage: string) => {
     const lowerMessage = userMessage.toLowerCase();
     
@@ -161,22 +213,32 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
     setTimeout(() => {
       const response = generateElliotResponse(inputValue);
       
+      const getQuickReplies = () => {
+        if (type === 'writing-solution') {
+          return ["Explain this mistake", "How can I improve this text?", "Study tips for writing"];
+        } else if (type) {
+          return [
+            "Explain another question",
+            "More study tips",
+            type === 'reading-comprehension' ? "Help with passage analysis" : "Pattern recognition tips",
+            "Next question explanation"
+          ];
+        } else {
+          return [
+            "Study strategies",
+            "Practice recommendations",
+            "General tips",
+            "Subject help"
+          ];
+        }
+      };
+      
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'assistant',
         content: response,
         timestamp: new Date(),
-        quickReplies: type ? [
-          "Explain another question",
-          "More study tips",
-          type === 'reading-comprehension' ? "Help with passage analysis" : "Pattern recognition tips",
-          "Next question explanation"
-        ] : [
-          "Study strategies",
-          "Practice recommendations",
-          "General tips",
-          "Subject help"
-        ]
+        quickReplies: getQuickReplies()
       };
       
       setMessages(prev => [...prev, aiMessage]);
@@ -315,7 +377,7 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
           </Button>
         </div>
         <p className="text-xs text-gray-500 mt-1 text-center">
-          {type ? `Elliot has access to all questions and explanations.` : `Elliot is here to help with your studies.`}
+          {type === 'writing-solution' ? `Elliot can see your text and all highlighted errors.` : type ? `Elliot has access to all questions and explanations.` : `Elliot is here to help with your studies.`}
         </p>
       </div>
     </div>
