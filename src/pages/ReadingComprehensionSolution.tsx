@@ -66,7 +66,7 @@ const ReadingComprehensionSolution = () => {
   }, [currentQuestionIndex]);
 
   const handleBackToResults = () => {
-    navigate('/abstract-reasoning-results');
+    navigate('/reading-comprehension-results');
   };
 
   const handleNextQuestion = () => {
