@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Clock } from 'lucide-react';
@@ -32,6 +31,8 @@ const TestCard = ({
       navigate('/abstract-reasoning-prestart');
     } else if (title === 'Reading Comprehension') {
       navigate('/reading-comprehension-test');
+    } else if (title === 'Writing Test') {
+      navigate('/writing-test');
     } else {
       // We'll implement other tests later
       console.log(`Starting test: ${title}`);
