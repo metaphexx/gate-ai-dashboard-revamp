@@ -200,7 +200,7 @@ const ReadingComprehensionTest = () => {
     });
     
     setShowSubmitDialog(false);
-    navigate('/abstract-reasoning-results');
+    navigate('/reading-comprehension-results');
   };
 
   const handleCancel = () => {
