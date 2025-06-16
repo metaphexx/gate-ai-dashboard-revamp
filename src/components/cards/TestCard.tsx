@@ -27,9 +27,11 @@ const TestCard = ({
   const navigate = useNavigate();
 
   const handleStartTest = () => {
-    // For now, only Abstract Reasoning links to the pre-start screen
+    // Navigate to specific test pages
     if (title === 'Abstract Reasoning') {
       navigate('/abstract-reasoning-prestart');
+    } else if (title === 'Reading Comprehension') {
+      navigate('/reading-comprehension-test');
     } else {
       // We'll implement other tests later
       console.log(`Starting test: ${title}`);
