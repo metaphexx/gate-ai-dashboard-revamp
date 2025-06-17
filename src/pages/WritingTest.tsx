@@ -304,16 +304,16 @@ const WritingTest = () => {
       </div>
       
       {/* Main content with top padding to account for fixed header */}
-      <div className="container mx-auto pt-20 px-4 pb-24">
+      <div className="pt-20 pb-24 min-h-screen">
         {/* Test title and progress */}
-        <div className="mb-8">
+        <div className="container mx-auto px-4 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
             <h1 className="text-2xl font-bold text-blue-900">
               Writing Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
             </h1>
           </div>
           
-          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
+          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden">
             <div 
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
@@ -321,29 +321,29 @@ const WritingTest = () => {
           </div>
         </div>
         
-        {/* Main question card */}
-        <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
-          <CardContent className="p-0">
-            {/* Category banner */}
-            <div className="bg-[#009dff] py-3 px-6 text-white shadow-sm rounded-t-lg">
-              <p className="text-sm font-medium">{currentQuestion.category}</p>
-            </div>
-            
-            {/* Question content */}
-            <div className="p-6 md:p-8">
+        {/* Two-column layout */}
+        <div className="h-[calc(100vh-200px)] flex">
+          {/* Left column - Prompt panel (sticky) */}
+          <div className="w-1/2 border-r border-gray-200 bg-white overflow-y-auto">
+            <div className="p-6">
+              {/* Category banner */}
+              <div className="bg-[#009dff] py-2 px-4 text-white shadow-sm rounded-lg mb-4">
+                <p className="text-sm font-medium">{currentQuestion.category}</p>
+              </div>
+              
               {/* Question prompt */}
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 {currentQuestion.prompt}
               </h2>
               
               {/* Image section */}
-              <div className="mb-6">
-                <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
+              <div className="mb-4">
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
                   <div className="relative">
                     <img 
                       src={currentQuestion.image}
                       alt="Writing prompt image" 
-                      className="w-full max-h-[400px] rounded-lg object-cover shadow-sm"
+                      className="w-full max-h-[250px] rounded-lg object-cover shadow-sm"
                     />
                   </div>
                 </div>
@@ -354,191 +354,195 @@ const WritingTest = () => {
                 <div className="flex items-start">
                   <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
                   <div className="space-y-2">
-                    <p className="text-gray-700 leading-relaxed">Look at the image above and write a creative piece inspired by what you see. You may choose any writing style - narrative, descriptive, persuasive, or analytical.</p>
+                    <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
                   </div>
                 </div>
               </div>
               
-              {/* Writing area */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-lg font-semibold text-gray-900">Your Response:</label>
-                  <div className="flex items-center space-x-4">
-                    <div className={`text-sm px-3 py-1 rounded-full ${
-                      canSubmit 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-orange-100 text-orange-700'
-                    }`}>
-                      Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
-                    </div>
-                    {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
-                      <div className="flex items-center text-sm text-orange-600">
-                        <AlertCircle className="h-4 w-4 mr-1" />
-                        Need {currentQuestion.minWords - writingAnalytics.words} more words
-                      </div>
-                    )}
-                    {writingAnalytics.words > currentQuestion.maxWords && (
-                      <div className="flex items-center text-sm text-orange-600">
-                        <AlertCircle className="h-4 w-4 mr-1" />
-                        {writingAnalytics.words - currentQuestion.maxWords} words over limit
-                      </div>
-                    )}
-                  </div>
+              {/* Writing Analytics */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.words}</div>
+                  <div className="text-xs text-gray-600">Words</div>
                 </div>
-                
-                {/* Writing Analytics */}
-                <div className="grid grid-cols-4 gap-4 mb-4">
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.words}</div>
-                    <div className="text-sm text-gray-600">Words</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.characters}</div>
-                    <div className="text-sm text-gray-600">Characters</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.sentences}</div>
-                    <div className="text-sm text-gray-600">Sentences</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
-                    <div className="text-sm text-gray-600">Paragraphs</div>
-                  </div>
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.characters}</div>
+                  <div className="text-xs text-gray-600">Characters</div>
                 </div>
-                
-                {/* Text formatting toolbar */}
-                <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap items-center gap-1">
-                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('bold')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Bold"
-                    >
-                      <Bold className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('italic')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Italic"
-                    >
-                      <Italic className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('underline')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Underline"
-                    >
-                      <Underline className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('strikethrough')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Strikethrough"
-                    >
-                      <Strikethrough className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('alignLeft')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Align Left"
-                    >
-                      <AlignLeft className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('alignCenter')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Align Center"
-                    >
-                      <AlignCenter className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('alignRight')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Align Right"
-                    >
-                      <AlignRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('bulletList')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Bullet List"
-                    >
-                      <List className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('numberedList')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Numbered List"
-                    >
-                      <ListOrdered className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => applyFormat('quote')}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Quote"
-                    >
-                      <Quote className="h-4 w-4" />
-                    </Button>
-                  </div>
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.sentences}</div>
+                  <div className="text-xs text-gray-600">Sentences</div>
                 </div>
-                
-                <div
-                  ref={editorRef}
-                  contentEditable
-                  onInput={handleEditorChange}
-                  className="min-h-[400px] w-full text-base leading-relaxed focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0 focus:outline-none"
-                  style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
-                  suppressContentEditableWarning={true}
-                  data-placeholder="Write something here..."
-                />
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
+                  <div className="text-xs text-gray-600">Paragraphs</div>
+                </div>
               </div>
               
-              {/* Flag button */}
-              <div className="flex items-center justify-start space-x-2">
+              {/* Word count requirement */}
+              <div className={`text-sm px-3 py-2 rounded-full text-center mb-4 ${
+                canSubmit 
+                  ? 'bg-green-100 text-green-700' 
+                  : 'bg-orange-100 text-orange-700'
+              }`}>
+                Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
+              </div>
+              
+              {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
+                <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                  <AlertCircle className="h-4 w-4 mr-1" />
+                  Need {currentQuestion.minWords - writingAnalytics.words} more words
+                </div>
+              )}
+              
+              {writingAnalytics.words > currentQuestion.maxWords && (
+                <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                  <AlertCircle className="h-4 w-4 mr-1" />
+                  {writingAnalytics.words - currentQuestion.maxWords} words over limit
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Right column - Writing panel */}
+          <div className="w-1/2 bg-white flex flex-col">
+            <div className="flex-1 p-6 flex flex-col">
+              <div className="flex items-center justify-between mb-4">
+                <label className="text-lg font-semibold text-gray-900">Your Response:</label>
+                
+                {/* Flag button */}
                 <Button 
                   variant="outline"
                   onClick={toggleFlagQuestion}
+                  size="sm"
                   className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
                 >
                   <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
-                  {flaggedQuestions[currentQuestionIndex] ? 'Flagged for Review' : 'Flag for Review'}
+                  {flaggedQuestions[currentQuestionIndex] ? 'Flagged' : 'Flag'}
                 </Button>
               </div>
+              
+              {/* Text formatting toolbar */}
+              <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap items-center gap-1 mb-0">
+                <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('bold')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Bold"
+                  >
+                    <Bold className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('italic')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Italic"
+                  >
+                    <Italic className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('underline')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Underline"
+                  >
+                    <Underline className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('strikethrough')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Strikethrough"
+                  >
+                    <Strikethrough className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('alignLeft')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Align Left"
+                  >
+                    <AlignLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('alignCenter')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Align Center"
+                  >
+                    <AlignCenter className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('alignRight')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Align Right"
+                  >
+                    <AlignRight className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('bulletList')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Bullet List"
+                  >
+                    <List className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('numberedList')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Numbered List"
+                  >
+                    <ListOrdered className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="flex items-center space-x-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => applyFormat('quote')}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                    title="Quote"
+                  >
+                    <Quote className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              {/* Writing editor - takes up remaining space */}
+              <div
+                ref={editorRef}
+                contentEditable
+                onInput={handleEditorChange}
+                className="flex-1 w-full text-base leading-relaxed focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0 focus:outline-none overflow-y-auto"
+                style={{ wordWrap: 'break-word', overflowWrap: 'break-word', minHeight: '400px' }}
+                suppressContentEditableWarning={true}
+                data-placeholder="Write something here..."
+              />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
         
         {/* Keyboard shortcuts info */}
-        <div className="mt-6 text-center">
+        <div className="container mx-auto px-4 mt-4 text-center">
           <p className="text-sm text-gray-500">
             Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate
           </p>
