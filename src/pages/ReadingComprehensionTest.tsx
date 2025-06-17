@@ -236,14 +236,14 @@ const ReadingComprehensionTest = () => {
       {/* Main content with top padding to account for fixed header */}
       <div className="container mx-auto pt-20 px-4 pb-24">
         {/* Test title and progress */}
-        <div className="mb-8">
+        <div className="w-full px-4 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
             <h1 className="text-2xl font-bold text-blue-900">
-              Reading Comprehension <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
+              Reading Comprehension Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
             </h1>
           </div>
           
-          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
+          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden w-full">
             <div 
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
