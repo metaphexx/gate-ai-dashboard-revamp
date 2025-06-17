@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -281,7 +282,7 @@ const WritingTest = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
       <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="w-full px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <EverestLogo />
           </div>
@@ -306,14 +307,14 @@ const WritingTest = () => {
       {/* Main content with top padding to account for fixed header */}
       <div className="pt-20 pb-24 min-h-screen">
         {/* Test title and progress */}
-        <div className="container mx-auto px-4 mb-6">
+        <div className="w-full px-4 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
             <h1 className="text-2xl font-bold text-blue-900">
               Writing Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
             </h1>
           </div>
           
-          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden">
+          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden w-full">
             <div 
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
@@ -542,7 +543,7 @@ const WritingTest = () => {
         </div>
         
         {/* Keyboard shortcuts info */}
-        <div className="container mx-auto px-4 mt-4 text-center">
+        <div className="w-full px-4 mt-4 text-center">
           <p className="text-sm text-gray-500">
             Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate
           </p>
@@ -550,7 +551,7 @@ const WritingTest = () => {
         
         {/* Fixed bottom navigation */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="w-full px-4 py-3 flex items-center justify-between">
             <Button 
               variant="outline"
               onClick={goToPreviousQuestion}
