@@ -27,8 +27,6 @@ import {
   BarChart3,
   MessageSquare,
   Trophy,
-  Lightbulb,
-  HelpCircle,
   Bot
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
@@ -93,9 +91,6 @@ const QuantitativeReasoningLessons = () => {
   const [totalWatchTime, setTotalWatchTime] = useState(0);
   const [notesCount, setNotesCount] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [showSmartPrompt, setShowSmartPrompt] = useState(false);
-  const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
-  const [pauseCount, setPauseCount] = useState(0);
   
   const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
   const { toast } = useToast();
@@ -113,29 +108,12 @@ const QuantitativeReasoningLessons = () => {
     }
   }, [getLastWatchedVideo]);
 
-  // Smart prompt logic
-  useEffect(() => {
-    const checkForSmartPrompt = () => {
-      const timeSinceLastInteraction = Date.now() - lastInteractionTime;
-      
-      // Show smart prompt if user has been inactive for 30 seconds or paused multiple times
-      if (timeSinceLastInteraction > 30000 || pauseCount >= 3) {
-        setShowSmartPrompt(true);
-      }
-    };
-
-    const interval = setInterval(checkForSmartPrompt, 10000); // Check every 10 seconds
-    return () => clearInterval(interval);
-  }, [lastInteractionTime, pauseCount]);
-
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
-    setShowSmartPrompt(false); // Hide smart prompt when chat is opened
   };
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
     setCurrentTime(currentTime);
-    setLastInteractionTime(Date.now());
     updateVideoProgress('quantitative-reasoning', lesson.id, {
       currentTime,
       duration,
@@ -145,11 +123,6 @@ const QuantitativeReasoningLessons = () => {
     if (currentTime / duration > 0.9) {
       markVideoCompleted('quantitative-reasoning', lesson.id);
     }
-  };
-
-  const handleVideoPause = () => {
-    setPauseCount(prev => prev + 1);
-    setLastInteractionTime(Date.now());
   };
 
   const handleVideoEnded = () => {
@@ -166,9 +139,6 @@ const QuantitativeReasoningLessons = () => {
         </Button>
       ),
     });
-
-    // Show smart prompt for practice recommendations
-    setShowSmartPrompt(true);
 
     if (autoPlayNext && currentLesson < quantitativeReasoningLessons.lessons.length - 1) {
       setTimeout(() => {
@@ -317,48 +287,7 @@ const QuantitativeReasoningLessons = () => {
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Quantitative Reasoning</h1>
               <p className="text-sm text-gray-600">GATE Exam Preparation</p>
             </div>
-            
-            {/* Phase 1: Header Elliot Button */}
-            <Button 
-              onClick={toggleChat}
-              className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#0080ff] hover:to-[#2980ff] text-white shadow-lg"
-              size="sm"
-            >
-              <Bot className="w-4 h-4 mr-2" />
-              Ask Elliot
-            </Button>
           </div>
-
-          {/* Smart Prompt - Phase 5 */}
-          {showSmartPrompt && !isChatOpen && (
-            <Card className="mb-4 border-blue-200 bg-blue-50">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
-                      <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
-                      <p className="text-sm text-blue-700">
-                        {pauseCount >= 3 ? "I noticed you've paused several times. Let me help explain this concept!" : 
-                         getVideoProgress('quantitative-reasoning', lesson.id)?.completed ? "Great job completing this lesson! Ready for practice recommendations?" :
-                         "I'm here to help you understand quantitative reasoning concepts better!"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button onClick={toggleChat} size="sm" className="bg-blue-600 hover:bg-blue-700">
-                      Ask Elliot
-                    </Button>
-                    <Button onClick={() => setShowSmartPrompt(false)} variant="ghost" size="sm">
-                      ×
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
           {/* Analytics Dashboard */}
           <AnalyticsDashboard
@@ -379,7 +308,6 @@ const QuantitativeReasoningLessons = () => {
                   src={lesson.videoUrl}
                   onTimeUpdate={handleVideoTimeUpdate}
                   onEnded={handleVideoEnded}
-                  onPause={handleVideoPause}
                   initialTime={getInitialTime()}
                   onNext={handleNext}
                   onPrevious={handlePrevious}
@@ -388,7 +316,7 @@ const QuantitativeReasoningLessons = () => {
                 />
               </Card>
 
-              {/* Tabbed Content - Phase 2: Add Elliot Tab */}
+              {/* Tabbed Content */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
                 <TabsList className="grid w-full grid-cols-7">
                   <TabsTrigger value="lesson">Lesson</TabsTrigger>
@@ -448,59 +376,6 @@ const QuantitativeReasoningLessons = () => {
                           </Button>
                         </div>
                       </div>
-
-                      {/* Phase 3: Elliot Quick Help Section */}
-                      <Card className="mb-4 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
-                              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
-                            </div>
-                            <div>
-                              <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
-                              <p className="text-sm text-blue-700">Elliot can explain concepts, provide study tips, and answer questions about {lesson.title.toLowerCase()}.</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              onClick={() => {
-                                toggleChat();
-                                setActiveTab('elliot');
-                              }}
-                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
-                            >
-                              <HelpCircle className="w-4 h-4 mr-1" />
-                              Explain this concept
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              onClick={() => {
-                                toggleChat();
-                                setActiveTab('elliot');
-                              }}
-                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
-                            >
-                              <Lightbulb className="w-4 h-4 mr-1" />
-                              Study tips
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              onClick={() => {
-                                toggleChat();
-                                setActiveTab('elliot');
-                              }}
-                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
-                            >
-                              <MessageSquare className="w-4 h-4 mr-1" />
-                              Ask questions
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
 
                       {/* Auto-play toggle */}
                       <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
@@ -598,7 +473,7 @@ const QuantitativeReasoningLessons = () => {
                   <QuizIntegration lessonId={lesson.id} onQuizComplete={handleQuizComplete} />
                 </TabsContent>
 
-                {/* Phase 2: Elliot Tab Content */}
+                {/* Elliot Tab Content */}
                 <TabsContent value="elliot">
                   <Card>
                     <CardHeader>
