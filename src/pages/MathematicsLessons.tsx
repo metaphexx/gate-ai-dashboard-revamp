@@ -1,10 +1,17 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import EnhancedVideoPlayer, { VideoPlayerRef } from '@/components/EnhancedVideoPlayer';
+import AnalyticsDashboard from '@/components/video/AnalyticsDashboard';
+import LessonSearch, { FilterOptions } from '@/components/video/LessonSearch';
+import NoteTaking from '@/components/video/NoteTaking';
+import QuizIntegration from '@/components/video/QuizIntegration';
+import AchievementSystem from '@/components/video/AchievementSystem';
+import DiscussionSystem from '@/components/video/DiscussionSystem';
+import SmartRecommendations from '@/components/video/SmartRecommendations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   ArrowLeft, 
   Heart, 
@@ -14,7 +21,11 @@ import {
   Clock,
   Users,
   Globe,
-  Play
+  Play,
+  BarChart3,
+  MessageSquare,
+  Trophy,
+  Lightbulb
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
@@ -64,6 +75,20 @@ const MathematicsLessons = () => {
   const [currentLesson, setCurrentLesson] = useState(0);
   const [showTranscript, setShowTranscript] = useState(false);
   const [autoPlayNext, setAutoPlayNext] = useState(true);
+  const [activeTab, setActiveTab] = useState('lesson');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState<FilterOptions>({
+    completed: true,
+    inProgress: true,
+    notStarted: true,
+    sortBy: 'title',
+    sortOrder: 'asc'
+  });
+  const [currentTime, setCurrentTime] = useState(0);
+  const [quizScores, setQuizScores] = useState<number[]>([]);
+  const [totalWatchTime, setTotalWatchTime] = useState(0);
+  const [notesCount, setNotesCount] = useState(0);
+  
   const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
   const { toast } = useToast();
 
@@ -81,6 +106,7 @@ const MathematicsLessons = () => {
   }, [getLastWatchedVideo]);
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
+    setCurrentTime(currentTime);
     updateVideoProgress('mathematics', lesson.id, {
       currentTime,
       duration,
@@ -141,6 +167,82 @@ const MathematicsLessons = () => {
     return progress?.currentTime || 0;
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleFilter = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+  };
+
+  const handleQuizComplete = (score: number) => {
+    setQuizScores([...quizScores, score]);
+  };
+
+  // Filter and sort lessons based on search and filters
+  const filteredLessons = mathematicsLessons.lessons.filter(lessonItem => {
+    const progress = getVideoProgress('mathematics', lessonItem.id);
+    const matchesSearch = lessonItem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         lessonItem.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const isCompleted = progress?.completed || false;
+    const hasProgress = progress && progress.currentTime > 0;
+    const isNotStarted = !progress || progress.currentTime === 0;
+    
+    const matchesStatus = (
+      (filters.completed && isCompleted) ||
+      (filters.inProgress && hasProgress && !isCompleted) ||
+      (filters.notStarted && isNotStarted)
+    );
+    
+    return matchesSearch && matchesStatus;
+  }).sort((a, b) => {
+    const aProgress = getVideoProgress('mathematics', a.id);
+    const bProgress = getVideoProgress('mathematics', b.id);
+    
+    let comparison = 0;
+    switch (filters.sortBy) {
+      case 'title':
+        comparison = a.title.localeCompare(b.title);
+        break;
+      case 'duration':
+        comparison = parseInt(a.duration.split(':')[0]) * 60 + parseInt(a.duration.split(':')[1]) -
+                    (parseInt(b.duration.split(':')[0]) * 60 + parseInt(b.duration.split(':')[1]));
+        break;
+      case 'progress':
+        const aPercent = aProgress ? (aProgress.currentTime / aProgress.duration) * 100 : 0;
+        const bPercent = bProgress ? (bProgress.currentTime / bProgress.duration) * 100 : 0;
+        comparison = aPercent - bPercent;
+        break;
+    }
+    
+    return filters.sortOrder === 'asc' ? comparison : -comparison;
+  });
+
+  // Analytics data
+  const completedLessons = mathematicsLessons.lessons.filter(l => {
+    const progress = getVideoProgress('mathematics', l.id);
+    return progress?.completed;
+  }).length;
+
+  const averageScore = quizScores.length > 0 ? 
+    Math.round(quizScores.reduce((a, b) => a + b, 0) / quizScores.length) : 0;
+
+  const userStats = {
+    lessonsCompleted: completedLessons,
+    totalWatchTime: totalWatchTime,
+    streak: 4, // Mock data
+    averageScore,
+    notesCount,
+    quizzesTaken: quizScores.length
+  };
+
+  const userPerformance = {
+    weakAreas: ['Algebraic Expressions', 'Word Problems'],
+    strongAreas: ['Percentages', 'Basic Arithmetic'],
+    learningStyle: 'Visual learner with preference for step-by-step explanations'
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       <DashboardSidebar />
@@ -162,6 +264,15 @@ const MathematicsLessons = () => {
             </div>
           </div>
 
+          {/* Analytics Dashboard */}
+          <AnalyticsDashboard
+            totalWatchTime={totalWatchTime}
+            completedLessons={completedLessons}
+            totalLessons={mathematicsLessons.lessons.length}
+            averageScore={averageScore}
+            streak={4}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
@@ -180,108 +291,156 @@ const MathematicsLessons = () => {
                 />
               </Card>
 
-              {/* Lesson Info */}
-              <Card>
-                <CardContent className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
-                    <div className="flex-1">
-                      <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
-                      <p className="text-gray-600 text-sm mb-3">{lesson.description}</p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {lesson.duration}
-                        </span>
-                        <span>Lesson {currentLesson + 1} of {mathematicsLessons.lessons.length}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={handleAddToFavorites}
-                      >
-                        <Heart className="w-4 h-4 mr-2" />
-                        <span className="hidden sm:inline">Favorite</span>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={handleAddToWatchLater}
-                      >
-                        <BookmarkPlus className="w-4 h-4 mr-2" />
-                        <span className="hidden sm:inline">Watch Later</span>
-                      </Button>
-                    </div>
-                  </div>
+              {/* Tabbed Content */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+                <TabsList className="grid w-full grid-cols-6">
+                  <TabsTrigger value="lesson">Lesson</TabsTrigger>
+                  <TabsTrigger value="notes">Notes</TabsTrigger>
+                  <TabsTrigger value="quiz">Quiz</TabsTrigger>
+                  <TabsTrigger value="discussion">
+                    <MessageSquare className="w-4 h-4 mr-1" />
+                    Discussion
+                  </TabsTrigger>
+                  <TabsTrigger value="analytics">
+                    <BarChart3 className="w-4 h-4 mr-1" />
+                    Analytics
+                  </TabsTrigger>
+                  <TabsTrigger value="achievements">
+                    <Trophy className="w-4 h-4 mr-1" />
+                    Achievements
+                  </TabsTrigger>
+                </TabsList>
 
-                  {/* Auto-play toggle */}
-                  <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <input 
-                      type="checkbox" 
-                      id="autoplay" 
-                      checked={autoPlayNext}
-                      onChange={(e) => setAutoPlayNext(e.target.checked)}
-                      className="rounded"
+                <TabsContent value="lesson" className="space-y-4">
+                  {/* Lesson Info */}
+                  <Card>
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                        <div className="flex-1">
+                          <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
+                          <p className="text-gray-600 text-sm mb-3">{lesson.description}</p>
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {lesson.duration}
+                            </span>
+                            <span>Lesson {currentLesson + 1} of {mathematicsLessons.lessons.length}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={handleAddToFavorites}
+                          >
+                            <Heart className="w-4 h-4 mr-2" />
+                            <span className="hidden sm:inline">Favorite</span>
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={handleAddToWatchLater}
+                          >
+                            <BookmarkPlus className="w-4 h-4 mr-2" />
+                            <span className="hidden sm:inline">Watch Later</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Auto-play toggle */}
+                      <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                        <input 
+                          type="checkbox" 
+                          id="autoplay" 
+                          checked={autoPlayNext}
+                          onChange={(e) => setAutoPlayNext(e.target.checked)}
+                          className="rounded"
+                        />
+                        <label htmlFor="autoplay" className="text-sm text-gray-700">
+                          Auto-play next lesson
+                        </label>
+                      </div>
+
+                      {/* Transcript Toggle */}
+                      <Button
+                        variant="ghost"
+                        onClick={() => setShowTranscript(!showTranscript)}
+                        className="w-full sm:w-auto"
+                      >
+                        {showTranscript ? 'Hide' : 'Show'} Transcript
+                        <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showTranscript ? 'rotate-180' : ''}`} />
+                      </Button>
+
+                      {showTranscript && (
+                        <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                          <p className="text-sm text-gray-700">
+                            Transcript content would go here. This would be the full text of the video lesson including timestamps and searchable content...
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Course Details */}   
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Course Details</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <div className="text-gray-500">Total Lessons</div>
+                          <div className="font-semibold">{mathematicsLessons.totalLessons}</div>
+                        </div>
+                        <div>
+                          <div className="text-gray-500">Duration</div>
+                          <div className="font-semibold">{mathematicsLessons.totalDuration}</div>  
+                        </div>
+                        <div>
+                          <div className="text-gray-500">Language</div>
+                          <div className="font-semibold flex items-center gap-1">
+                            <Globe className="w-3 h-3" />
+                            {mathematicsLessons.language}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-500">Learners</div>
+                          <div className="font-semibold flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {mathematicsLessons.learners.toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="notes">
+                  <NoteTaking videoId={lesson.id} currentTime={currentTime} />
+                </TabsContent>
+
+                <TabsContent value="quiz">
+                  <QuizIntegration lessonId={lesson.id} onQuizComplete={handleQuizComplete} />
+                </TabsContent>
+
+                <TabsContent value="discussion">
+                  <DiscussionSystem lessonId={lesson.id} />
+                </TabsContent>
+
+                <TabsContent value="analytics">
+                  <div className="space-y-4">
+                    <SmartRecommendations 
+                      currentLessonId={lesson.id}
+                      userPerformance={userPerformance}
                     />
-                    <label htmlFor="autoplay" className="text-sm text-gray-700">
-                      Auto-play next lesson
-                    </label>
                   </div>
+                </TabsContent>
 
-                  {/* Transcript Toggle */}
-                  <Button
-                    variant="ghost"
-                    onClick={() => setShowTranscript(!showTranscript)}
-                    className="w-full sm:w-auto"
-                  >
-                    {showTranscript ? 'Hide' : 'Show'} Transcript
-                    <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showTranscript ? 'rotate-180' : ''}`} />
-                  </Button>
-
-                  {showTranscript && (
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-700">
-                        Transcript content would go here. This would be the full text of the video lesson including timestamps and searchable content...
-                      </p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Course Details */}   
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Course Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
-                    <div>
-                      <div className="text-gray-500">Total Lessons</div>
-                      <div className="font-semibold">{mathematicsLessons.totalLessons}</div>
-                    </div>
-                    <div>
-                      <div className="text-gray-500">Duration</div>
-                      <div className="font-semibold">{mathematicsLessons.totalDuration}</div>  
-                    </div>
-                    <div>
-                      <div className="text-gray-500">Language</div>
-                      <div className="font-semibold flex items-center gap-1">
-                        <Globe className="w-3 h-3" />
-                        {mathematicsLessons.language}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-500">Learners</div>
-                      <div className="font-semibold flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        {mathematicsLessons.learners.toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                <TabsContent value="achievements">
+                  <AchievementSystem stats={userStats} />
+                </TabsContent>
+              </Tabs>
             </div>
 
             {/* Sidebar - Lesson List */}
@@ -289,9 +448,15 @@ const MathematicsLessons = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Lessons ({mathematicsLessons.lessons.length})</CardTitle>
+                  <LessonSearch
+                    onSearch={handleSearch}
+                    onFilter={handleFilter}
+                    searchQuery={searchQuery}
+                    filters={filters}
+                  />
                 </CardHeader>
                 <CardContent className="p-0">
-                  {mathematicsLessons.lessons.map((lessonItem, index) => {
+                  {filteredLessons.map((lessonItem, index) => {
                     const progress = getVideoProgress('mathematics', lessonItem.id);
                     const isCompleted = progress?.completed || false;
                     const isActive = index === currentLesson;
