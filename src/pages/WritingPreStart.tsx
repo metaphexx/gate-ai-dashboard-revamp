@@ -1,11 +1,10 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Clock, FileText, CheckCircle, AlertCircle, Play } from 'lucide-react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import { Card, CardContent } from '@/components/ui/card';
+import { Clock, CheckCircle, ArrowLeft } from 'lucide-react';
+import EverestLogo from '@/components/test/EverestLogo';
 
 const WritingPreStart = () => {
   const navigate = useNavigate();
@@ -14,196 +13,154 @@ const WritingPreStart = () => {
     navigate('/writing-test');
   };
 
-  const handleGoBack = () => {
+  const handleBackToPractice = () => {
     navigate('/video-lessons/writing');
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Header */}
-          <div className="flex items-center gap-4 mb-6">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleGoBack}
-              className="p-2"
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Fixed top navigation bar */}
+      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <EverestLogo />
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={handleBackToPractice}
+              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Writing Test</h1>
-              <p className="text-gray-600">GATE Exam Preparation</p>
-            </div>
+              <ArrowLeft className="h-5 w-5 mr-1" />
+              <span>Back To Practice Tests</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="container mx-auto pt-24 px-4 pb-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+              Writing Test
+            </h1>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              This writing test will assess your ability to construct a well-organized essay with clear arguments, 
+              proper structure, and effective use of language.
+            </p>
           </div>
 
-          {/* Test Overview */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-600" />
-                Test Overview
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">1</div>
-                  <div className="text-sm text-gray-600">Essay Prompt</div>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">30</div>
-                  <div className="text-sm text-gray-600">Minutes</div>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">300-400</div>
-                  <div className="text-sm text-gray-600">Words</div>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                This writing test will assess your ability to construct a well-organized essay with clear arguments, 
-                proper structure, and effective use of language.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Instructions */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                Instructions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <Badge variant="outline" className="mt-1">1</Badge>
-                  <div>
-                    <h4 className="font-medium mb-1">Read the Prompt Carefully</h4>
-                    <p className="text-sm text-gray-600">
-                      Take time to understand what the prompt is asking. Identify key terms and requirements.
-                    </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Instructions */}
+            <div className="md:col-span-2">
+              <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none">
+                <CardContent className="p-8">
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">
+                    Please Read Instructions Carefully
+                  </h2>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-[#009dff] rounded-full flex items-center justify-center mt-0.5">
+                        <span className="text-white text-sm font-bold">•</span>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed">
+                        You will have <strong>30 minutes</strong> to complete this test.
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-[#009dff] rounded-full flex items-center justify-center mt-0.5">
+                        <span className="text-white text-sm font-bold">•</span>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed">
+                        You will be given <strong>1 essay prompt</strong>. Write a well-structured essay of <strong>300-400 words</strong> responding to the prompt.
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-[#009dff] rounded-full flex items-center justify-center mt-0.5">
+                        <span className="text-white text-sm font-bold">•</span>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed">
+                        Plan your essay structure before writing. Include an introduction, body paragraphs with clear arguments, and a conclusion.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Badge variant="outline" className="mt-1">2</Badge>
-                  <div>
-                    <h4 className="font-medium mb-1">Plan Your Essay</h4>
-                    <p className="text-sm text-gray-600">
-                      Spend 3-5 minutes planning your essay structure: introduction, body paragraphs, and conclusion.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Badge variant="outline" className="mt-1">3</Badge>
-                  <div>
-                    <h4 className="font-medium mb-1">Write Clear Arguments</h4>
-                    <p className="text-sm text-gray-600">
-                      Support your main points with specific examples and logical reasoning.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Badge variant="outline" className="mt-1">4</Badge>
-                  <div>
-                    <h4 className="font-medium mb-1">Review and Edit</h4>
-                    <p className="text-sm text-gray-600">
-                      Save 2-3 minutes at the end to review your essay for clarity and errors.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Assessment Criteria */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-orange-600" />
-                Assessment Criteria
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h4 className="font-medium mb-2">Content & Ideas</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Relevance to the prompt</li>
-                    <li>• Depth of analysis</li>
-                    <li>• Use of examples</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-medium mb-2">Organization</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Clear introduction and conclusion</li>
-                    <li>• Logical flow of ideas</li>
-                    <li>• Effective transitions</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-medium mb-2">Language Use</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Grammar and syntax</li>
-                    <li>• Vocabulary variety</li>
-                    <li>• Sentence structure</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-medium mb-2">Mechanics</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Spelling accuracy</li>
-                    <li>• Punctuation</li>
-                    <li>• Word count adherence</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                  {/* Action buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                    <Button 
+                      onClick={handleStartTest}
+                      className="bg-[#009dff] hover:bg-[#008ae6] text-white px-8 py-3 rounded-xl text-lg font-medium flex-1"
+                    >
+                      Start Test
+                    </Button>
+                    <Button 
+                      onClick={handleBackToPractice}
+                      variant="outline"
+                      className="border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-8 py-3 rounded-xl text-lg font-medium transition-colors"
+                    >
+                      Back To Practice Tests
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Tips */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>Quick Tips</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <ul className="text-sm space-y-2">
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Stay within the word count range (300-400 words)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Use formal academic language</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Keep track of time - aim for 25 minutes writing, 5 minutes reviewing</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Make your position clear in the introduction</span>
-                  </li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
+            {/* Test Info Sidebar */}
+            <div className="md:col-span-1">
+              <Card className="bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-xl shadow-blue-100 border border-blue-100">
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-6">
+                    Test Includes
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-white rounded-lg p-4 border border-blue-100">
+                      <h4 className="font-semibold text-gray-900 mb-3">Writing Test</h4>
+                      
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex items-center justify-between">
+                          <span>Question type:</span>
+                          <span className="font-medium text-gray-900">Essay</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Prompts:</span>
+                          <span className="font-medium text-gray-900">1</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Duration:</span>
+                          <span className="font-medium text-gray-900">30 minutes</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Word count:</span>
+                          <span className="font-medium text-gray-900">300-400</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Start Test Button */}
-          <div className="flex justify-center">
-            <Button 
-              onClick={handleStartTest}
-              size="lg"
-              className="px-8 py-3 text-lg"
-            >
-              <Play className="w-5 h-5 mr-2" />
-              Start Writing Test
-            </Button>
+                  {/* Quick stats */}
+                  <div className="mt-6 pt-6 border-t border-blue-100">
+                    <div className="grid grid-cols-2 gap-4 text-center">
+                      <div className="flex flex-col items-center">
+                        <Clock className="h-8 w-8 text-[#009dff] mb-2" />
+                        <span className="text-xs text-gray-500 uppercase tracking-wide">Duration</span>
+                        <span className="text-sm font-bold text-gray-900">30 min</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <CheckCircle className="h-8 w-8 text-[#009dff] mb-2" />
+                        <span className="text-xs text-gray-500 uppercase tracking-wide">Words</span>
+                        <span className="text-sm font-bold text-gray-900">300-400</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
