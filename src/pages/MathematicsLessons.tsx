@@ -2,24 +2,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
+import EnhancedVideoPlayer, { VideoPlayerRef } from '@/components/EnhancedVideoPlayer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { 
   ArrowLeft, 
-  Play, 
-  Pause, 
-  SkipBack, 
-  SkipForward, 
   Heart, 
   BookmarkPlus, 
   ChevronDown, 
   CheckCircle,
   Clock,
   Users,
-  Globe
+  Globe,
+  Play
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
+import { useToast } from '@/hooks/use-toast';
 
 const mathematicsLessons = {
   title: 'Mathematics',
@@ -33,98 +31,114 @@ const mathematicsLessons = {
       id: 'math-intro',
       title: 'Introduction to GATE Mathematics',
       duration: '8:45',
-      videoUrl: 'https://example.com/video1', // This would be your Vimeo/hosted URL
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
       description: 'Overview of mathematical concepts tested in GATE'
     },
     {
       id: 'arithmetic-basics',
       title: 'Arithmetic Fundamentals',
       duration: '12:30',
-      videoUrl: 'https://example.com/video2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       description: 'Basic arithmetic operations and problem-solving strategies'
     },
     {
       id: 'percentages',
       title: 'Percentages and Ratios',
       duration: '15:20',
-      videoUrl: 'https://example.com/video3',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       description: 'Understanding percentages, ratios, and proportions'
+    },
+    {
+      id: 'algebra-basics',
+      title: 'Algebraic Expressions',
+      duration: '18:45',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+      description: 'Working with variables and algebraic expressions'
     }
   ]
 };
 
 const MathematicsLessons = () => {
   const navigate = useNavigate();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<VideoPlayerRef>(null);
   const [currentLesson, setCurrentLesson] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [showTranscript, setShowTranscript] = useState(false);
-  const { getVideoProgress, updateVideoProgress, markVideoCompleted } = useVideoProgress();
+  const [autoPlayNext, setAutoPlayNext] = useState(true);
+  const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
+  const { toast } = useToast();
 
   const lesson = mathematicsLessons.lessons[currentLesson];
 
-  // Load saved progress when lesson changes
+  // Load the last watched video on mount
   useEffect(() => {
-    const progress = getVideoProgress('mathematics', lesson.id);
-    if (progress && videoRef.current) {
-      videoRef.current.currentTime = progress.currentTime;
-      setCurrentTime(progress.currentTime);
+    const lastWatchedId = getLastWatchedVideo('mathematics');
+    if (lastWatchedId) {
+      const lastIndex = mathematicsLessons.lessons.findIndex(l => l.id === lastWatchedId);
+      if (lastIndex !== -1) {
+        setCurrentLesson(lastIndex);
+      }
     }
-  }, [currentLesson, lesson.id, getVideoProgress]);
+  }, [getLastWatchedVideo]);
 
-  // Save progress periodically
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (videoRef.current && isPlaying) {
-        const currentTime = videoRef.current.currentTime;
-        const duration = videoRef.current.duration;
-        
-        updateVideoProgress('mathematics', lesson.id, {
-          currentTime,
-          duration,
-          completed: currentTime / duration > 0.9 // Mark as completed if 90% watched
-        });
+  const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
+    updateVideoProgress('mathematics', lesson.id, {
+      currentTime,
+      duration,
+      completed: currentTime / duration > 0.9
+    });
 
-        if (currentTime / duration > 0.9) {
-          markVideoCompleted('mathematics', lesson.id);
-        }
-      }
-    }, 5000); // Save every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [isPlaying, lesson.id, updateVideoProgress, markVideoCompleted]);
-
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
+    if (currentTime / duration > 0.9) {
+      markVideoCompleted('mathematics', lesson.id);
     }
   };
 
-  const handlePrevious = () => {
-    if (currentLesson > 0) {
-      setCurrentLesson(currentLesson - 1);
-      setIsPlaying(false);
+  const handleVideoEnded = () => {
+    markVideoCompleted('mathematics', lesson.id);
+    toast({
+      title: "Lesson completed!",
+      description: `You've finished "${lesson.title}"`,
+    });
+
+    if (autoPlayNext && currentLesson < mathematicsLessons.lessons.length - 1) {
+      setTimeout(() => {
+        handleNext();
+      }, 2000);
     }
   };
 
   const handleNext = () => {
     if (currentLesson < mathematicsLessons.lessons.length - 1) {
-      setCurrentLesson(currentLesson + 1);
-      setIsPlaying(false);
+      setCurrentLesson(prev => prev + 1);
     }
   };
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  const handlePrevious = () => {
+    if (currentLesson > 0) {
+      setCurrentLesson(prev => prev - 1);
+    }
+  };
+
+  const handleLessonSelect = (index: number) => {
+    setCurrentLesson(index);
+  };
+
+  const handleAddToFavorites = () => {
+    toast({
+      title: "Added to Favorites",
+      description: `"${lesson.title}" has been added to your favorites`,
+    });
+  };
+
+  const handleAddToWatchLater = () => {
+    toast({
+      title: "Added to Watch Later",
+      description: `"${lesson.title}" has been added to your watch later list`,
+    });
+  };
+
+  const getInitialTime = () => {
+    const progress = getVideoProgress('mathematics', lesson.id);
+    return progress?.currentTime || 0;
   };
 
   return (
@@ -151,66 +165,19 @@ const MathematicsLessons = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Video Player */}
+              {/* Enhanced Video Player */}
               <Card className="overflow-hidden">
-                <div className="relative bg-black aspect-video">
-                  <video
-                    ref={videoRef}
-                    className="w-full h-full"
-                    onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-                    onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-                    onEnded={() => setIsPlaying(false)}
-                  >
-                    <source src={lesson.videoUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  
-                  {/* Video Controls Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <div className="flex items-center gap-4 text-white">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handlePrevious}
-                        disabled={currentLesson === 0}
-                        className="text-white hover:bg-white/20"
-                      >
-                        <SkipBack className="w-4 h-4" />
-                      </Button>
-                      
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handlePlayPause}
-                        className="text-white hover:bg-white/20"
-                      >
-                        {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                      </Button>
-                      
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleNext}
-                        disabled={currentLesson === mathematicsLessons.lessons.length - 1}
-                        className="text-white hover:bg-white/20"
-                      >
-                        <SkipForward className="w-4 h-4" />
-                      </Button>
-                      
-                      <div className="flex-1 mx-4">
-                        <div className="text-xs mb-1">
-                          {formatTime(currentTime)} / {formatTime(duration)}
-                        </div>
-                        <div className="w-full bg-white/30 rounded-full h-1">
-                          <div 
-                            className="bg-[#009dff] h-1 rounded-full transition-all"
-                            style={{ width: `${(currentTime / duration) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <EnhancedVideoPlayer
+                  ref={videoRef}
+                  src={lesson.videoUrl}
+                  onTimeUpdate={handleVideoTimeUpdate}
+                  onEnded={handleVideoEnded}
+                  initialTime={getInitialTime()}
+                  onNext={handleNext}
+                  onPrevious={handlePrevious}
+                  hasNext={currentLesson < mathematicsLessons.lessons.length - 1}
+                  hasPrevious={currentLesson > 0}
+                />
               </Card>
 
               {/* Lesson Info */}
@@ -219,19 +186,48 @@ const MathematicsLessons = () => {
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
-                      <p className="text-gray-600 text-sm">{lesson.description}</p>
+                      <p className="text-gray-600 text-sm mb-3">{lesson.description}</p>
+                      <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {lesson.duration}
+                        </span>
+                        <span>Lesson {currentLesson + 1} of {mathematicsLessons.lessons.length}</span>
+                      </div>
                     </div>
                     
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={handleAddToFavorites}
+                      >
                         <Heart className="w-4 h-4 mr-2" />
-                        <span className="hidden sm:inline">Favourite</span>
+                        <span className="hidden sm:inline">Favorite</span>
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={handleAddToWatchLater}
+                      >
                         <BookmarkPlus className="w-4 h-4 mr-2" />
                         <span className="hidden sm:inline">Watch Later</span>
                       </Button>
                     </div>
+                  </div>
+
+                  {/* Auto-play toggle */}
+                  <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <input 
+                      type="checkbox" 
+                      id="autoplay" 
+                      checked={autoPlayNext}
+                      onChange={(e) => setAutoPlayNext(e.target.checked)}
+                      className="rounded"
+                    />
+                    <label htmlFor="autoplay" className="text-sm text-gray-700">
+                      Auto-play next lesson
+                    </label>
                   </div>
 
                   {/* Transcript Toggle */}
@@ -247,7 +243,7 @@ const MathematicsLessons = () => {
                   {showTranscript && (
                     <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                       <p className="text-sm text-gray-700">
-                        Transcript content would go here. This would be the full text of the video lesson...
+                        Transcript content would go here. This would be the full text of the video lesson including timestamps and searchable content...
                       </p>
                     </div>
                   )}
@@ -292,13 +288,14 @@ const MathematicsLessons = () => {
             <div className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Lessons</CardTitle>
+                  <CardTitle className="text-lg">Lessons ({mathematicsLessons.lessons.length})</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   {mathematicsLessons.lessons.map((lessonItem, index) => {
                     const progress = getVideoProgress('mathematics', lessonItem.id);
                     const isCompleted = progress?.completed || false;
                     const isActive = index === currentLesson;
+                    const watchProgress = progress ? (progress.currentTime / progress.duration) * 100 : 0;
                     
                     return (
                       <div
@@ -306,18 +303,18 @@ const MathematicsLessons = () => {
                         className={`p-4 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 transition-colors ${
                           isActive ? 'bg-blue-50 border-l-4 border-l-[#009dff]' : ''
                         }`}
-                        onClick={() => setCurrentLesson(index)}
+                        onClick={() => handleLessonSelect(index)}
                       >
                         <div className="flex items-start gap-3">
                           <div className="flex-shrink-0 mt-1">
                             {isCompleted ? (
                               <CheckCircle className="w-5 h-5 text-green-600" />
-                            ) : (
-                              <div className={`w-5 h-5 rounded-full border-2 ${
-                                isActive ? 'border-[#009dff] bg-[#009dff]' : 'border-gray-300'
-                              }`}>
-                                {isActive && <div className="w-1 h-1 bg-white rounded-full m-1.5" />}
+                            ) : isActive ? (
+                              <div className="w-5 h-5 rounded-full border-2 border-[#009dff] bg-[#009dff] flex items-center justify-center">
+                                <Play className="w-2 h-2 text-white fill-white" />
                               </div>
+                            ) : (
+                              <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -326,10 +323,19 @@ const MathematicsLessons = () => {
                             }`}>
                               {lessonItem.title}
                             </h4>
-                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                               <Clock className="w-3 h-3" />
                               {lessonItem.duration}
                             </div>
+                            {/* Progress bar for partially watched videos */}
+                            {progress && watchProgress > 0 && !isCompleted && (
+                              <div className="w-full bg-gray-200 rounded-full h-1 mb-1">
+                                <div 
+                                  className="bg-[#009dff] h-1 rounded-full transition-all"
+                                  style={{ width: `${Math.min(watchProgress, 100)}%` }}
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
