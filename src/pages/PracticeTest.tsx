@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TestCard from '@/components/cards/TestCard';
 import DashboardSidebar from '@/components/DashboardSidebar';
@@ -37,13 +36,14 @@ const testData = [
   },
   {
     id: 4,
-    title: 'Quantitative Reasoning',
+    title: 'Mathematics',
     questions: 10,
     duration: 10,
-    description: 'Evaluate your ability to interpret and analyze numerical data in various formats. Practice with problems designed to strengthen your mathematical reasoning skills.',
+    description: 'Practice specific math topics with targeted questions. Choose from 12 different subtopics including algebra, geometry, fractions, and more.',
     imagePath: '/quantitative-reasoning.jpg',
     hasAI: false,
-    isNew: false,
+    isNew: true,
+    customPath: '/practice-test/mathematics'
   },
 ];
 
@@ -68,6 +68,7 @@ const PracticeTest = () => {
               imagePath={test.imagePath}
               isNew={test.isNew}
               hasAI={test.hasAI}
+              customPath={test.customPath}
             />
           ))}
         </div>

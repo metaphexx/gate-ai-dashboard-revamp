@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
@@ -13,8 +12,8 @@ const mathSubtopics = [
     id: 'fractions-decimals',
     title: 'Fractions & Decimals',
     description: 'Work with fractions, decimals, and their conversions',
-    questions: 25,
-    estimatedTime: '20 min',
+    questions: 10,
+    estimatedTime: '10 min',
     difficulty: 'Medium',
     videoLessonId: 'fractions-decimals'
   },
@@ -22,8 +21,8 @@ const mathSubtopics = [
     id: 'time',
     title: 'Time',
     description: 'Time calculations, schedules, and duration problems',
-    questions: 20,
-    estimatedTime: '15 min',
+    questions: 10,
+    estimatedTime: '8 min',
     difficulty: 'Easy',
     videoLessonId: 'time'
   },
@@ -31,8 +30,8 @@ const mathSubtopics = [
     id: 'algebra',
     title: 'Algebra',
     description: 'Algebraic expressions, equations, and problem solving',
-    questions: 30,
-    estimatedTime: '25 min',
+    questions: 10,
+    estimatedTime: '12 min',
     difficulty: 'Hard',
     videoLessonId: 'algebra-basics'
   },
@@ -40,8 +39,8 @@ const mathSubtopics = [
     id: 'geometry',
     title: 'Geometry',
     description: 'Shapes, angles, area, and geometric relationships',
-    questions: 28,
-    estimatedTime: '22 min',
+    questions: 10,
+    estimatedTime: '10 min',
     difficulty: 'Medium',
     videoLessonId: 'geometry'
   },
@@ -49,8 +48,8 @@ const mathSubtopics = [
     id: 'graph-table-interpretation',
     title: 'Graph & Table Interpretation',
     description: 'Reading and analyzing graphs, charts, and tables',
-    questions: 22,
-    estimatedTime: '18 min',
+    questions: 10,
+    estimatedTime: '9 min',
     difficulty: 'Medium',
     videoLessonId: 'graph-interpretation'
   },
@@ -58,8 +57,8 @@ const mathSubtopics = [
     id: 'multiplication-division',
     title: 'Multiplication & Division',
     description: 'Advanced multiplication and division problems',
-    questions: 24,
-    estimatedTime: '20 min',
+    questions: 10,
+    estimatedTime: '8 min',
     difficulty: 'Easy',
     videoLessonId: 'arithmetic-basics'
   },
@@ -67,8 +66,8 @@ const mathSubtopics = [
     id: 'area-perimeter',
     title: 'Area & Perimeter',
     description: 'Calculate area and perimeter of various shapes',
-    questions: 26,
-    estimatedTime: '20 min',
+    questions: 10,
+    estimatedTime: '10 min',
     difficulty: 'Medium',
     videoLessonId: 'area-perimeter'
   },
@@ -76,8 +75,8 @@ const mathSubtopics = [
     id: 'spatial-reasoning',
     title: 'Spatial Reasoning',
     description: '3D visualization and spatial relationship problems',
-    questions: 20,
-    estimatedTime: '25 min',
+    questions: 10,
+    estimatedTime: '12 min',
     difficulty: 'Hard',
     videoLessonId: 'spatial-reasoning'
   },
@@ -85,8 +84,8 @@ const mathSubtopics = [
     id: 'ratios-unit-conversions',
     title: 'Ratios & Unit Conversions',
     description: 'Ratios, proportions, and unit conversion problems',
-    questions: 25,
-    estimatedTime: '18 min',
+    questions: 10,
+    estimatedTime: '9 min',
     difficulty: 'Medium',
     videoLessonId: 'percentages'
   },
@@ -94,8 +93,8 @@ const mathSubtopics = [
     id: 'probability',
     title: 'Probability',
     description: 'Basic probability and statistical concepts',
-    questions: 18,
-    estimatedTime: '15 min',
+    questions: 10,
+    estimatedTime: '8 min',
     difficulty: 'Medium',
     videoLessonId: 'probability'
   },
@@ -103,8 +102,8 @@ const mathSubtopics = [
     id: 'patterns-sequences',
     title: 'Patterns & Sequences',
     description: 'Number patterns, sequences, and series',
-    questions: 22,
-    estimatedTime: '20 min',
+    questions: 10,
+    estimatedTime: '10 min',
     difficulty: 'Medium',
     videoLessonId: 'patterns'
   },
@@ -112,8 +111,8 @@ const mathSubtopics = [
     id: 'problem-solving',
     title: 'Problem Solving',
     description: 'Word problems and multi-step problem solving',
-    questions: 30,
-    estimatedTime: '30 min',
+    questions: 10,
+    estimatedTime: '12 min',
     difficulty: 'Hard',
     videoLessonId: 'problem-solving'
   }
@@ -218,14 +217,14 @@ const MathematicsPracticeTest = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              onClick={() => navigate('/video-lessons')}
+              onClick={() => navigate('/practice')}
               className="p-2"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Mathematics Practice Tests</h1>
-              <p className="text-gray-600">Choose a specific topic to practice</p>
+              <p className="text-gray-600">Choose a specific topic to practice - 10 questions each</p>
             </div>
           </div>
 
@@ -260,11 +259,8 @@ const MathematicsPracticeTest = () => {
                 <div className="flex items-center gap-3">
                   <Clock className="w-8 h-8 text-purple-600" />
                   <div>
-                    <div className="text-2xl font-bold">
-                      {Math.round(mathSubtopics.reduce((total, topic) => 
-                        total + parseInt(topic.estimatedTime.split(' ')[0]), 0) / mathSubtopics.length)}m
-                    </div>
-                    <div className="text-sm text-gray-500">Avg. Duration</div>
+                    <div className="text-2xl font-bold">10</div>
+                    <div className="text-sm text-gray-500">Questions Each</div>
                   </div>
                 </div>
               </CardContent>
