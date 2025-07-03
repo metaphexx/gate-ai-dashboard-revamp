@@ -13,12 +13,7 @@ export interface StudyTopic {
   id: string;
   title: string;
   description: string;
-  introduction: string;
-  keyConcepts: {
-    title: string;
-    content: string;
-    points?: string[];
-  }[];
+  content: string; // Single content field for all educational material
   examples: StudyExample[];
   estimatedTime: number;
 }
@@ -44,48 +39,50 @@ export const studyNotesData: StudySubject[] = [
         id: 'algebra',
         title: 'Algebra',
         description: 'Linear equations, quadratic equations, and algebraic expressions',
-        introduction: 'Algebra is the branch of mathematics that uses letters and symbols to represent numbers and quantities in formulas and equations. It forms the foundation for solving mathematical problems systematically and is essential for understanding relationships between variables.',
-        keyConcepts: [
-          {
-            title: 'Variables and Constants',
-            content: 'In algebra, we use letters (usually x, y, z) to represent unknown values called variables. Constants are fixed numbers that do not change their value.',
-            points: [
-              'Variables can represent any number and change in value',
-              'Constants remain the same throughout the equation',
-              'We use variables to create general formulas that work for many situations'
-            ]
-          },
-          {
-            title: 'Linear Equations',
-            content: 'A linear equation is an equation where the highest power of the variable is 1. The general form is ax + b = c, where a, b, and c are constants.',
-            points: [
-              'Linear equations graph as straight lines',
-              'They have at most one solution',
-              'The solution represents where the line crosses the x-axis',
-              'Use inverse operations to isolate the variable'
-            ]
-          },
-          {
-            title: 'Quadratic Equations',
-            content: 'Quadratic equations contain a variable raised to the power of 2. The standard form is ax² + bx + c = 0, where a ≠ 0.',
-            points: [
-              'Quadratic equations can have 0, 1, or 2 real solutions',
-              'They graph as parabolas (U-shaped curves)',
-              'Can be solved by factoring, completing the square, or using the quadratic formula',
-              'The discriminant (b² - 4ac) tells us the number of real solutions'
-            ]
-          },
-          {
-            title: 'Solving Strategies',
-            content: 'There are systematic approaches to solving algebraic equations that ensure accuracy and efficiency.',
-            points: [
-              'Always perform the same operation on both sides of the equation',
-              'Work in reverse order of operations (PEMDAS backwards)',
-              'Combine like terms before isolating variables',
-              'Check your solution by substituting back into the original equation'
-            ]
-          }
-        ],
+        content: `
+# Introduction to Algebra
+
+Algebra is the branch of mathematics that uses letters and symbols to represent numbers and quantities in formulas and equations. It forms the foundation for solving mathematical problems systematically and is essential for understanding relationships between variables.
+
+## Variables and Constants
+
+In algebra, we use letters (usually x, y, z) to represent unknown values called variables. Constants are fixed numbers that do not change their value.
+
+- Variables can represent any number and change in value
+- Constants remain the same throughout the equation
+- We use variables to create general formulas that work for many situations
+
+## Linear Equations
+
+A linear equation is an equation where the highest power of the variable is 1. The general form is ax + b = c, where a, b, and c are constants.
+
+Key properties of linear equations:
+- Linear equations graph as straight lines
+- They have at most one solution
+- The solution represents where the line crosses the x-axis
+- Use inverse operations to isolate the variable
+
+## Quadratic Equations
+
+Quadratic equations contain a variable raised to the power of 2. The standard form is ax² + bx + c = 0, where a ≠ 0.
+
+Important characteristics:
+- Quadratic equations can have 0, 1, or 2 real solutions
+- They graph as parabolas (U-shaped curves)
+- Can be solved by factoring, completing the square, or using the quadratic formula
+- The discriminant (b² - 4ac) tells us the number of real solutions
+
+## Solving Strategies
+
+There are systematic approaches to solving algebraic equations that ensure accuracy and efficiency:
+
+1. Always perform the same operation on both sides of the equation
+2. Work in reverse order of operations (PEMDAS backwards)
+3. Combine like terms before isolating variables
+4. Check your solution by substituting back into the original equation
+
+The key to success in algebra is understanding that equations represent balanced relationships, and whatever you do to one side must be done to the other to maintain that balance.
+        `,
         estimatedTime: 45,
         examples: [
           {
@@ -129,29 +126,33 @@ export const studyNotesData: StudySubject[] = [
         id: 'arithmetic',
         title: 'Arithmetic',
         description: 'Basic operations, percentages, ratios, and proportions',
-        introduction: 'Arithmetic forms the foundation of all mathematics, dealing with basic operations on numbers. Understanding arithmetic is crucial for developing number sense and solving real-world problems involving calculations, percentages, and proportional relationships.',
-        keyConcepts: [
-          {
-            title: 'Percentage Calculations',
-            content: 'Percentages represent parts of a whole expressed as fractions of 100. They are essential for understanding proportions, discounts, interest rates, and statistical data.',
-            points: [
-              'Percent means "per hundred" - 25% = 25/100 = 0.25',
-              'To find a percentage of a number: multiply the number by the decimal form',
-              'To find what percentage one number is of another: divide and multiply by 100',
-              'Percentage increase/decrease: (new - old)/old × 100'
-            ]
-          },
-          {
-            title: 'Ratios and Proportions',
-            content: 'Ratios compare quantities, while proportions state that two ratios are equal. These concepts are fundamental in scaling, unit conversions, and solving real-world problems.',
-            points: [
-              'A ratio compares two or more quantities (e.g., 3:2 or 3/2)',
-              'A proportion states that two ratios are equal (a/b = c/d)',
-              'Cross multiplication: if a/b = c/d, then ad = bc',
-              'Unit rates compare quantities with different units (miles per hour, cost per item)'
-            ]
-          }
-        ],
+        content: `
+# Introduction to Arithmetic
+
+Arithmetic forms the foundation of all mathematics, dealing with basic operations on numbers. Understanding arithmetic is crucial for developing number sense and solving real-world problems involving calculations, percentages, and proportional relationships.
+
+## Percentage Calculations
+
+Percentages represent parts of a whole expressed as fractions of 100. They are essential for understanding proportions, discounts, interest rates, and statistical data.
+
+Key concepts to remember:
+- Percent means "per hundred" - 25% = 25/100 = 0.25
+- To find a percentage of a number: multiply the number by the decimal form
+- To find what percentage one number is of another: divide and multiply by 100
+- Percentage increase/decrease: (new - old)/old × 100
+
+## Ratios and Proportions
+
+Ratios compare quantities, while proportions state that two ratios are equal. These concepts are fundamental in scaling, unit conversions, and solving real-world problems.
+
+Understanding ratios and proportions:
+- A ratio compares two or more quantities (e.g., 3:2 or 3/2)
+- A proportion states that two ratios are equal (a/b = c/d)
+- Cross multiplication: if a/b = c/d, then ad = bc
+- Unit rates compare quantities with different units (miles per hour, cost per item)
+
+Mastering these concepts will help you solve many practical problems in daily life, from cooking recipes to financial calculations.
+        `,
         estimatedTime: 30,
         examples: [
           {
@@ -186,29 +187,31 @@ export const studyNotesData: StudySubject[] = [
         id: 'inference-techniques',
         title: 'Making Inferences',
         description: 'Learn to read between the lines and draw logical conclusions',
-        introduction: 'Inference is the ability to understand information that is not explicitly stated in a text. It involves using context clues, background knowledge, and logical reasoning to draw conclusions about what the author means beyond the literal words on the page.',
-        keyConcepts: [
-          {
-            title: 'Types of Inferences',
-            content: 'There are different levels of inference, from simple context clues to complex analytical reasoning.',
-            points: [
-              'Literal inference: directly stated information',
-              'Interpretive inference: reading between the lines',
-              'Critical inference: evaluating and analyzing information',
-              'Creative inference: extending ideas beyond the text'
-            ]
-          },
-          {
-            title: 'Context Clues',
-            content: 'Context clues help us understand unfamiliar words and concepts by examining the surrounding text.',
-            points: [
-              'Definition clues: the meaning is directly stated',
-              'Example clues: examples help clarify meaning',
-              'Contrast clues: opposite meanings provide hints',
-              'Inference clues: meaning must be reasoned from context'
-            ]
-          }
-        ],
+        content: `
+# Making Inferences
+
+Inference is the ability to understand information that is not explicitly stated in a text. It involves using context clues, background knowledge, and logical reasoning to draw conclusions about what the author means beyond the literal words on the page.
+
+## Types of Inferences
+
+There are different levels of inference, from simple context clues to complex analytical reasoning:
+
+- **Literal inference**: directly stated information
+- **Interpretive inference**: reading between the lines
+- **Critical inference**: evaluating and analyzing information
+- **Creative inference**: extending ideas beyond the text
+
+## Context Clues
+
+Context clues help us understand unfamiliar words and concepts by examining the surrounding text. These are essential tools for any reader:
+
+- **Definition clues**: the meaning is directly stated
+- **Example clues**: examples help clarify meaning
+- **Contrast clues**: opposite meanings provide hints
+- **Inference clues**: meaning must be reasoned from context
+
+Developing strong inference skills takes practice, but it's one of the most valuable reading comprehension abilities you can develop.
+        `,
         estimatedTime: 25,
         examples: [
           {
@@ -242,29 +245,31 @@ export const studyNotesData: StudySubject[] = [
         id: 'pattern-recognition',
         title: 'Pattern Recognition',
         description: 'Identify and predict patterns in sequences and shapes',
-        introduction: 'Pattern recognition is the ability to identify regularities and relationships in data, sequences, or visual information. This skill is fundamental to logical thinking and problem-solving across many disciplines.',
-        keyConcepts: [
-          {
-            title: 'Number Sequences',
-            content: 'Number sequences follow specific rules or patterns that can be identified and used to predict future terms.',
-            points: [
-              'Arithmetic sequences: constant difference between terms',
-              'Geometric sequences: constant ratio between terms',
-              'Fibonacci sequences: each term is the sum of the two preceding terms',
-              'Look for differences, ratios, or other mathematical relationships'
-            ]
-          },
-          {
-            title: 'Visual Patterns',
-            content: 'Visual patterns involve shapes, colors, positions, and transformations that follow logical rules.',
-            points: [
-              'Rotation: shapes turning around a central point',
-              'Reflection: shapes flipping across an axis',
-              'Translation: shapes moving position without changing orientation',
-              'Scaling: shapes changing size while maintaining proportions'
-            ]
-          }
-        ],
+        content: `
+# Pattern Recognition
+
+Pattern recognition is the ability to identify regularities and relationships in data, sequences, or visual information. This skill is fundamental to logical thinking and problem-solving across many disciplines.
+
+## Number Sequences
+
+Number sequences follow specific rules or patterns that can be identified and used to predict future terms:
+
+- **Arithmetic sequences**: constant difference between terms
+- **Geometric sequences**: constant ratio between terms
+- **Fibonacci sequences**: each term is the sum of the two preceding terms
+- Look for differences, ratios, or other mathematical relationships
+
+## Visual Patterns
+
+Visual patterns involve shapes, colors, positions, and transformations that follow logical rules:
+
+- **Rotation**: shapes turning around a central point
+- **Reflection**: shapes flipping across an axis
+- **Translation**: shapes moving position without changing orientation
+- **Scaling**: shapes changing size while maintaining proportions
+
+The key to success in pattern recognition is systematic analysis and careful observation of relationships between elements.
+        `,
         estimatedTime: 35,
         examples: [
           {
@@ -300,39 +305,40 @@ export const studyNotesData: StudySubject[] = [
         id: 'essay-structure',
         title: 'Essay Structure',
         description: 'Learn to organize and structure compelling essays',
-        introduction: 'Effective essay writing requires clear organization, logical flow, and persuasive argumentation. A well-structured essay guides readers through your ideas systematically and convincingly.',
-        keyConcepts: [
-          {
-            title: 'The Five-Paragraph Essay',
-            content: 'The five-paragraph essay is a fundamental structure that provides a clear framework for organizing ideas and arguments.',
-            points: [
-              'Introduction: Hook, background information, and thesis statement',
-              'Body paragraphs: Each focuses on one main point with evidence',
-              'Conclusion: Restates thesis and summarizes key arguments',
-              'Transitions connect ideas between and within paragraphs'
-            ]
-          },
-          {
-            title: 'Thesis Development',
-            content: 'A strong thesis statement is the backbone of any effective essay, providing focus and direction for your argument.',
-            points: [
-              'Make a clear, specific claim that can be supported with evidence',
-              'Position it at the end of your introduction paragraph',
-              'Ensure it addresses the prompt or question directly',
-              'Preview the main points you will discuss in the body'
-            ]
-          },
-          {
-            title: 'Evidence and Support',
-            content: 'Strong essays use various types of evidence to support their claims and convince readers.',
-            points: [
-              'Facts, statistics, and data provide concrete support',
-              'Expert opinions and quotations add authority',
-              'Examples and anecdotes make abstract concepts concrete',
-              'Always explain how evidence supports your argument'
-            ]
-          }
-        ],
+        content: `
+# Essay Structure
+
+Effective essay writing requires clear organization, logical flow, and persuasive argumentation. A well-structured essay guides readers through your ideas systematically and convincingly.
+
+## The Five-Paragraph Essay
+
+The five-paragraph essay is a fundamental structure that provides a clear framework for organizing ideas and arguments:
+
+- **Introduction**: Hook, background information, and thesis statement
+- **Body paragraphs**: Each focuses on one main point with evidence
+- **Conclusion**: Restates thesis and summarizes key arguments
+- **Transitions**: Connect ideas between and within paragraphs
+
+## Thesis Development
+
+A strong thesis statement is the backbone of any effective essay, providing focus and direction for your argument:
+
+- Make a clear, specific claim that can be supported with evidence
+- Position it at the end of your introduction paragraph
+- Ensure it addresses the prompt or question directly
+- Preview the main points you will discuss in the body
+
+## Evidence and Support
+
+Strong essays use various types of evidence to support their claims and convince readers:
+
+- **Facts, statistics, and data** provide concrete support
+- **Expert opinions and quotations** add authority
+- **Examples and anecdotes** make abstract concepts concrete
+- Always explain how evidence supports your argument
+
+Remember: the goal is to create a logical, compelling argument that guides your reader from introduction to conclusion.
+        `,
         estimatedTime: 40,
         examples: [
           {
