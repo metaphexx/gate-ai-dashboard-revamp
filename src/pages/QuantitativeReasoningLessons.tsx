@@ -27,8 +27,9 @@ import {
   BarChart3,
   MessageSquare,
   Trophy,
-  Bot,
-  X
+  Lightbulb,
+  HelpCircle,
+  Bot
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
@@ -93,8 +94,8 @@ const QuantitativeReasoningLessons = () => {
   const [notesCount, setNotesCount] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showSmartPrompt, setShowSmartPrompt] = useState(false);
-  const [smartPromptType, setSmartPromptType] = useState<'pause' | 'inactivity' | 'completion'>('pause');
-  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
+  const [pauseCount, setPauseCount] = useState(0);
   
   const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
   const { toast } = useToast();
@@ -114,25 +115,27 @@ const QuantitativeReasoningLessons = () => {
 
   // Smart prompt logic
   useEffect(() => {
-    const checkInactivity = () => {
-      const now = Date.now();
-      if (now - lastActivity > 30000 && !showSmartPrompt) { // 30 seconds of inactivity
-        setSmartPromptType('inactivity');
+    const checkForSmartPrompt = () => {
+      const timeSinceLastInteraction = Date.now() - lastInteractionTime;
+      
+      // Show smart prompt if user has been inactive for 30 seconds or paused multiple times
+      if (timeSinceLastInteraction > 30000 || pauseCount >= 3) {
         setShowSmartPrompt(true);
       }
     };
 
-    const interval = setInterval(checkInactivity, 10000); // Check every 10 seconds
+    const interval = setInterval(checkForSmartPrompt, 10000); // Check every 10 seconds
     return () => clearInterval(interval);
-  }, [lastActivity, showSmartPrompt]);
+  }, [lastInteractionTime, pauseCount]);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
+    setShowSmartPrompt(false); // Hide smart prompt when chat is opened
   };
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
     setCurrentTime(currentTime);
-    setLastActivity(Date.now());
+    setLastInteractionTime(Date.now());
     updateVideoProgress('quantitative-reasoning', lesson.id, {
       currentTime,
       duration,
@@ -145,18 +148,12 @@ const QuantitativeReasoningLessons = () => {
   };
 
   const handleVideoPause = () => {
-    // Show smart prompt when video is paused frequently
-    if (!showSmartPrompt) {
-      setSmartPromptType('pause');
-      setShowSmartPrompt(true);
-    }
+    setPauseCount(prev => prev + 1);
+    setLastInteractionTime(Date.now());
   };
 
   const handleVideoEnded = () => {
     markVideoCompleted('quantitative-reasoning', lesson.id);
-    setSmartPromptType('completion');
-    setShowSmartPrompt(true);
-    
     toast({
       title: "Lesson completed!",
       description: `You've finished "${lesson.title}"`,
@@ -170,48 +167,13 @@ const QuantitativeReasoningLessons = () => {
       ),
     });
 
+    // Show smart prompt for practice recommendations
+    setShowSmartPrompt(true);
+
     if (autoPlayNext && currentLesson < quantitativeReasoningLessons.lessons.length - 1) {
       setTimeout(() => {
         handleNext();
       }, 2000);
-    }
-  };
-
-  const handleSmartPromptAction = () => {
-    setActiveTab('elliot');
-    setShowSmartPrompt(false);
-  };
-
-  const dismissSmartPrompt = () => {
-    setShowSmartPrompt(false);
-  };
-
-  const getSmartPromptContent = () => {
-    switch (smartPromptType) {
-      case 'pause':
-        return {
-          title: "Need help understanding this concept?",
-          description: "Ask Elliot for clarification or additional examples!",
-          action: "Ask Elliot"
-        };
-      case 'inactivity':
-        return {
-          title: "Still there?",
-          description: "If you're having trouble, Elliot can help explain the material!",
-          action: "Get Help"
-        };
-      case 'completion':
-        return {
-          title: "Great job completing this lesson!",
-          description: "Ask Elliot for practice recommendations or study tips for the next topic.",
-          action: "Ask Elliot"
-        };
-      default:
-        return {
-          title: "Need help?",
-          description: "Ask Elliot for assistance!",
-          action: "Ask Elliot"
-        };
     }
   };
 
@@ -355,40 +317,47 @@ const QuantitativeReasoningLessons = () => {
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Quantitative Reasoning</h1>
               <p className="text-sm text-gray-600">GATE Exam Preparation</p>
             </div>
+            
+            {/* Phase 1: Header Elliot Button */}
+            <Button 
+              onClick={toggleChat}
+              className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#0080ff] hover:to-[#2980ff] text-white shadow-lg"
+              size="sm"
+            >
+              <Bot className="w-4 h-4 mr-2" />
+              Ask Elliot
+            </Button>
           </div>
 
-          {/* Smart Prompt Banner */}
-          {showSmartPrompt && (
-            <div className="mb-6 p-4 bg-gradient-to-r from-[#009dff]/10 to-[#80dfff]/10 border border-[#009dff]/20 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#009dff]/20 flex items-center justify-center">
-                    <Bot className="w-5 h-5 text-[#009dff]" />
+          {/* Smart Prompt - Phase 5 */}
+          {showSmartPrompt && !isChatOpen && (
+            <Card className="mb-4 border-blue-200 bg-blue-50">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
+                      <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
+                      <p className="text-sm text-blue-700">
+                        {pauseCount >= 3 ? "I noticed you've paused several times. Let me help explain this concept!" : 
+                         getVideoProgress('quantitative-reasoning', lesson.id)?.completed ? "Great job completing this lesson! Ready for practice recommendations?" :
+                         "I'm here to help you understand quantitative reasoning concepts better!"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">{getSmartPromptContent().title}</h4>
-                    <p className="text-sm text-gray-600">{getSmartPromptContent().description}</p>
+                  <div className="flex gap-2">
+                    <Button onClick={toggleChat} size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      Ask Elliot
+                    </Button>
+                    <Button onClick={() => setShowSmartPrompt(false)} variant="ghost" size="sm">
+                      ×
+                    </Button>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button 
-                    onClick={handleSmartPromptAction}
-                    size="sm"
-                    className="bg-[#009dff] hover:bg-[#0080ff]"
-                  >
-                    <Bot className="w-4 h-4 mr-2" />
-                    {getSmartPromptContent().action}
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={dismissSmartPrompt}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* Analytics Dashboard */}
@@ -419,7 +388,7 @@ const QuantitativeReasoningLessons = () => {
                 />
               </Card>
 
-              {/* Tabbed Content */}
+              {/* Tabbed Content - Phase 2: Add Elliot Tab */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
                 <TabsList className="grid w-full grid-cols-7">
                   <TabsTrigger value="lesson">Lesson</TabsTrigger>
@@ -480,23 +449,58 @@ const QuantitativeReasoningLessons = () => {
                         </div>
                       </div>
 
-                      {/* Quick Help Section with Elliot */}
-                      <div className="mb-4 p-3 bg-gradient-to-r from-[#009dff]/5 to-[#80dfff]/5 border border-[#009dff]/10 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Bot className="w-4 h-4 text-[#009dff]" />
-                            <span className="text-sm font-medium text-gray-900">Need help with this lesson?</span>
+                      {/* Phase 3: Elliot Quick Help Section */}
+                      <Card className="mb-4 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
+                              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
+                              <p className="text-sm text-blue-700">Elliot can explain concepts, provide study tips, and answer questions about {lesson.title.toLowerCase()}.</p>
+                            </div>
                           </div>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => setActiveTab('elliot')}
-                            className="text-[#009dff] hover:text-[#0080ff] hover:bg-[#009dff]/10"
-                          >
-                            Ask Elliot
-                          </Button>
-                        </div>
-                      </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => {
+                                toggleChat();
+                                setActiveTab('elliot');
+                              }}
+                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
+                            >
+                              <HelpCircle className="w-4 h-4 mr-1" />
+                              Explain this concept
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => {
+                                toggleChat();
+                                setActiveTab('elliot');
+                              }}
+                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
+                            >
+                              <Lightbulb className="w-4 h-4 mr-1" />
+                              Study tips
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => {
+                                toggleChat();
+                                setActiveTab('elliot');
+                              }}
+                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
+                            >
+                              <MessageSquare className="w-4 h-4 mr-1" />
+                              Ask questions
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
 
                       {/* Auto-play toggle */}
                       <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
@@ -594,7 +598,7 @@ const QuantitativeReasoningLessons = () => {
                   <QuizIntegration lessonId={lesson.id} onQuizComplete={handleQuizComplete} />
                 </TabsContent>
 
-                {/* Elliot Tab Content */}
+                {/* Phase 2: Elliot Tab Content */}
                 <TabsContent value="elliot">
                   <Card>
                     <CardHeader>
