@@ -319,14 +319,7 @@ const QuantitativeReasoningLessons = () => {
             </div>
             
             {/* Phase 1: Header Elliot Button */}
-            <Button 
-              onClick={toggleChat}
-              className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#0080ff] hover:to-[#2980ff] text-white shadow-lg"
-              size="sm"
-            >
-              <Bot className="w-4 h-4 mr-2" />
-              Ask Elliot
-            </Button>
+            
           </div>
 
           {/* Smart Prompt - Phase 5 */}
