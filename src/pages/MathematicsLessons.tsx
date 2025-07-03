@@ -123,6 +123,14 @@ const MathematicsLessons = () => {
     toast({
       title: "Lesson completed!",
       description: `You've finished "${lesson.title}"`,
+      action: (
+        <Button 
+          size="sm" 
+          onClick={() => navigate(`/practice-test/mathematics?topic=${getPracticeTopicId(lesson.id)}`)}
+        >
+          Practice Now
+        </Button>
+      ),
     });
 
     if (autoPlayNext && currentLesson < mathematicsLessons.lessons.length - 1) {
@@ -130,6 +138,16 @@ const MathematicsLessons = () => {
         handleNext();
       }, 2000);
     }
+  };
+
+  const getPracticeTopicId = (lessonId: string): string => {
+    const lessonToPracticeMap: { [key: string]: string } = {
+      'math-intro': 'problem-solving',
+      'arithmetic-basics': 'multiplication-division', 
+      'percentages': 'ratios-unit-conversions',
+      'algebra-basics': 'algebra'
+    };
+    return lessonToPracticeMap[lessonId] || 'problem-solving';
   };
 
   const handleNext = () => {
@@ -296,7 +314,7 @@ const MathematicsLessons = () => {
                 <TabsList className="grid w-full grid-cols-6">
                   <TabsTrigger value="lesson">Lesson</TabsTrigger>
                   <TabsTrigger value="notes">Notes</TabsTrigger>
-                  <TabsTrigger value="quiz">Quiz</TabsTrigger>
+                  <TabsTrigger value="practice">Practice</TabsTrigger>
                   <TabsTrigger value="discussion">
                     <MessageSquare className="w-4 h-4 mr-1" />
                     Discussion
@@ -362,6 +380,26 @@ const MathematicsLessons = () => {
                         </label>
                       </div>
 
+                      {/* Show Practice Button for completed lessons */}
+                      {getVideoProgress('mathematics', lesson.id)?.completed && (
+                        <div className="mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-medium text-green-900">Lesson Completed!</h4>
+                              <p className="text-sm text-green-700">Ready to practice what you've learned?</p>
+                            </div>
+                            <Button 
+                              onClick={() => navigate(`/practice-test/mathematics?topic=${getPracticeTopicId(lesson.id)}`)}
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              <Play className="w-4 h-4 mr-2" />
+                              Practice Now
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Transcript Toggle */}
                       <Button
                         variant="ghost"
@@ -420,7 +458,7 @@ const MathematicsLessons = () => {
                   <NoteTaking videoId={lesson.id} currentTime={currentTime} />
                 </TabsContent>
 
-                <TabsContent value="quiz">
+                <TabsContent value="practice">
                   <QuizIntegration lessonId={lesson.id} onQuizComplete={handleQuizComplete} />
                 </TabsContent>
 

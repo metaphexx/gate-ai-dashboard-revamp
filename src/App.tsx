@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -36,10 +35,11 @@ import WritingTest from "./pages/WritingTest";
 import WritingResults from "./pages/WritingResults";
 import WritingSolution from "./pages/WritingSolution";
 import ChatWithElliot from "./pages/ChatWithElliot";
+import MathematicsPracticeTest from '@/pages/MathematicsPracticeTest';
 
 const queryClient = new QueryClient();
 
-const App = () => {
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <VideoProgressProvider>
@@ -76,6 +76,7 @@ const App = () => {
                 <Route path="/video-lessons/reading-comprehension" element={<ReadingComprehensionLessons />} />
                 <Route path="/video-lessons/writing" element={<WritingLessons />} />
                 <Route path="/video-lessons/abstract-reasoning" element={<AbstractReasoningLessons />} />
+                <Route path="/practice-test/mathematics" element={<MathematicsPracticeTest />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
@@ -87,6 +88,6 @@ const App = () => {
       </VideoProgressProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;
