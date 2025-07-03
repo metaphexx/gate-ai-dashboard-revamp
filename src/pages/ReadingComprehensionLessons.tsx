@@ -500,7 +500,7 @@ const ReadingComprehensionLessons = () => {
                               <p className="text-sm text-green-700">Ready to practice your reading comprehension skills?</p>
                             </div>
                             <Button 
-                              onClick={() => navigate('/reading-comprehension-test')}
+                              onClick={() => navigate('/reading-comprehension-prestart')}
                               size="sm"
                               className="bg-green-600 hover:bg-green-700"
                             >
@@ -584,7 +584,7 @@ const ReadingComprehensionLessons = () => {
                       
                       <div className="flex flex-col sm:flex-row gap-3">
                         <Button 
-                          onClick={() => navigate('/reading-comprehension-test')}
+                          onClick={() => navigate('/reading-comprehension-prestart')}
                           className="flex-1"
                           size="lg"
                         >

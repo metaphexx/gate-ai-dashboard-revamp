@@ -29,9 +29,11 @@ import AbstractReasoningTest from "./pages/AbstractReasoningTest";
 import AbstractReasoningResults from "./pages/AbstractReasoningResults";
 import AbstractReasoningFeedback from "./pages/AbstractReasoningFeedback";
 import AbstractReasoningSolution from "./pages/AbstractReasoningSolution";
+import ReadingComprehensionPreStart from "./pages/ReadingComprehensionPreStart";
 import ReadingComprehensionTest from "./pages/ReadingComprehensionTest";
 import ReadingComprehensionResults from "./pages/ReadingComprehensionResults";
 import ReadingComprehensionSolution from "./pages/ReadingComprehensionSolution";
+import WritingPreStart from "./pages/WritingPreStart";
 import WritingTest from "./pages/WritingTest";
 import WritingResults from "./pages/WritingResults";
 import WritingSolution from "./pages/WritingSolution";
@@ -58,9 +60,11 @@ function App() {
                 <Route path="/abstract-reasoning-results" element={<AbstractReasoningResults />} />
                 <Route path="/abstract-reasoning-feedback" element={<AbstractReasoningFeedback />} />
                 <Route path="/abstract-reasoning-solution" element={<AbstractReasoningSolution />} />
+                <Route path="/reading-comprehension-prestart" element={<ReadingComprehensionPreStart />} />
                 <Route path="/reading-comprehension-test" element={<ReadingComprehensionTest />} />
                 <Route path="/reading-comprehension-results" element={<ReadingComprehensionResults />} />
                 <Route path="/reading-comprehension-solution" element={<ReadingComprehensionSolution />} />
+                <Route path="/writing-prestart" element={<WritingPreStart />} />
                 <Route path="/writing-test" element={<WritingTest />} />
                 <Route path="/writing-results" element={<WritingResults />} />
                 <Route path="/writing-solution" element={<WritingSolution />} />

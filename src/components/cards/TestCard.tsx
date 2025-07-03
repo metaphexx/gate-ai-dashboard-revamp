@@ -33,14 +33,14 @@ const TestCard: React.FC<TestCardProps> = ({
     if (customPath) {
       navigate(customPath);
     } else {
-      // Default navigation logic based on title
+      // Default navigation logic based on title - navigate to prestart pages
       const path = title.toLowerCase().replace(/\s+/g, '-');
       if (path === 'abstract-reasoning') {
         navigate('/abstract-reasoning-prestart');
       } else if (path === 'writing-test') {
-        navigate('/writing-test');
+        navigate('/writing-prestart');
       } else if (path === 'reading-comprehension') {
-        navigate('/reading-comprehension-test');
+        navigate('/reading-comprehension-prestart');
       } else if (path === 'quantitative-reasoning') {
         navigate('/practice-test?subject=mathematics');
       }

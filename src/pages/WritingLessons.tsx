@@ -500,7 +500,7 @@ const WritingLessons = () => {
                               <p className="text-sm text-green-700">Ready to practice your writing skills?</p>
                             </div>
                             <Button 
-                              onClick={() => navigate('/writing-test')}
+                              onClick={() => navigate('/writing-prestart')}
                               size="sm"
                               className="bg-green-600 hover:bg-green-700"
                             >
@@ -584,7 +584,7 @@ const WritingLessons = () => {
                       
                       <div className="flex flex-col sm:flex-row gap-3">
                         <Button 
-                          onClick={() => navigate('/writing-test')}
+                          onClick={() => navigate('/writing-prestart')}
                           className="flex-1"
                           size="lg"
                         >
