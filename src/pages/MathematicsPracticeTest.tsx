@@ -1,11 +1,11 @@
+
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Play, CheckCircle, Lock, Clock, Target } from 'lucide-react';
-import { useVideoProgress } from '@/contexts/VideoProgressContext';
+import { ArrowLeft, Play, Clock, Target, Shuffle } from 'lucide-react';
 
 const mathSubtopics = [
   {
@@ -13,9 +13,8 @@ const mathSubtopics = [
     title: 'Fractions & Decimals',
     description: 'Work with fractions, decimals, and their conversions',
     questions: 10,
-    estimatedTime: '10 min',
+    estimatedTime: '8 min',
     difficulty: 'Medium',
-    videoLessonId: 'fractions-decimals'
   },
   {
     id: 'time',
@@ -24,25 +23,22 @@ const mathSubtopics = [
     questions: 10,
     estimatedTime: '8 min',
     difficulty: 'Easy',
-    videoLessonId: 'time'
   },
   {
     id: 'algebra',
     title: 'Algebra',
     description: 'Algebraic expressions, equations, and problem solving',
     questions: 10,
-    estimatedTime: '12 min',
+    estimatedTime: '10 min',
     difficulty: 'Hard',
-    videoLessonId: 'algebra-basics'
   },
   {
     id: 'geometry',
     title: 'Geometry',
     description: 'Shapes, angles, area, and geometric relationships',
     questions: 10,
-    estimatedTime: '10 min',
+    estimatedTime: '8 min',
     difficulty: 'Medium',
-    videoLessonId: 'geometry'
   },
   {
     id: 'graph-table-interpretation',
@@ -51,7 +47,6 @@ const mathSubtopics = [
     questions: 10,
     estimatedTime: '9 min',
     difficulty: 'Medium',
-    videoLessonId: 'graph-interpretation'
   },
   {
     id: 'multiplication-division',
@@ -60,34 +55,30 @@ const mathSubtopics = [
     questions: 10,
     estimatedTime: '8 min',
     difficulty: 'Easy',
-    videoLessonId: 'arithmetic-basics'
   },
   {
     id: 'area-perimeter',
     title: 'Area & Perimeter',
     description: 'Calculate area and perimeter of various shapes',
     questions: 10,
-    estimatedTime: '10 min',
+    estimatedTime: '8 min',
     difficulty: 'Medium',
-    videoLessonId: 'area-perimeter'
   },
   {
     id: 'spatial-reasoning',
     title: 'Spatial Reasoning',
     description: '3D visualization and spatial relationship problems',
     questions: 10,
-    estimatedTime: '12 min',
+    estimatedTime: '10 min',
     difficulty: 'Hard',
-    videoLessonId: 'spatial-reasoning'
   },
   {
     id: 'ratios-unit-conversions',
     title: 'Ratios & Unit Conversions',
     description: 'Ratios, proportions, and unit conversion problems',
     questions: 10,
-    estimatedTime: '9 min',
+    estimatedTime: '8 min',
     difficulty: 'Medium',
-    videoLessonId: 'percentages'
   },
   {
     id: 'probability',
@@ -96,25 +87,22 @@ const mathSubtopics = [
     questions: 10,
     estimatedTime: '8 min',
     difficulty: 'Medium',
-    videoLessonId: 'probability'
   },
   {
     id: 'patterns-sequences',
     title: 'Patterns & Sequences',
     description: 'Number patterns, sequences, and series',
     questions: 10,
-    estimatedTime: '10 min',
+    estimatedTime: '8 min',
     difficulty: 'Medium',
-    videoLessonId: 'patterns'
   },
   {
     id: 'problem-solving',
     title: 'Problem Solving',
     description: 'Word problems and multi-step problem solving',
     questions: 10,
-    estimatedTime: '12 min',
+    estimatedTime: '10 min',
     difficulty: 'Hard',
-    videoLessonId: 'problem-solving'
   }
 ];
 
@@ -122,7 +110,6 @@ const MathematicsPracticeTest = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const selectedTopic = searchParams.get('topic');
-  const { getVideoProgress } = useVideoProgress();
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -133,18 +120,18 @@ const MathematicsPracticeTest = () => {
     }
   };
 
-  const isTopicUnlocked = (videoLessonId: string) => {
-    const progress = getVideoProgress('mathematics', videoLessonId);
-    return progress?.completed || false;
-  };
-
   const handleStartTest = (subtopicId: string) => {
     // Navigate to actual practice test with the specific subtopic
     navigate(`/practice-test?subject=mathematics&topic=${subtopicId}`);
   };
 
+  const handleStartRandomMix = () => {
+    // Navigate to practice test with random mix parameter
+    navigate(`/practice-test?subject=mathematics&topic=random-mix`);
+  };
+
   // If a specific topic is selected (from video lesson), show that topic's test
-  if (selectedTopic) {
+  if (selectedTopic && selectedTopic !== 'random-mix') {
     const topic = mathSubtopics.find(t => t.id === selectedTopic);
     if (topic) {
       return (
@@ -156,7 +143,7 @@ const MathematicsPracticeTest = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => navigate('/video-lessons/mathematics')}
+                  onClick={() => navigate('/practice-test/mathematics')}
                   className="p-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -244,12 +231,10 @@ const MathematicsPracticeTest = () => {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                  <Shuffle className="w-8 h-8 text-purple-600" />
                   <div>
-                    <div className="text-2xl font-bold">
-                      {mathSubtopics.filter(topic => isTopicUnlocked(topic.videoLessonId)).length}
-                    </div>
-                    <div className="text-sm text-gray-500">Topics Unlocked</div>
+                    <div className="text-2xl font-bold">1</div>
+                    <div className="text-sm text-gray-500">Random Mix Option</div>
                   </div>
                 </div>
               </CardContent>
@@ -257,7 +242,7 @@ const MathematicsPracticeTest = () => {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Clock className="w-8 h-8 text-purple-600" />
+                  <Clock className="w-8 h-8 text-green-600" />
                   <div>
                     <div className="text-2xl font-bold">10</div>
                     <div className="text-sm text-gray-500">Questions Each</div>
@@ -267,91 +252,100 @@ const MathematicsPracticeTest = () => {
             </Card>
           </div>
 
+          {/* Random Mix Card */}
+          <div className="mb-6">
+            <Card 
+              className="overflow-hidden transition-all duration-200 hover:shadow-lg cursor-pointer border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50"
+              onClick={handleStartRandomMix}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-xl mb-2 flex items-center gap-2 text-purple-700">
+                      <Shuffle className="w-5 h-5" />
+                      Random Mix Challenge
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Test your overall math skills with a random selection of questions from all topics
+                    </p>
+                    <Badge className="bg-purple-100 text-purple-800">
+                      Mixed Difficulty
+                    </Badge>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                  <span className="flex items-center gap-1">
+                    <Target className="w-3 h-3" />
+                    10 questions
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    8-10 min
+                  </span>
+                </div>
+                
+                <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStartRandomMix();
+                  }}
+                >
+                  <Shuffle className="w-4 h-4 mr-2" />
+                  Start Random Mix
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
           {/* Topics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mathSubtopics.map((topic) => {
-              const isUnlocked = isTopicUnlocked(topic.videoLessonId);
-              
-              return (
-                <Card 
-                  key={topic.id} 
-                  className={`overflow-hidden transition-all duration-200 ${
-                    isUnlocked 
-                      ? 'hover:shadow-lg cursor-pointer border-2 border-transparent hover:border-blue-100' 
-                      : 'opacity-60'
-                  }`}
-                  onClick={isUnlocked ? () => handleStartTest(topic.id) : undefined}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg mb-2 flex items-center gap-2">
-                          {topic.title}
-                          {isUnlocked ? (
-                            <CheckCircle className="w-4 h-4 text-green-600" />
-                          ) : (
-                            <Lock className="w-4 h-4 text-gray-400" />
-                          )}
-                        </CardTitle>
-                        <p className="text-sm text-gray-600 mb-3">{topic.description}</p>
-                        <Badge className={getDifficultyColor(topic.difficulty)}>
-                          {topic.difficulty}
-                        </Badge>
-                      </div>
+            {mathSubtopics.map((topic) => (
+              <Card 
+                key={topic.id} 
+                className="overflow-hidden transition-all duration-200 hover:shadow-lg cursor-pointer border-2 border-transparent hover:border-blue-100"
+                onClick={() => handleStartTest(topic.id)}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <CardTitle className="text-lg mb-2">
+                        {topic.title}
+                      </CardTitle>
+                      <p className="text-sm text-gray-600 mb-3">{topic.description}</p>
+                      <Badge className={getDifficultyColor(topic.difficulty)}>
+                        {topic.difficulty}
+                      </Badge>
                     </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                      <span className="flex items-center gap-1">
-                        <Target className="w-3 h-3" />
-                        {topic.questions} questions
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {topic.estimatedTime}
-                      </span>
-                    </div>
-                    
-                    <Button 
-                      className="w-full" 
-                      disabled={!isUnlocked}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (isUnlocked) {
-                          handleStartTest(topic.id);
-                        }
-                      }}
-                    >
-                      {isUnlocked ? (
-                        <>
-                          <Play className="w-4 h-4 mr-2" />
-                          Start Test
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="w-4 h-4 mr-2" />
-                          Complete Video Lesson
-                        </>
-                      )}
-                    </Button>
-                    
-                    {!isUnlocked && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full mt-2"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate('/video-lessons/mathematics');
-                        }}
-                      >
-                        Watch Video Lesson
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                    <span className="flex items-center gap-1">
+                      <Target className="w-3 h-3" />
+                      {topic.questions} questions
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {topic.estimatedTime}
+                    </span>
+                  </div>
+                  
+                  <Button 
+                    className="w-full" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleStartTest(topic.id);
+                    }}
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Start Test
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </div>
