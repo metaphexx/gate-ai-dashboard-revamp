@@ -27,7 +27,8 @@ import {
   BarChart3,
   MessageSquare,
   Trophy,
-  Bot
+  Bot,
+  X
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
@@ -91,6 +92,9 @@ const QuantitativeReasoningLessons = () => {
   const [totalWatchTime, setTotalWatchTime] = useState(0);
   const [notesCount, setNotesCount] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showSmartPrompt, setShowSmartPrompt] = useState(false);
+  const [smartPromptType, setSmartPromptType] = useState<'pause' | 'inactivity' | 'completion'>('pause');
+  const [lastActivity, setLastActivity] = useState(Date.now());
   
   const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
   const { toast } = useToast();
@@ -108,12 +112,27 @@ const QuantitativeReasoningLessons = () => {
     }
   }, [getLastWatchedVideo]);
 
+  // Smart prompt logic
+  useEffect(() => {
+    const checkInactivity = () => {
+      const now = Date.now();
+      if (now - lastActivity > 30000 && !showSmartPrompt) { // 30 seconds of inactivity
+        setSmartPromptType('inactivity');
+        setShowSmartPrompt(true);
+      }
+    };
+
+    const interval = setInterval(checkInactivity, 10000); // Check every 10 seconds
+    return () => clearInterval(interval);
+  }, [lastActivity, showSmartPrompt]);
+
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
     setCurrentTime(currentTime);
+    setLastActivity(Date.now());
     updateVideoProgress('quantitative-reasoning', lesson.id, {
       currentTime,
       duration,
@@ -125,8 +144,19 @@ const QuantitativeReasoningLessons = () => {
     }
   };
 
+  const handleVideoPause = () => {
+    // Show smart prompt when video is paused frequently
+    if (!showSmartPrompt) {
+      setSmartPromptType('pause');
+      setShowSmartPrompt(true);
+    }
+  };
+
   const handleVideoEnded = () => {
     markVideoCompleted('quantitative-reasoning', lesson.id);
+    setSmartPromptType('completion');
+    setShowSmartPrompt(true);
+    
     toast({
       title: "Lesson completed!",
       description: `You've finished "${lesson.title}"`,
@@ -144,6 +174,44 @@ const QuantitativeReasoningLessons = () => {
       setTimeout(() => {
         handleNext();
       }, 2000);
+    }
+  };
+
+  const handleSmartPromptAction = () => {
+    setActiveTab('elliot');
+    setShowSmartPrompt(false);
+  };
+
+  const dismissSmartPrompt = () => {
+    setShowSmartPrompt(false);
+  };
+
+  const getSmartPromptContent = () => {
+    switch (smartPromptType) {
+      case 'pause':
+        return {
+          title: "Need help understanding this concept?",
+          description: "Ask Elliot for clarification or additional examples!",
+          action: "Ask Elliot"
+        };
+      case 'inactivity':
+        return {
+          title: "Still there?",
+          description: "If you're having trouble, Elliot can help explain the material!",
+          action: "Get Help"
+        };
+      case 'completion':
+        return {
+          title: "Great job completing this lesson!",
+          description: "Ask Elliot for practice recommendations or study tips for the next topic.",
+          action: "Ask Elliot"
+        };
+      default:
+        return {
+          title: "Need help?",
+          description: "Ask Elliot for assistance!",
+          action: "Ask Elliot"
+        };
     }
   };
 
@@ -289,6 +357,40 @@ const QuantitativeReasoningLessons = () => {
             </div>
           </div>
 
+          {/* Smart Prompt Banner */}
+          {showSmartPrompt && (
+            <div className="mb-6 p-4 bg-gradient-to-r from-[#009dff]/10 to-[#80dfff]/10 border border-[#009dff]/20 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#009dff]/20 flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-[#009dff]" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">{getSmartPromptContent().title}</h4>
+                    <p className="text-sm text-gray-600">{getSmartPromptContent().description}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    onClick={handleSmartPromptAction}
+                    size="sm"
+                    className="bg-[#009dff] hover:bg-[#0080ff]"
+                  >
+                    <Bot className="w-4 h-4 mr-2" />
+                    {getSmartPromptContent().action}
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={dismissSmartPrompt}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Analytics Dashboard */}
           <AnalyticsDashboard
             totalWatchTime={totalWatchTime}
@@ -308,6 +410,7 @@ const QuantitativeReasoningLessons = () => {
                   src={lesson.videoUrl}
                   onTimeUpdate={handleVideoTimeUpdate}
                   onEnded={handleVideoEnded}
+                  onPause={handleVideoPause}
                   initialTime={getInitialTime()}
                   onNext={handleNext}
                   onPrevious={handlePrevious}
@@ -373,6 +476,24 @@ const QuantitativeReasoningLessons = () => {
                           >
                             <BookmarkPlus className="w-4 h-4 mr-2" />
                             <span className="hidden sm:inline">Watch Later</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Quick Help Section with Elliot */}
+                      <div className="mb-4 p-3 bg-gradient-to-r from-[#009dff]/5 to-[#80dfff]/5 border border-[#009dff]/10 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Bot className="w-4 h-4 text-[#009dff]" />
+                            <span className="text-sm font-medium text-gray-900">Need help with this lesson?</span>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => setActiveTab('elliot')}
+                            className="text-[#009dff] hover:text-[#0080ff] hover:bg-[#009dff]/10"
+                          >
+                            Ask Elliot
                           </Button>
                         </div>
                       </div>
