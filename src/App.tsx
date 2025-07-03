@@ -39,6 +39,9 @@ import WritingResults from "./pages/WritingResults";
 import WritingSolution from "./pages/WritingSolution";
 import ChatWithElliot from "./pages/ChatWithElliot";
 import QuantitativeReasoningPracticeTest from './pages/QuantitativeReasoningPracticeTest';
+import StudyNotes from './pages/StudyNotes';
+import StudyNotesSubject from './pages/StudyNotesSubject';
+import StudyNotesTopic from './pages/StudyNotesTopic';
 
 const queryClient = new QueryClient();
 
@@ -82,6 +85,9 @@ function App() {
                 <Route path="/video-lessons/writing" element={<WritingLessons />} />
                 <Route path="/video-lessons/abstract-reasoning" element={<AbstractReasoningLessons />} />
                 <Route path="/practice-test/quantitative-reasoning" element={<QuantitativeReasoningPracticeTest />} />
+                <Route path="/study-notes" element={<StudyNotes />} />
+                <Route path="/study-notes/:subjectId" element={<StudyNotesSubject />} />
+                <Route path="/study-notes/:subjectId/:topicId" element={<StudyNotesTopic />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

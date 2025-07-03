@@ -11,7 +11,8 @@ import {
   HelpCircle,
   User,
   Video,
-  MessageCircle
+  MessageCircle,
+  NotebookPen
 } from 'lucide-react';
 
 const DashboardSidebar = () => {
@@ -27,7 +28,8 @@ const DashboardSidebar = () => {
         { name: "Exam in Progress", icon: <Clock size={20} />, path: "/progress" },
         { name: "Exam History", icon: <Clock size={20} />, path: "/history" },
         { name: "Video Lessons", icon: <Video size={20} />, path: "/video-lessons" },
-        { name: "Video Tutorials", icon: <Video size={20} />, path: "/video-tutorials" }
+        { name: "Video Tutorials", icon: <Video size={20} />, path: "/video-tutorials" },
+        { name: "Study Notes", icon: <NotebookPen size={20} />, path: "/study-notes" }
       ]
     },
     {
