@@ -36,7 +36,7 @@ import WritingTest from "./pages/WritingTest";
 import WritingResults from "./pages/WritingResults";
 import WritingSolution from "./pages/WritingSolution";
 import ChatWithElliot from "./pages/ChatWithElliot";
-import QuantitativeReasoningPracticeTest from '@/pages/QuantitativeReasoningPracticeTest';
+import QuantitativeReasoningPracticeTest from './pages/QuantitativeReasoningPracticeTest';
 
 const queryClient = new QueryClient();
 
