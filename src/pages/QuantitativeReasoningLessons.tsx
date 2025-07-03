@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
@@ -31,7 +32,6 @@ import {
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
-import { useChat } from '@/contexts/ChatContext';
 
 const quantitativeReasoningLessons = {
   title: 'Quantitative Reasoning',
@@ -91,10 +91,10 @@ const QuantitativeReasoningLessons = () => {
   const [quizScores, setQuizScores] = useState<number[]>([]);
   const [totalWatchTime, setTotalWatchTime] = useState(0);
   const [notesCount, setNotesCount] = useState(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
   const { toast } = useToast();
-  const { isChatOpen, toggleChat } = useChat();
 
   const lesson = quantitativeReasoningLessons.lessons[currentLesson];
 
@@ -108,6 +108,10 @@ const QuantitativeReasoningLessons = () => {
       }
     }
   }, [getLastWatchedVideo]);
+
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
     setCurrentTime(currentTime);
@@ -558,10 +562,18 @@ const QuantitativeReasoningLessons = () => {
       {/* Elliot Integration */}
       <FloatingChatButton onClick={toggleChat} />
       {isChatOpen && (
-        <ChatPanel 
-          initialMessage={`I'm watching the "${lesson.title}" video lesson. Can you help me understand this topic better?`}
-          context={`Current lesson: ${lesson.title} - ${lesson.description}`}
-        />
+        <div className="fixed right-0 top-0 w-80 h-full bg-white shadow-lg border-l z-50">
+          <div className="flex items-center justify-between p-4 border-b">
+            <h3 className="font-semibold">Chat with Elliot</h3>
+            <Button variant="ghost" size="sm" onClick={toggleChat}>
+              ×
+            </Button>
+          </div>
+          <ChatPanel 
+            isOpen={true}
+            onClose={toggleChat}
+          />
+        </div>
       )}
     </div>
   );
