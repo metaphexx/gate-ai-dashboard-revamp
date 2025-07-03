@@ -9,6 +9,8 @@ import QuizIntegration from '@/components/video/QuizIntegration';
 import AchievementSystem from '@/components/video/AchievementSystem';
 import DiscussionSystem from '@/components/video/DiscussionSystem';
 import SmartRecommendations from '@/components/video/SmartRecommendations';
+import FloatingChatButton from '@/components/chat/FloatingChatButton';
+import ChatPanel from '@/components/chat/ChatPanel';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -29,9 +31,10 @@ import {
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
+import { useChat } from '@/contexts/ChatContext';
 
-const mathematicsLessons = {
-  title: 'Mathematics',
+const quantitativeReasoningLessons = {
+  title: 'Quantitative Reasoning',
   totalLessons: 15,
   totalDuration: '3h 20m',
   language: 'English',
@@ -40,10 +43,10 @@ const mathematicsLessons = {
   lessons: [
     {
       id: 'math-intro',
-      title: 'Introduction to GATE Mathematics',
+      title: 'Introduction to GATE Quantitative Reasoning',
       duration: '8:45',
       videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      description: 'Overview of mathematical concepts tested in GATE'
+      description: 'Overview of quantitative concepts tested in GATE'
     },
     {
       id: 'arithmetic-basics',
@@ -69,7 +72,7 @@ const mathematicsLessons = {
   ]
 };
 
-const MathematicsLessons = () => {
+const QuantitativeReasoningLessons = () => {
   const navigate = useNavigate();
   const videoRef = useRef<VideoPlayerRef>(null);
   const [currentLesson, setCurrentLesson] = useState(0);
@@ -91,14 +94,15 @@ const MathematicsLessons = () => {
   
   const { getVideoProgress, updateVideoProgress, markVideoCompleted, getLastWatchedVideo } = useVideoProgress();
   const { toast } = useToast();
+  const { isChatOpen, toggleChat } = useChat();
 
-  const lesson = mathematicsLessons.lessons[currentLesson];
+  const lesson = quantitativeReasoningLessons.lessons[currentLesson];
 
   // Load the last watched video on mount
   useEffect(() => {
-    const lastWatchedId = getLastWatchedVideo('mathematics');
+    const lastWatchedId = getLastWatchedVideo('quantitative-reasoning');
     if (lastWatchedId) {
-      const lastIndex = mathematicsLessons.lessons.findIndex(l => l.id === lastWatchedId);
+      const lastIndex = quantitativeReasoningLessons.lessons.findIndex(l => l.id === lastWatchedId);
       if (lastIndex !== -1) {
         setCurrentLesson(lastIndex);
       }
@@ -107,33 +111,33 @@ const MathematicsLessons = () => {
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
     setCurrentTime(currentTime);
-    updateVideoProgress('mathematics', lesson.id, {
+    updateVideoProgress('quantitative-reasoning', lesson.id, {
       currentTime,
       duration,
       completed: currentTime / duration > 0.9
     });
 
     if (currentTime / duration > 0.9) {
-      markVideoCompleted('mathematics', lesson.id);
+      markVideoCompleted('quantitative-reasoning', lesson.id);
     }
   };
 
   const handleVideoEnded = () => {
-    markVideoCompleted('mathematics', lesson.id);
+    markVideoCompleted('quantitative-reasoning', lesson.id);
     toast({
       title: "Lesson completed!",
       description: `You've finished "${lesson.title}"`,
       action: (
         <Button 
           size="sm" 
-          onClick={() => navigate(`/practice-test/mathematics?topic=${getPracticeTopicId(lesson.id)}`)}
+          onClick={() => navigate(`/practice-test/quantitative-reasoning?topic=${getPracticeTopicId(lesson.id)}`)}
         >
           Practice Now
         </Button>
       ),
     });
 
-    if (autoPlayNext && currentLesson < mathematicsLessons.lessons.length - 1) {
+    if (autoPlayNext && currentLesson < quantitativeReasoningLessons.lessons.length - 1) {
       setTimeout(() => {
         handleNext();
       }, 2000);
@@ -151,7 +155,7 @@ const MathematicsLessons = () => {
   };
 
   const handleNext = () => {
-    if (currentLesson < mathematicsLessons.lessons.length - 1) {
+    if (currentLesson < quantitativeReasoningLessons.lessons.length - 1) {
       setCurrentLesson(prev => prev + 1);
     }
   };
@@ -181,7 +185,7 @@ const MathematicsLessons = () => {
   };
 
   const getInitialTime = () => {
-    const progress = getVideoProgress('mathematics', lesson.id);
+    const progress = getVideoProgress('quantitative-reasoning', lesson.id);
     return progress?.currentTime || 0;
   };
 
@@ -198,8 +202,8 @@ const MathematicsLessons = () => {
   };
 
   // Filter and sort lessons based on search and filters
-  const filteredLessons = mathematicsLessons.lessons.filter(lessonItem => {
-    const progress = getVideoProgress('mathematics', lessonItem.id);
+  const filteredLessons = quantitativeReasoningLessons.lessons.filter(lessonItem => {
+    const progress = getVideoProgress('quantitative-reasoning', lessonItem.id);
     const matchesSearch = lessonItem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          lessonItem.description.toLowerCase().includes(searchQuery.toLowerCase());
     
@@ -215,8 +219,8 @@ const MathematicsLessons = () => {
     
     return matchesSearch && matchesStatus;
   }).sort((a, b) => {
-    const aProgress = getVideoProgress('mathematics', a.id);
-    const bProgress = getVideoProgress('mathematics', b.id);
+    const aProgress = getVideoProgress('quantitative-reasoning', a.id);
+    const bProgress = getVideoProgress('quantitative-reasoning', b.id);
     
     let comparison = 0;
     switch (filters.sortBy) {
@@ -238,8 +242,8 @@ const MathematicsLessons = () => {
   });
 
   // Analytics data
-  const completedLessons = mathematicsLessons.lessons.filter(l => {
-    const progress = getVideoProgress('mathematics', l.id);
+  const completedLessons = quantitativeReasoningLessons.lessons.filter(l => {
+    const progress = getVideoProgress('quantitative-reasoning', l.id);
     return progress?.completed;
   }).length;
 
@@ -277,7 +281,7 @@ const MathematicsLessons = () => {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Mathematics</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Quantitative Reasoning</h1>
               <p className="text-sm text-gray-600">GATE Exam Preparation</p>
             </div>
           </div>
@@ -286,7 +290,7 @@ const MathematicsLessons = () => {
           <AnalyticsDashboard
             totalWatchTime={totalWatchTime}
             completedLessons={completedLessons}
-            totalLessons={mathematicsLessons.lessons.length}
+            totalLessons={quantitativeReasoningLessons.lessons.length}
             averageScore={averageScore}
             streak={4}
           />
@@ -304,7 +308,7 @@ const MathematicsLessons = () => {
                   initialTime={getInitialTime()}
                   onNext={handleNext}
                   onPrevious={handlePrevious}
-                  hasNext={currentLesson < mathematicsLessons.lessons.length - 1}
+                  hasNext={currentLesson < quantitativeReasoningLessons.lessons.length - 1}
                   hasPrevious={currentLesson > 0}
                 />
               </Card>
@@ -342,7 +346,7 @@ const MathematicsLessons = () => {
                               <Clock className="w-4 h-4" />
                               {lesson.duration}
                             </span>
-                            <span>Lesson {currentLesson + 1} of {mathematicsLessons.lessons.length}</span>
+                            <span>Lesson {currentLesson + 1} of {quantitativeReasoningLessons.lessons.length}</span>
                           </div>
                         </div>
                         
@@ -381,7 +385,7 @@ const MathematicsLessons = () => {
                       </div>
 
                       {/* Show Practice Button for completed lessons */}
-                      {getVideoProgress('mathematics', lesson.id)?.completed && (
+                      {getVideoProgress('quantitative-reasoning', lesson.id)?.completed && (
                         <div className="mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
                           <div className="flex items-center justify-between">
                             <div>
@@ -389,7 +393,7 @@ const MathematicsLessons = () => {
                               <p className="text-sm text-green-700">Ready to practice what you've learned?</p>
                             </div>
                             <Button 
-                              onClick={() => navigate(`/practice-test/mathematics?topic=${getPracticeTopicId(lesson.id)}`)}
+                              onClick={() => navigate(`/practice-test/quantitative-reasoning?topic=${getPracticeTopicId(lesson.id)}`)}
                               size="sm"
                               className="bg-green-600 hover:bg-green-700"
                             >
@@ -429,24 +433,24 @@ const MathematicsLessons = () => {
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                         <div>
                           <div className="text-gray-500">Total Lessons</div>
-                          <div className="font-semibold">{mathematicsLessons.totalLessons}</div>
+                          <div className="font-semibold">{quantitativeReasoningLessons.totalLessons}</div>
                         </div>
                         <div>
                           <div className="text-gray-500">Duration</div>
-                          <div className="font-semibold">{mathematicsLessons.totalDuration}</div>  
+                          <div className="font-semibold">{quantitativeReasoningLessons.totalDuration}</div>  
                         </div>
                         <div>
                           <div className="text-gray-500">Language</div>
                           <div className="font-semibold flex items-center gap-1">
                             <Globe className="w-3 h-3" />
-                            {mathematicsLessons.language}
+                            {quantitativeReasoningLessons.language}
                           </div>
                         </div>
                         <div>
                           <div className="text-gray-500">Learners</div>
                           <div className="font-semibold flex items-center gap-1">
                             <Users className="w-3 h-3" />
-                            {mathematicsLessons.learners.toLocaleString()}
+                            {quantitativeReasoningLessons.learners.toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -485,7 +489,7 @@ const MathematicsLessons = () => {
             <div className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Lessons ({mathematicsLessons.lessons.length})</CardTitle>
+                  <CardTitle className="text-lg">Lessons ({quantitativeReasoningLessons.lessons.length})</CardTitle>
                   <LessonSearch
                     onSearch={handleSearch}
                     onFilter={handleFilter}
@@ -495,7 +499,7 @@ const MathematicsLessons = () => {
                 </CardHeader>
                 <CardContent className="p-0">
                   {filteredLessons.map((lessonItem, index) => {
-                    const progress = getVideoProgress('mathematics', lessonItem.id);
+                    const progress = getVideoProgress('quantitative-reasoning', lessonItem.id);
                     const isCompleted = progress?.completed || false;
                     const isActive = index === currentLesson;
                     const watchProgress = progress ? (progress.currentTime / progress.duration) * 100 : 0;
@@ -550,8 +554,17 @@ const MathematicsLessons = () => {
           </div>
         </div>
       </div>
+
+      {/* Elliot Integration */}
+      <FloatingChatButton onClick={toggleChat} />
+      {isChatOpen && (
+        <ChatPanel 
+          initialMessage={`I'm watching the "${lesson.title}" video lesson. Can you help me understand this topic better?`}
+          context={`Current lesson: ${lesson.title} - ${lesson.description}`}
+        />
+      )}
     </div>
   );
 };
 
-export default MathematicsLessons;
+export default QuantitativeReasoningLessons;

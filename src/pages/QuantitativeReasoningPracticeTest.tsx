@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Play, Clock, Target, Shuffle } from 'lucide-react';
 
-const mathSubtopics = [
+const quantitativeReasoningSubtopics = [
   {
     id: 'fractions-decimals',
     title: 'Fractions & Decimals',
@@ -106,7 +106,7 @@ const mathSubtopics = [
   }
 ];
 
-const MathematicsPracticeTest = () => {
+const QuantitativeReasoningPracticeTest = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const selectedTopic = searchParams.get('topic');
@@ -122,17 +122,17 @@ const MathematicsPracticeTest = () => {
 
   const handleStartTest = (subtopicId: string) => {
     // Navigate to actual practice test with the specific subtopic
-    navigate(`/practice-test?subject=mathematics&topic=${subtopicId}`);
+    navigate(`/practice-test?subject=quantitative-reasoning&topic=${subtopicId}`);
   };
 
   const handleStartRandomMix = () => {
     // Navigate to practice test with random mix parameter
-    navigate(`/practice-test?subject=mathematics&topic=random-mix`);
+    navigate(`/practice-test?subject=quantitative-reasoning&topic=random-mix`);
   };
 
   // If a specific topic is selected (from video lesson), show that topic's test
   if (selectedTopic && selectedTopic !== 'random-mix') {
-    const topic = mathSubtopics.find(t => t.id === selectedTopic);
+    const topic = quantitativeReasoningSubtopics.find(t => t.id === selectedTopic);
     if (topic) {
       return (
         <div className="flex h-screen overflow-hidden">
@@ -143,7 +143,7 @@ const MathematicsPracticeTest = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => navigate('/practice-test/mathematics')}
+                  onClick={() => navigate('/practice-test/quantitative-reasoning')}
                   className="p-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -210,7 +210,7 @@ const MathematicsPracticeTest = () => {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Mathematics Practice Tests</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Quantitative Reasoning Practice Tests</h1>
               <p className="text-gray-600">Choose a specific topic to practice - 10 questions each</p>
             </div>
           </div>
@@ -222,7 +222,7 @@ const MathematicsPracticeTest = () => {
                 <div className="flex items-center gap-3">
                   <Target className="w-8 h-8 text-blue-600" />
                   <div>
-                    <div className="text-2xl font-bold">{mathSubtopics.length}</div>
+                    <div className="text-2xl font-bold">{quantitativeReasoningSubtopics.length}</div>
                     <div className="text-sm text-gray-500">Topics Available</div>
                   </div>
                 </div>
@@ -266,7 +266,7 @@ const MathematicsPracticeTest = () => {
                       Random Mix Challenge
                     </CardTitle>
                     <p className="text-sm text-gray-600 mb-3">
-                      Test your overall math skills with a random selection of questions from all topics
+                      Test your overall quantitative reasoning skills with a random selection of questions from all topics
                     </p>
                     <Badge className="bg-purple-100 text-purple-800">
                       Mixed Difficulty
@@ -302,7 +302,7 @@ const MathematicsPracticeTest = () => {
 
           {/* Topics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mathSubtopics.map((topic) => (
+            {quantitativeReasoningSubtopics.map((topic) => (
               <Card 
                 key={topic.id} 
                 className="overflow-hidden transition-all duration-200 hover:shadow-lg cursor-pointer border-2 border-transparent hover:border-blue-100"
@@ -353,4 +353,4 @@ const MathematicsPracticeTest = () => {
   );
 };
 
-export default MathematicsPracticeTest;
+export default QuantitativeReasoningPracticeTest;

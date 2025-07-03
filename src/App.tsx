@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,7 +19,7 @@ import Settings from "./pages/Settings";
 import Support from "./pages/Support";
 import VideoTutorials from "./pages/VideoTutorials";
 import VideoLessons from "./pages/VideoLessons";
-import MathematicsLessons from "./pages/MathematicsLessons";
+import QuantitativeReasoningLessons from "./pages/QuantitativeReasoningLessons";
 import ReadingComprehensionLessons from "./pages/ReadingComprehensionLessons";
 import WritingLessons from "./pages/WritingLessons";
 import AbstractReasoningLessons from "./pages/AbstractReasoningLessons";
@@ -35,7 +36,7 @@ import WritingTest from "./pages/WritingTest";
 import WritingResults from "./pages/WritingResults";
 import WritingSolution from "./pages/WritingSolution";
 import ChatWithElliot from "./pages/ChatWithElliot";
-import MathematicsPracticeTest from '@/pages/MathematicsPracticeTest';
+import QuantitativeReasoningPracticeTest from '@/pages/QuantitativeReasoningPracticeTest';
 
 const queryClient = new QueryClient();
 
@@ -72,11 +73,11 @@ function App() {
                 <Route path="/support" element={<Support />} />
                 <Route path="/video-tutorials" element={<VideoTutorials />} />
                 <Route path="/video-lessons" element={<VideoLessons />} />
-                <Route path="/video-lessons/mathematics" element={<MathematicsLessons />} />
+                <Route path="/video-lessons/quantitative-reasoning" element={<QuantitativeReasoningLessons />} />
                 <Route path="/video-lessons/reading-comprehension" element={<ReadingComprehensionLessons />} />
                 <Route path="/video-lessons/writing" element={<WritingLessons />} />
                 <Route path="/video-lessons/abstract-reasoning" element={<AbstractReasoningLessons />} />
-                <Route path="/practice-test/mathematics" element={<MathematicsPracticeTest />} />
+                <Route path="/practice-test/quantitative-reasoning" element={<QuantitativeReasoningPracticeTest />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

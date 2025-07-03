@@ -28,14 +28,14 @@ const videoLessonsData = [
     route: '/video-lessons/writing'
   },
   {
-    id: 'mathematics',
-    title: 'Mathematics',
+    id: 'quantitative-reasoning',
+    title: 'Quantitative Reasoning',
     description: 'Build strong foundations in arithmetic, algebra, and quantitative reasoning.',
     videoCount: 15,
     totalDuration: '3h 20m',
     thumbnail: '/quantitative-reasoning.jpg',  
     progress: 60,
-    route: '/video-lessons/mathematics'
+    route: '/video-lessons/quantitative-reasoning'
   },
   {
     id: 'abstract-reasoning',

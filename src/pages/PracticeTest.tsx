@@ -1,3 +1,4 @@
+
 import React from 'react';
 import TestCard from '@/components/cards/TestCard';
 import DashboardSidebar from '@/components/DashboardSidebar';
@@ -36,14 +37,14 @@ const testData = [
   },
   {
     id: 4,
-    title: 'Mathematics',
+    title: 'Quantitative Reasoning',
     questions: 10,
     duration: 10,
-    description: 'Practice specific math topics with targeted questions. Choose from 12 different subtopics including algebra, geometry, fractions, and more.',
+    description: 'Practice specific quantitative reasoning topics with targeted questions. Choose from 12 different subtopics including algebra, geometry, fractions, and more.',
     imagePath: '/quantitative-reasoning.jpg',
     hasAI: false,
     isNew: true,
-    customPath: '/practice-test/mathematics'
+    customPath: '/practice-test/quantitative-reasoning'
   },
 ];
 
