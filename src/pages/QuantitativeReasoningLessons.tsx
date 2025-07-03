@@ -76,6 +76,7 @@ const quantitativeReasoningLessons = {
 const QuantitativeReasoningLessons = () => {
   const navigate = useNavigate();
   const videoRef = useRef<VideoPlayerRef>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
   const [currentLesson, setCurrentLesson] = useState(0);
   const [showTranscript, setShowTranscript] = useState(false);
   const [autoPlayNext, setAutoPlayNext] = useState(true);
@@ -92,7 +93,6 @@ const QuantitativeReasoningLessons = () => {
   const [quizScores, setQuizScores] = useState<number[]>([]);
   const [totalWatchTime, setTotalWatchTime] = useState(0);
   const [notesCount, setNotesCount] = useState(0);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [showSmartPrompt, setShowSmartPrompt] = useState(false);
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
   const [pauseCount, setPauseCount] = useState(0);
@@ -128,9 +128,16 @@ const QuantitativeReasoningLessons = () => {
     return () => clearInterval(interval);
   }, [lastInteractionTime, pauseCount]);
 
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-    setShowSmartPrompt(false); // Hide smart prompt when chat is opened
+  const activateElliotChat = () => {
+    setActiveTab('elliot');
+    setShowSmartPrompt(false);
+    // Smooth scroll to tabs section
+    setTimeout(() => {
+      tabsRef.current?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }, 100);
   };
 
   const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
@@ -323,7 +330,7 @@ const QuantitativeReasoningLessons = () => {
           </div>
 
           {/* Smart Prompt - Phase 5 */}
-          {showSmartPrompt && !isChatOpen && (
+          {showSmartPrompt && (
             <Card className="mb-4 border-blue-200 bg-blue-50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
@@ -341,7 +348,7 @@ const QuantitativeReasoningLessons = () => {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button onClick={toggleChat} size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Button onClick={activateElliotChat} size="sm" className="bg-blue-600 hover:bg-blue-700">
                       Ask Elliot
                     </Button>
                     <Button onClick={() => setShowSmartPrompt(false)} variant="ghost" size="sm">
@@ -381,8 +388,8 @@ const QuantitativeReasoningLessons = () => {
                 />
               </Card>
 
-              {/* Tabbed Content - Phase 2: Add Elliot Tab */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+              {/* Tabbed Content */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
                 <TabsList className="grid w-full grid-cols-7">
                   <TabsTrigger value="lesson">Lesson</TabsTrigger>
                   <TabsTrigger value="notes">Notes</TabsTrigger>
@@ -442,7 +449,7 @@ const QuantitativeReasoningLessons = () => {
                         </div>
                       </div>
 
-                      {/* Phase 3: Elliot Quick Help Section */}
+                      {/* Elliot Quick Help Section */}
                       <Card className="mb-4 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3 mb-3">
@@ -458,10 +465,7 @@ const QuantitativeReasoningLessons = () => {
                             <Button 
                               size="sm" 
                               variant="outline" 
-                              onClick={() => {
-                                toggleChat();
-                                setActiveTab('elliot');
-                              }}
+                              onClick={activateElliotChat}
                               className="text-blue-700 border-blue-200 hover:bg-blue-100"
                             >
                               <HelpCircle className="w-4 h-4 mr-1" />
@@ -470,10 +474,7 @@ const QuantitativeReasoningLessons = () => {
                             <Button 
                               size="sm" 
                               variant="outline" 
-                              onClick={() => {
-                                toggleChat();
-                                setActiveTab('elliot');
-                              }}
+                              onClick={activateElliotChat}
                               className="text-blue-700 border-blue-200 hover:bg-blue-100"
                             >
                               <Lightbulb className="w-4 h-4 mr-1" />
@@ -482,10 +483,7 @@ const QuantitativeReasoningLessons = () => {
                             <Button 
                               size="sm" 
                               variant="outline" 
-                              onClick={() => {
-                                toggleChat();
-                                setActiveTab('elliot');
-                              }}
+                              onClick={activateElliotChat}
                               className="text-blue-700 border-blue-200 hover:bg-blue-100"
                             >
                               <MessageSquare className="w-4 h-4 mr-1" />
@@ -591,7 +589,6 @@ const QuantitativeReasoningLessons = () => {
                   <QuizIntegration lessonId={lesson.id} onQuizComplete={handleQuizComplete} />
                 </TabsContent>
 
-                {/* Phase 2: Elliot Tab Content */}
                 <TabsContent value="elliot">
                   <Card>
                     <CardHeader>
@@ -700,22 +697,8 @@ const QuantitativeReasoningLessons = () => {
         </div>
       </div>
 
-      {/* Elliot Integration */}
-      <FloatingChatButton onClick={toggleChat} />
-      {isChatOpen && (
-        <div className="fixed right-0 top-0 w-80 h-full bg-white shadow-lg border-l z-50">
-          <div className="flex items-center justify-between p-4 border-b">
-            <h3 className="font-semibold">Chat with Elliot</h3>
-            <Button variant="ghost" size="sm" onClick={toggleChat}>
-              ×
-            </Button>
-          </div>
-          <ChatPanel 
-            isOpen={true}
-            onClose={toggleChat}
-          />
-        </div>
-      )}
+      {/* Floating Chat Button */}
+      <FloatingChatButton onClick={activateElliotChat} />
     </div>
   );
 };
