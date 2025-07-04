@@ -33,7 +33,7 @@ const StudyNotesTopic = () => {
     );
   }
 
-  // Simplified content renderer with clean styling
+  // Enhanced content renderer with varied colors
   const renderContent = (content: string) => {
     const lines = content.split('\n');
     const elements = [];
@@ -51,6 +51,7 @@ const StudyNotesTopic = () => {
           );
           currentSection = [];
         }
+        // Main headings in blue
         elements.push(
           <div key={elements.length} className="mb-6">
             <h2 className="text-2xl font-bold text-blue-600 mb-4 mt-6 first:mt-0">
@@ -67,10 +68,20 @@ const StudyNotesTopic = () => {
           );
           currentSection = [];
         }
+        const headingText = line.substring(3);
+        // Key concepts and important sections in orange/amber
+        const isKeySection = headingText.toLowerCase().includes('key') || 
+                           headingText.toLowerCase().includes('important') ||
+                           headingText.toLowerCase().includes('strategies') ||
+                           headingText.toLowerCase().includes('properties') ||
+                           headingText.toLowerCase().includes('characteristics');
+        
         elements.push(
           <div key={elements.length} className="mb-4">
-            <h3 className="text-xl font-semibold text-blue-600 mb-3 mt-4">
-              {line.substring(3)}
+            <h3 className={`text-xl font-semibold mb-3 mt-4 ${
+              isKeySection ? 'text-orange-600' : 'text-blue-600'
+            }`}>
+              {headingText}
             </h3>
           </div>
         );
@@ -87,10 +98,29 @@ const StudyNotesTopic = () => {
           );
         }
       } else if (line.startsWith('**') && line.endsWith('**')) {
+        // Bold statements - use orange for emphasis
         currentSection.push(
           <div key={currentSection.length} className="mb-4">
-            <p className="text-gray-800 font-bold">
+            <p className="text-orange-600 font-bold">
               {line.substring(2, line.length - 2)}
+            </p>
+          </div>
+        );
+      } else if (line.toLowerCase().includes('answer:') || line.toLowerCase().includes('solution:')) {
+        // Answers and solutions in green
+        currentSection.push(
+          <div key={currentSection.length} className="mb-4">
+            <p className="text-green-600 font-semibold">
+              {line}
+            </p>
+          </div>
+        );
+      } else if (line.toLowerCase().includes('question:') || line.toLowerCase().includes('example')) {
+        // Questions and examples in amber
+        currentSection.push(
+          <div key={currentSection.length} className="mb-4">
+            <p className="text-amber-600 font-medium">
+              {line}
             </p>
           </div>
         );
@@ -125,66 +155,6 @@ const StudyNotesTopic = () => {
     return elements;
   };
 
-  // Simplified examples rendering integrated into content
-  const renderExamples = () => {
-    if (topic.examples.length === 0) return null;
-
-    return (
-      <div className="mt-8 space-y-8">
-        <h2 className="text-2xl font-bold text-blue-600 mb-6">
-          Practice Examples
-        </h2>
-        
-        {topic.examples.map((example, index) => (
-          <div key={example.id} className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Example {index + 1}: {example.title}
-            </h3>
-
-            <div className="mb-4">
-              <p className="font-medium text-gray-800 mb-2">Question:</p>
-              <p className="text-gray-700 mb-4">{example.question}</p>
-            </div>
-
-            <div className="mb-4">
-              <p className="font-medium text-gray-800 mb-3">Solution:</p>
-              <ol className="list-decimal list-inside space-y-2">
-                {example.steps.map((step, stepIndex) => (
-                  <li key={stepIndex} className="text-gray-700 leading-relaxed">
-                    {step}
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            <div className="mb-4">
-              <p className="font-medium text-gray-800 mb-2">Answer:</p>
-              <p className="text-blue-600 font-semibold">{example.answer}</p>
-            </div>
-
-            {example.videoId && (
-              <div className="mb-6">
-                <p className="font-medium text-gray-800 mb-3">Video Tutorial:</p>
-                <div className="aspect-video rounded-lg overflow-hidden">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${example.videoId}`}
-                    title={`Video tutorial for ${example.title}`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="rounded-lg"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className="flex h-screen bg-gray-50">
       <DashboardSidebar />
@@ -210,9 +180,6 @@ const StudyNotesTopic = () => {
                     <Clock className="w-3 h-3" />
                     ~{topic.estimatedTime} min read
                   </Badge>
-                  <Badge variant="secondary">
-                    {topic.examples.length} example{topic.examples.length !== 1 ? 's' : ''}
-                  </Badge>
                 </div>
               </div>
             </div>
@@ -231,13 +198,9 @@ const StudyNotesTopic = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="prose prose-lg max-w-none">
-                {/* Main Content */}
                 <div className="space-y-4">
                   {renderContent(topic.content)}
                 </div>
-
-                {/* Integrated Examples */}
-                {renderExamples()}
               </CardContent>
             </Card>
           </div>
