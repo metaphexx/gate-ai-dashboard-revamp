@@ -241,25 +241,43 @@ const StudyNotesTopic = () => {
                   {topic.examples && topic.examples.some(example => example.videoId) && (
                     <div className="mt-8 pt-6 border-t border-gray-200">
                       <h3 className="text-xl font-semibold text-purple-600 mb-4">Practice Videos</h3>
-                      <div className="space-y-6">
-                        {topic.examples
-                          .filter(example => example.videoId)
-                          .map((example) => (
-                            <div key={example.id} className="mb-4">
-                              <iframe
-                                width="100%"
-                                height="315"
-                                src={`https://www.youtube.com/embed/${example.videoId}`}
-                                title={example.title}
-                                frameBorder="0"
-                                allowFullScreen
-                                className="rounded-lg"
-                              />
-                            </div>
-                          ))}
+                      <div className="mb-4">
+                        <iframe
+                          width="100%"
+                          height="315"
+                          src={`https://www.youtube.com/embed/${topic.examples.find(example => example.videoId)?.videoId}`}
+                          title={topic.examples.find(example => example.videoId)?.title}
+                          frameBorder="0"
+                          allowFullScreen
+                          className="rounded-lg"
+                        />
                       </div>
                     </div>
                   )}
+                  
+                  {/* Bottom Navigation */}
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-between">
+                      <Button
+                        variant="outline"
+                        onClick={() => navigate(`/study-notes/${subjectId}/${prevTopic?.id}`)}
+                        disabled={!prevTopic}
+                        className="flex items-center gap-2"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        {prevTopic ? `Previous: ${prevTopic.title}` : 'First Topic'}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => navigate(`/study-notes/${subjectId}/${nextTopic?.id}`)}
+                        disabled={!nextTopic}
+                        className="flex items-center gap-2"
+                      >
+                        {nextTopic ? `Next: ${nextTopic.title}` : 'Last Topic'}
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
