@@ -51,30 +51,54 @@ In algebra, we use letters (usually x, y, z) to represent unknown values called 
 - Constants remain the same throughout the equation
 - We use variables to create general formulas that work for many situations
 
-## Linear Equations
+## Key Strategies for Linear Equations
 
 A linear equation is an equation where the highest power of the variable is 1. The general form is ax + b = c, where a, b, and c are constants.
 
-Key properties of linear equations:
+**Essential properties of linear equations:**
 - Linear equations graph as straight lines
 - They have at most one solution
 - The solution represents where the line crosses the x-axis
 - Use inverse operations to isolate the variable
 
-## Quadratic Equations
+Example 1: Basic Linear Equation
+
+Question: Solve for x in the equation 2x + 5 = 13
+
+Step-by-step solution:
+1. Start with: 2x + 5 = 13
+2. Subtract 5 from both sides: 2x = 8
+3. Divide both sides by 2: x = 4
+
+Final Answer: x = 4
+
+## Important Characteristics of Quadratic Equations
 
 Quadratic equations contain a variable raised to the power of 2. The standard form is ax² + bx + c = 0, where a ≠ 0.
 
-Important characteristics:
+**Key properties to remember:**
 - Quadratic equations can have 0, 1, or 2 real solutions
 - They graph as parabolas (U-shaped curves)
 - Can be solved by factoring, completing the square, or using the quadratic formula
 - The discriminant (b² - 4ac) tells us the number of real solutions
 
-## Solving Strategies
+Example 2: Factoring Quadratic Equations
+
+Question: Factor and solve x² - 7x + 12 = 0
+
+Step-by-step approach:
+1. Look for two numbers that multiply to 12 and add to -7
+2. Those numbers are -3 and -4
+3. Factor: (x - 3)(x - 4) = 0
+4. Set each factor to zero: x - 3 = 0 or x - 4 = 0
+
+Final Answer: x = 3 or x = 4
+
+## Key Strategies for Success
 
 There are systematic approaches to solving algebraic equations that ensure accuracy and efficiency:
 
+**Essential solving techniques:**
 1. Always perform the same operation on both sides of the equation
 2. Work in reverse order of operations (PEMDAS backwards)
 3. Combine like terms before isolating variables
