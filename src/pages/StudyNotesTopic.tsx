@@ -51,10 +51,10 @@ const StudyNotesTopic = () => {
           );
           currentSection = [];
         }
-        // Main headings in blue
+        // Main headings in dark blue
         elements.push(
           <div key={elements.length} className="mb-6">
-            <h2 className="text-2xl font-bold text-blue-600 mb-4 mt-6 first:mt-0">
+            <h2 className="text-2xl font-bold text-blue-800 mb-4 mt-6 first:mt-0">
               {line.substring(2)}
             </h2>
           </div>
@@ -69,7 +69,7 @@ const StudyNotesTopic = () => {
           currentSection = [];
         }
         const headingText = line.substring(3);
-        // Key concepts and important sections in orange/amber
+        // Key concepts and important sections in purple, others in navy
         const isKeySection = headingText.toLowerCase().includes('key') || 
                            headingText.toLowerCase().includes('important') ||
                            headingText.toLowerCase().includes('strategies') ||
@@ -79,7 +79,7 @@ const StudyNotesTopic = () => {
         elements.push(
           <div key={elements.length} className="mb-4">
             <h3 className={`text-xl font-semibold mb-3 mt-4 ${
-              isKeySection ? 'text-orange-600' : 'text-blue-600'
+              isKeySection ? 'text-purple-600' : 'text-blue-900'
             }`}>
               {headingText}
             </h3>
@@ -116,10 +116,10 @@ const StudyNotesTopic = () => {
           </div>
         );
       } else if (line.toLowerCase().includes('question:') || line.toLowerCase().includes('example')) {
-        // Questions and examples in amber
+        // Questions and examples in teal
         currentSection.push(
           <div key={currentSection.length} className="mb-4">
-            <p className="text-amber-600 font-medium">
+            <p className="text-teal-600 font-medium">
               {line}
             </p>
           </div>
@@ -201,6 +201,50 @@ const StudyNotesTopic = () => {
                 <div className="space-y-4">
                   {renderContent(topic.content)}
                 </div>
+                
+                {/* Examples Section */}
+                {topic.examples && topic.examples.length > 0 && (
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <h3 className="text-xl font-semibold text-purple-600 mb-4">Practice Examples</h3>
+                    <div className="space-y-6">
+                      {topic.examples.map((example) => (
+                        <Card key={example.id} className="bg-gray-50">
+                          <CardContent className="p-6">
+                            <h4 className="text-lg font-medium text-teal-600 mb-2">{example.title}</h4>
+                            <p className="text-teal-700 font-medium mb-4">{example.question}</p>
+                            
+                            {example.videoId && (
+                              <div className="mb-4">
+                                <iframe
+                                  width="100%"
+                                  height="315"
+                                  src={`https://www.youtube.com/embed/${example.videoId}`}
+                                  title={example.title}
+                                  frameBorder="0"
+                                  allowFullScreen
+                                  className="rounded-lg"
+                                />
+                              </div>
+                            )}
+                            
+                            <div className="space-y-2">
+                              <h5 className="font-medium text-orange-600">Step-by-step solution:</h5>
+                              <ol className="list-decimal list-inside space-y-1">
+                                {example.steps.map((step, index) => (
+                                  <li key={index} className="text-gray-700">{step}</li>
+                                ))}
+                              </ol>
+                            </div>
+                            
+                            <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                              <p className="text-green-700 font-semibold">Final Answer: {example.answer}</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
