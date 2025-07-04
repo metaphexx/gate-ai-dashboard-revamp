@@ -1,4 +1,3 @@
-
 export interface StudyExample {
   id: string;
   title: string;
@@ -114,7 +113,7 @@ The key to success in algebra is understanding that equations represent balanced
               'Apply the zero product property: if AB = 0, then A = 0 or B = 0',
               'Set each factor equal to zero: x - 2 = 0 or x - 3 = 0',
               'Solve each equation: x = 2 or x = 3',
-              'Check both solutions in the original equation:'
+              'Check both solutions in the original equation'
             ],
             answer: 'x = 2 or x = 3',
             videoId: 'dQw4w9WgXcQ',
