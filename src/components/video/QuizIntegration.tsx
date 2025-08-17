@@ -41,7 +41,7 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
   };
 
   return (
-    <div className="space-y-4 pb-10 md:pb-4">
+    <div className="space-y-4 pb-10 md:pb-1">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
