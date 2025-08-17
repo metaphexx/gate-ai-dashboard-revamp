@@ -14,7 +14,9 @@ import {
   ChevronUp,
   MessageCircle,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Home,
+  X
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -23,6 +25,7 @@ import EverestLogo from '@/components/test/EverestLogo';
 import ChatPanel from '@/components/chat/ChatPanel';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import { useChatContext } from '@/contexts/ChatContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Mock data - writing prompt with image support
 const writingPrompt = {
@@ -97,6 +100,7 @@ const WritingSolution = () => {
   const [activeTab, setActiveTab] = useState("original");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const { setMessages } = useChatContext();
+  const isMobile = useIsMobile();
 
   const handleBackToTest = () => {
     navigate('/writing-test');
@@ -148,246 +152,13 @@ const WritingSolution = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex">
-        {/* Main Content */}
-        <div className={`flex-1 transition-all duration-300 ${isChatOpen ? 'mr-96' : ''}`}>
-          {/* Header */}
-          <div className="bg-white shadow-sm border-b border-gray-200">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <EverestLogo />
-                  <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={() => navigate('/writing-test')}
-                      className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-1" />
-                      <span className="text-sm">Back to Test</span>
-                    </button>
-                  </div>
-                </div>
-                <Button
-                  onClick={handleBackToResults}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white flex items-center gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Results
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="container mx-auto px-4 py-6">
-            <div className="max-w-7xl mx-auto">
-              {/* Page Title */}
-              <div className="text-center mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Writing - Solution Review</h1>
-                <p className="text-lg text-gray-600">Review your writing and understand the AI feedback</p>
-              </div>
-
-              {/* Chat with Elliot Banner - Only show when chat is closed */}
-              {!isChatOpen && (
-                <div className="mb-6">
-                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-2xl border border-blue-200 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
-                          <img 
-                            src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
-                            alt="Elliot Avatar" 
-                            className="w-10 h-10 rounded-full"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-lg text-blue-900">Need help understanding any question?</h3>
-                          <p className="text-blue-700 text-sm">Chat with Elliot about your writing, errors, and explanations!</p>
-                        </div>
-                      </div>
-                      <Button 
-                        onClick={handleOpenChat}
-                        className="bg-[#009dff] hover:bg-[#0080ff] text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
-                      >
-                        <MessageCircle className="h-4 w-4" />
-                        Chat with Elliot
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Two-column layout for prompt and submission */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                {/* Writing Prompt */}
-                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100/50">
-                  <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
-                    <CardTitle className="text-xl font-medium text-blue-900">Writing Prompt</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    {writingPrompt.hasImage ? (
-                      <div className="space-y-4">
-                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                          <img 
-                            src={writingPrompt.image} 
-                            alt="Writing prompt" 
-                            className="w-full h-48 object-cover rounded-lg"
-                          />
-                        </div>
-                        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                          <p className="text-base leading-relaxed text-gray-800">{writingPrompt.text}</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                        <p className="text-base leading-relaxed text-gray-800">{writingPrompt.text}</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* User Submission with Error Summary */}
-                <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100/50">
-                  <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl font-medium text-blue-900">Your Submission</CardTitle>
-                      <div className="flex items-center gap-2 text-sm">
-                        <AlertCircle className="h-4 w-4 text-red-500" />
-                        <span className="text-red-600 font-medium">{errorCount} errors found</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-                      <div 
-                        className="text-base leading-relaxed whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{ __html: highlightErrorsWithTooltips(userText) }}
-                      />
-                    </div>
-
-                    {/* Collapsible Error Explanations */}
-                    <Collapsible open={showExplanations} onOpenChange={setShowExplanations}>
-                      <CollapsibleTrigger asChild>
-                        <Button variant="outline" className="w-full justify-between border-[#009dff] text-[#009dff] hover:bg-blue-50">
-                          <div className="flex items-center gap-2">
-                            <AlertCircle className="h-4 w-4 text-red-500" />
-                            <span>Error Explanations ({errorCount})</span>
-                          </div>
-                          {showExplanations ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                        </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-4">
-                        <div className="space-y-3">
-                          {errors.map((error, index) => (
-                            <div key={index} className="bg-red-50 p-3 rounded-lg border border-red-200">
-                              <div className="flex items-start space-x-3">
-                                <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                                <div className="flex-1 text-sm">
-                                  <div className="mb-1">
-                                    <span className="font-medium text-red-800">"{error.word}"</span>
-                                    <span className="mx-2">→</span>
-                                    <span className="font-medium text-green-700">"{error.correction}"</span>
-                                  </div>
-                                  <p className="text-gray-700">{error.explanation}</p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* AI Results with Tabs */}
-              <Card className="bg-white rounded-2xl border-none shadow-xl shadow-blue-100/50">
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-2xl">
-                  <CardTitle className="text-xl font-medium text-blue-900">AI-Enhanced Results</CardTitle>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 bg-blue-50 border border-blue-200">
-                      <TabsTrigger value="original" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg">Original</TabsTrigger>
-                      <TabsTrigger value="rewritten" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg">AI Rewrite</TabsTrigger>
-                      <TabsTrigger value="generated" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg">AI Generate</TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="original" className="mt-6">
-                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
-                        <div className="text-base leading-relaxed whitespace-pre-wrap">
-                          {userText}
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-2 text-sm text-gray-600 mt-4 bg-orange-50 p-3 rounded-lg border border-orange-200">
-                        <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-orange-600" />
-                        <p>Your original submission with {errorCount} highlighted errors to review and learn from.</p>
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="rewritten" className="mt-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-sm">
-                        <div className="text-base leading-relaxed whitespace-pre-wrap">
-                          {aiRewrittenText}
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-2 text-sm text-blue-700 mt-4 bg-green-50 p-3 rounded-lg border border-green-200">
-                        <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-600" />
-                        <p>Your text rewritten by AI with corrections applied and improved flow while maintaining your original ideas.</p>
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="generated" className="mt-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-sm">
-                        <div className="text-base leading-relaxed whitespace-pre-wrap">
-                          {aiGeneratedText}
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-2 text-sm text-blue-700 mt-4 bg-green-50 p-3 rounded-lg border border-green-200">
-                        <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-600" />
-                        <p>A completely new response generated by AI to show different approaches to the same prompt.</p>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Sticky Action Bar */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10">
-            <div className={`container mx-auto px-4 py-3 transition-all duration-300 ${isChatOpen ? 'mr-96' : ''}`}>
-              <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-3">
-                <Button 
-                  onClick={() => setActiveTab("rewritten")}
-                  className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
-                >
-                  View AI Rewrite
-                </Button>
-                <Button 
-                  onClick={() => setActiveTab("generated")}
-                  className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
-                >
-                  View AI Generate
-                </Button>
-                <Button 
-                  onClick={() => navigate('/writing-results')}
-                  variant="outline"
-                  className="border-2 border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
-                >
-                  Back to Results
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom padding to account for sticky action bar */}
-          <div className="h-20"></div>
-        </div>
-
-        {/* Chat Panel - Side Panel */}
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white relative">
+        {/* Chat Panel - Full screen overlay on mobile */}
         {isChatOpen && (
-          <div className="fixed right-0 top-0 h-screen w-96 bg-white shadow-2xl border-l border-gray-200 z-50">
+          <div className={`
+            fixed inset-0 z-50 bg-white
+            ${isMobile ? 'w-full' : 'left-auto w-96 shadow-2xl border-l border-gray-200'}
+          `}>
             <div className="h-full flex flex-col">
               {/* Chat Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100">
@@ -401,7 +172,7 @@ const WritingSolution = () => {
                   </div>
                 </div>
                 <Button variant="ghost" size="icon" onClick={() => setIsChatOpen(false)} className="hover:bg-blue-100">
-                  <ArrowLeft className="h-5 w-5 text-blue-700" />
+                  {isMobile ? <X className="h-5 w-5 text-blue-700" /> : <ArrowLeft className="h-5 w-5 text-blue-700" />}
                 </Button>
               </div>
               
@@ -417,8 +188,303 @@ const WritingSolution = () => {
           </div>
         )}
 
-        {/* Floating Chat Button - Only show when chat is closed */}
-        {!isChatOpen && (
+        {/* Main Content - Hidden on mobile when chat is open */}
+        <div className={`${isChatOpen && isMobile ? 'hidden' : 'block'}`}>
+          {/* Header */}
+          <div className="bg-white shadow-sm border-b border-gray-200">
+            {/* Mobile Header */}
+            <div className="md:hidden">
+              <div className="px-4 py-4">
+                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
+                  <div className="flex justify-start">
+                    <button 
+                      onClick={handleBackToResults}
+                      className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <ArrowLeft className="h-5 w-5 text-gray-600" />
+                    </button>
+                  </div>
+                  <div className="flex justify-center">
+                    <EverestLogo />
+                  </div>
+                  <div className="flex justify-end">
+                    <button 
+                      onClick={() => navigate('/dashboard')}
+                      className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <Home className="h-5 w-5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Header */}
+            <div className="hidden md:block">
+              <div className="container mx-auto px-4 py-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <EverestLogo />
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={() => navigate('/writing-test')}
+                        className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-1" />
+                        <span className="text-sm">Back to Test</span>
+                      </button>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={handleBackToResults}
+                    className="bg-[#009dff] hover:bg-[#008ae6] text-white flex items-center gap-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Results
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="px-4 py-4 md:py-6 pb-24">
+            <div className={`max-w-7xl mx-auto ${!isMobile ? 'container' : ''}`}>
+              {/* Page Title */}
+              <div className="text-center mb-6 md:mb-8">
+                <h1 className="text-2xl md:text-4xl font-bold text-blue-900 mb-2 md:mb-4">Writing - Solution Review</h1>
+                <p className="text-sm md:text-lg text-gray-600">Review your writing and understand the AI feedback</p>
+              </div>
+
+              {/* Chat with Elliot Banner - Only show when chat is closed */}
+              {!isChatOpen && (
+                <div className="mb-4 md:mb-6">
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-3 md:p-4 rounded-2xl border border-blue-200 shadow-sm">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg flex-shrink-0">
+                          <img 
+                            src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
+                            alt="Elliot Avatar" 
+                            className="w-8 h-8 md:w-10 md:h-10 rounded-full"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-base md:text-lg text-blue-900 truncate">Need help understanding?</h3>
+                          <p className="text-blue-700 text-xs md:text-sm">Chat with Elliot about your writing!</p>
+                        </div>
+                      </div>
+                      <Button 
+                        onClick={handleOpenChat}
+                        className="bg-[#009dff] hover:bg-[#0080ff] text-white px-3 py-2 md:px-6 md:py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm md:text-base flex-shrink-0"
+                      >
+                        <MessageCircle className="h-3 w-3 md:h-4 md:w-4" />
+                        <span className="hidden sm:inline">Chat with Elliot</span>
+                        <span className="sm:hidden">Chat</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Content Cards - Responsive layout */}
+              <div className="space-y-4 md:space-y-6">
+                {/* Writing Prompt and Submission - Stack on mobile, side by side on desktop */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+                  {/* Writing Prompt */}
+                  <Card className="bg-white rounded-xl md:rounded-2xl border-none shadow-lg md:shadow-xl shadow-blue-100/50">
+                    <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl md:rounded-t-2xl p-4 md:p-6">
+                      <CardTitle className="text-lg md:text-xl font-medium text-blue-900">Writing Prompt</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4 md:p-6">
+                      {writingPrompt.hasImage ? (
+                        <div className="space-y-3 md:space-y-4">
+                          <div className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
+                            <img 
+                              src={writingPrompt.image} 
+                              alt="Writing prompt" 
+                              className="w-full h-32 md:h-48 object-cover rounded-lg"
+                            />
+                          </div>
+                          <div className="bg-blue-50 p-3 md:p-4 rounded-lg border border-blue-200">
+                            <p className="text-sm md:text-base leading-relaxed text-gray-800">{writingPrompt.text}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-blue-50 p-3 md:p-4 rounded-lg border border-blue-200">
+                          <p className="text-sm md:text-base leading-relaxed text-gray-800">{writingPrompt.text}</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* User Submission with Error Summary */}
+                  <Card className="bg-white rounded-xl md:rounded-2xl border-none shadow-lg md:shadow-xl shadow-blue-100/50">
+                    <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl md:rounded-t-2xl p-4 md:p-6">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <CardTitle className="text-lg md:text-xl font-medium text-blue-900">Your Submission</CardTitle>
+                        <div className="flex items-center gap-2 text-xs md:text-sm">
+                          <AlertCircle className="h-3 w-3 md:h-4 md:w-4 text-red-500" />
+                          <span className="text-red-600 font-medium">{errorCount} errors found</span>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4 md:p-6">
+                      <div className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200 mb-3 md:mb-4">
+                        <div 
+                          className="text-sm md:text-base leading-relaxed whitespace-pre-wrap"
+                          dangerouslySetInnerHTML={{ __html: highlightErrorsWithTooltips(userText) }}
+                        />
+                      </div>
+
+                      {/* Collapsible Error Explanations */}
+                      <Collapsible open={showExplanations} onOpenChange={setShowExplanations}>
+                        <CollapsibleTrigger asChild>
+                          <Button variant="outline" className="w-full justify-between border-[#009dff] text-[#009dff] hover:bg-blue-50 text-sm md:text-base">
+                            <div className="flex items-center gap-2">
+                              <AlertCircle className="h-3 w-3 md:h-4 md:w-4 text-red-500" />
+                              <span>Error Explanations ({errorCount})</span>
+                            </div>
+                            {showExplanations ? <ChevronUp className="h-3 w-3 md:h-4 md:w-4" /> : <ChevronDown className="h-3 w-3 md:h-4 md:w-4" />}
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="mt-3 md:mt-4">
+                          <div className="space-y-2 md:space-y-3">
+                            {errors.map((error, index) => (
+                              <div key={index} className="bg-red-50 p-2 md:p-3 rounded-lg border border-red-200">
+                                <div className="flex items-start space-x-2 md:space-x-3">
+                                  <div className="w-2 h-2 bg-red-500 rounded-full mt-1.5 md:mt-2 flex-shrink-0"></div>
+                                  <div className="flex-1 text-xs md:text-sm">
+                                    <div className="mb-1">
+                                      <span className="font-medium text-red-800">"{error.word}"</span>
+                                      <span className="mx-1 md:mx-2">→</span>
+                                      <span className="font-medium text-green-700">"{error.correction}"</span>
+                                    </div>
+                                    <p className="text-gray-700">{error.explanation}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* AI Results with Tabs */}
+                <Card className="bg-white rounded-xl md:rounded-2xl border-none shadow-lg md:shadow-xl shadow-blue-100/50">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-xl md:rounded-t-2xl p-4 md:p-6">
+                    <CardTitle className="text-lg md:text-xl font-medium text-blue-900">AI-Enhanced Results</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 md:p-6">
+                    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                      <TabsList className="grid w-full grid-cols-3 bg-blue-50 border border-blue-200 h-auto p-1">
+                        <TabsTrigger value="original" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg text-xs md:text-sm px-2 py-2 md:px-3 md:py-2">Original</TabsTrigger>
+                        <TabsTrigger value="rewritten" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg text-xs md:text-sm px-2 py-2 md:px-3 md:py-2">AI Rewrite</TabsTrigger>
+                        <TabsTrigger value="generated" className="data-[state=active]:bg-[#009dff] data-[state=active]:text-white data-[state=active]:shadow-lg text-xs md:text-sm px-2 py-2 md:px-3 md:py-2">AI Generate</TabsTrigger>
+                      </TabsList>
+                      
+                      <TabsContent value="original" className="mt-4 md:mt-6">
+                        <div className="bg-gray-50 p-4 md:p-6 rounded-xl border border-gray-200 shadow-sm">
+                          <div className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">
+                            {userText}
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-2 text-xs md:text-sm text-gray-600 mt-3 md:mt-4 bg-orange-50 p-2 md:p-3 rounded-lg border border-orange-200">
+                          <AlertCircle className="w-3 h-3 md:w-4 md:h-4 mt-0.5 flex-shrink-0 text-orange-600" />
+                          <p>Your original submission with {errorCount} highlighted errors to review and learn from.</p>
+                        </div>
+                      </TabsContent>
+                      
+                      <TabsContent value="rewritten" className="mt-4 md:mt-6">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 md:p-6 rounded-xl border border-blue-200 shadow-sm">
+                          <div className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">
+                            {aiRewrittenText}
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-2 text-xs md:text-sm text-blue-700 mt-3 md:mt-4 bg-green-50 p-2 md:p-3 rounded-lg border border-green-200">
+                          <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 mt-0.5 flex-shrink-0 text-green-600" />
+                          <p>Your text rewritten by AI with corrections applied and improved flow while maintaining your original ideas.</p>
+                        </div>
+                      </TabsContent>
+                      
+                      <TabsContent value="generated" className="mt-4 md:mt-6">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 md:p-6 rounded-xl border border-blue-200 shadow-sm max-h-80 md:max-h-96 overflow-y-auto">
+                          <div className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">
+                            {aiGeneratedText}
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-2 text-xs md:text-sm text-blue-700 mt-3 md:mt-4 bg-green-50 p-2 md:p-3 rounded-lg border border-green-200">
+                          <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 mt-0.5 flex-shrink-0 text-green-600" />
+                          <p>A completely new response generated by AI to show different approaches to the same prompt.</p>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          {/* Sticky Action Bar - Mobile optimized */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40">
+            <div className="px-4 py-3">
+              <div className="max-w-7xl mx-auto">
+                {isMobile ? (
+                  /* Mobile: Single column layout */
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => setActiveTab("rewritten")}
+                      className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-3 py-2 rounded-lg text-sm font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
+                    >
+                      AI Rewrite
+                    </Button>
+                    <Button 
+                      onClick={() => setActiveTab("generated")}
+                      className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-3 py-2 rounded-lg text-sm font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
+                    >
+                      AI Generate
+                    </Button>
+                    <Button 
+                      onClick={() => navigate('/writing-results')}
+                      variant="outline"
+                      className="border-2 border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-3 py-2 rounded-lg text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-200"
+                    >
+                      Results
+                    </Button>
+                  </div>
+                ) : (
+                  /* Desktop: Three column layout */
+                  <div className="flex gap-3">
+                    <Button 
+                      onClick={() => setActiveTab("rewritten")}
+                      className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
+                    >
+                      View AI Rewrite
+                    </Button>
+                    <Button 
+                      onClick={() => setActiveTab("generated")}
+                      className="bg-gradient-to-r from-[#009dff] to-[#33a9ff] hover:from-[#008ae6] hover:to-[#2998ff] text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
+                    >
+                      View AI Generate
+                    </Button>
+                    <Button 
+                      onClick={() => navigate('/writing-results')}
+                      variant="outline"
+                      className="border-2 border-[#009dff] text-[#009dff] hover:bg-[#009dff] hover:text-white px-6 py-2 rounded-xl text-base font-medium flex-1 shadow-lg hover:shadow-xl transition-all duration-200"
+                    >
+                      Back to Results
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Chat Button - Only show when chat is closed and not mobile */}
+        {!isChatOpen && !isMobile && (
           <FloatingChatButton onClick={handleOpenChat} />
         )}
       </div>
