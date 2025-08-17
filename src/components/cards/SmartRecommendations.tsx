@@ -41,27 +41,27 @@ const SmartRecommendations = () => {
   ];
   
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
+    <div className="bg-white p-3 sm:p-5 rounded-lg shadow-sm border border-gray-100 h-full overflow-hidden">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Recommended Actions</h3>
+        <h3 className="text-base sm:text-lg font-semibold truncate">Recommended Actions</h3>
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {recommendations.map((item) => (
-          <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-3 bg-gray-50 p-4 rounded-lg">
-            <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div key={item.id} className="flex flex-col gap-3 bg-gray-50 p-3 sm:p-4 rounded-lg">
+            <div className="flex items-start gap-3 min-w-0">
               <div className="p-2 bg-white rounded-full flex-shrink-0">
                 {item.icon}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm leading-tight mb-1">{item.title}</p>
-                <p className="text-xs text-gray-500 leading-relaxed">{item.description}</p>
+                <p className="font-medium text-sm leading-tight mb-1 break-words">{item.title}</p>
+                <p className="text-xs text-gray-500 leading-relaxed break-words">{item.description}</p>
               </div>
             </div>
             <Button 
               size="sm"
               variant={item.actionType}
-              className="w-full sm:w-auto min-h-[36px]"
+              className="w-full sm:w-auto min-h-[36px] text-xs sm:text-sm"
             >
               {item.action}
             </Button>
