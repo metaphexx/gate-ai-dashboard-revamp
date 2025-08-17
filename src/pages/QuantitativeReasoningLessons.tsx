@@ -447,8 +447,8 @@ const QuantitativeReasoningLessons = () => {
               <CardContent className={isMobile ? "p-3" : "p-4"}>
                 <div className={`flex ${isMobile ? 'flex-col gap-3' : 'items-center justify-between'}`}>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
-                      <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
+                      <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-9 h-9 rounded-full object-cover" />
                     </div>
                     <div className="flex-1">
                       <h4 className={`font-medium text-blue-900 ${isMobile ? 'text-sm' : ''}`}>Need help with this lesson?</h4>
@@ -638,8 +638,8 @@ const QuantitativeReasoningLessons = () => {
                       <Card className="mb-4 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
-                              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
+                              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-9 h-9 rounded-full object-cover" />
                             </div>
                             <div>
                               <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
