@@ -41,7 +41,7 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -57,7 +57,7 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
               onClick={handleStartPracticeTest}
-              className="flex-1"
+              className="flex-1 h-12 sm:h-11 text-base sm:text-sm"
               size="lg"
             >
               <Play className="w-4 h-4 mr-2" />
@@ -67,14 +67,14 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
             <Button 
               variant="outline"
               onClick={handleViewAllTopics}
-              className="flex-1"
+              className="flex-1 h-12 sm:h-11 text-base sm:text-sm"
             >
               <ArrowRight className="w-4 h-4 mr-2" />
               View All Topics
             </Button>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="bg-blue-50 p-4 rounded-lg mb-2">
             <h4 className="font-medium text-blue-900 mb-2">What's Next?</h4>
             <ul className="text-sm text-blue-800 space-y-1">
               <li>• Test your understanding with targeted questions</li>
