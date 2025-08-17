@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { 
   ArrowLeft, 
   Heart, 
@@ -514,7 +514,7 @@ const QuantitativeReasoningLessons = () => {
                   <div className="w-full overflow-hidden">
                     {/* All tabs scrollable horizontally */}
                     <ScrollArea className="w-full">
-                      <div className="flex gap-1 pb-2">
+                      <div className="flex gap-1 pb-2 cursor-grab active:cursor-grabbing" style={{ scrollBehavior: 'smooth' }}>
                         {allTabs.map((tab) => {
                           const Icon = tab.icon;
                           const isActive = activeTab === tab.id;
@@ -536,6 +536,7 @@ const QuantitativeReasoningLessons = () => {
                           );
                         })}
                       </div>
+                      <ScrollBar orientation="horizontal" />
                     </ScrollArea>
                   </div>
                 ) : (
