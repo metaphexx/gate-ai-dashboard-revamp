@@ -118,7 +118,28 @@ const WritingResults = () => {
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          {/* Mobile Header */}
+          <div className="flex md:hidden items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <button 
+                onClick={() => navigate(-1)}
+                className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+              <EverestLogo />
+            </div>
+            <Button
+              onClick={() => navigate('/')}
+              size="sm"
+              className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+            >
+              <Home className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          {/* Desktop Header */}
+          <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <EverestLogo />
               <div className="flex items-center space-x-2">
@@ -141,36 +162,61 @@ const WritingResults = () => {
               Home
             </Button>
           </div>
+          
+          {/* Mobile Title */}
+          <div className="md:hidden mt-3">
+            <h1 className="text-lg font-bold text-[#009dff] text-center">Writing Assessment Results</h1>
+          </div>
         </div>
       </div>
 
       {/* Results Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 md:px-8 py-6 md:py-8">
         {/* Overall Score Section */}
-        <Card className="mb-8 bg-[#009dff] text-white rounded-2xl border-none shadow-lg overflow-hidden">
-          <CardContent className="p-8">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h2 className="text-3xl font-bold mb-2">Overall Score</h2>
-                <p className="text-lg opacity-90 mb-6">
+        <Card className="mb-6 md:mb-8 bg-[#009dff] text-white rounded-2xl border-none shadow-lg overflow-hidden">
+          <CardContent className="p-4 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-6 md:space-y-0">
+              <div className="flex-1 text-center md:text-left">
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">Overall Score</h2>
+                <p className="text-base md:text-lg opacity-90 mb-4 md:mb-6">
                   You scored {writingResults.overall.score} out of {writingResults.overall.total} points
                 </p>
-                <div className="inline-flex items-center space-x-3 bg-white/10 rounded-lg px-4 py-3">
-                  <Clock className="h-6 w-6" />
+                <div className="inline-flex items-center space-x-3 bg-white/10 rounded-lg px-3 md:px-4 py-2 md:py-3">
+                  <Clock className="h-5 w-5 md:h-6 md:w-6" />
                   <div>
-                    <span className="text-base font-semibold">Time taken:</span>
-                    <span className="text-lg font-bold ml-2">{writingResults.timeSpent}</span>
+                    <span className="text-sm md:text-base font-semibold">Time taken:</span>
+                    <span className="text-base md:text-lg font-bold ml-2">{writingResults.timeSpent}</span>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center">
-                <div className="relative w-32 h-32 mb-4">
+                <div className="relative w-28 h-28 md:w-32 md:h-32 mb-3 md:mb-4">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-4xl font-bold">{Math.round(overallPercentage)}%</div>
+                      <div className="text-3xl md:text-4xl font-bold">{Math.round(overallPercentage)}%</div>
                     </div>
                   </div>
-                  <svg className="w-32 h-32 transform -rotate-90">
+                  <svg className="w-28 h-28 md:w-32 md:h-32 transform -rotate-90">
+                    <circle
+                      cx="56"
+                      cy="56"
+                      r="45"
+                      stroke="rgba(255,255,255,0.2)"
+                      strokeWidth="6"
+                      fill="transparent"
+                      className="md:hidden"
+                    />
+                    <circle
+                      cx="56"
+                      cy="56"
+                      r="45"
+                      stroke="white"
+                      strokeWidth="6"
+                      fill="transparent"
+                      strokeDasharray={`${(overallPercentage / 100) * 283} 283`}
+                      strokeLinecap="round"
+                      className="md:hidden"
+                    />
                     <circle
                       cx="64"
                       cy="64"
@@ -178,6 +224,7 @@ const WritingResults = () => {
                       stroke="rgba(255,255,255,0.2)"
                       strokeWidth="8"
                       fill="transparent"
+                      className="hidden md:block"
                     />
                     <circle
                       cx="64"
@@ -188,44 +235,49 @@ const WritingResults = () => {
                       fill="transparent"
                       strokeDasharray={`${(overallPercentage / 100) * 314} 314`}
                       strokeLinecap="round"
+                      className="hidden md:block"
                     />
                   </svg>
                 </div>
                 <div className="flex items-center space-x-1">
-                  {getStarRating(overallPercentage)}
+                  {getStarRating(overallPercentage).map((star, index) => (
+                    <div key={index} className="w-4 h-4 md:w-5 md:h-5">
+                      {star}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {/* Detailed Breakdown */}
           <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Breakdown</h3>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Detailed Breakdown</h3>
             <div className="space-y-4">
               {/* Creativity */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                        <Lightbulb className="h-6 w-6 text-green-600" />
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <Lightbulb className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-lg mb-1">Creativity</h4>
-                        <p className="text-sm text-gray-600">
+                        <h4 className="font-semibold text-gray-900 text-base md:text-lg mb-1">Creativity</h4>
+                        <p className="text-xs md:text-sm text-gray-600">
                           {((writingResults.creativity.score / writingResults.creativity.total) * 100).toFixed(1)}%
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-gray-900">{writingResults.creativity.score}</div>
-                      <div className="text-sm text-gray-600">out of {writingResults.creativity.total}</div>
+                      <div className="text-xl md:text-2xl font-bold text-gray-900">{writingResults.creativity.score}</div>
+                      <div className="text-xs md:text-sm text-gray-600">out of {writingResults.creativity.total}</div>
                     </div>
                   </div>
                   {/* Progress bar */}
-                  <div className="mt-4">
+                  <div className="mt-3 md:mt-4">
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
                         className="bg-green-500 h-2 rounded-full" 
@@ -238,26 +290,26 @@ const WritingResults = () => {
 
               {/* Structure */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                        <FileText className="h-6 w-6 text-orange-600" />
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <FileText className="h-5 w-5 md:h-6 md:w-6 text-orange-600" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-lg mb-1">Structure</h4>
-                        <p className="text-sm text-gray-600">
+                        <h4 className="font-semibold text-gray-900 text-base md:text-lg mb-1">Structure</h4>
+                        <p className="text-xs md:text-sm text-gray-600">
                           {((writingResults.structure.score / writingResults.structure.total) * 100).toFixed(1)}%
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-gray-900">{writingResults.structure.score}</div>
-                      <div className="text-sm text-gray-600">out of {writingResults.structure.total}</div>
+                      <div className="text-xl md:text-2xl font-bold text-gray-900">{writingResults.structure.score}</div>
+                      <div className="text-xs md:text-sm text-gray-600">out of {writingResults.structure.total}</div>
                     </div>
                   </div>
                   {/* Progress bar */}
-                  <div className="mt-4">
+                  <div className="mt-3 md:mt-4">
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
                         className="bg-orange-500 h-2 rounded-full" 
@@ -270,26 +322,26 @@ const WritingResults = () => {
 
               {/* Grammar */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                        <CheckCircle className="h-6 w-6 text-red-600" />
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-red-600" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-lg mb-1">Grammar</h4>
-                        <p className="text-sm text-gray-600">
+                        <h4 className="font-semibold text-gray-900 text-base md:text-lg mb-1">Grammar</h4>
+                        <p className="text-xs md:text-sm text-gray-600">
                           {((writingResults.grammar.score / writingResults.grammar.total) * 100).toFixed(1)}%
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-gray-900">{writingResults.grammar.score}</div>
-                      <div className="text-sm text-gray-600">out of {writingResults.grammar.total}</div>
+                      <div className="text-xl md:text-2xl font-bold text-gray-900">{writingResults.grammar.score}</div>
+                      <div className="text-xs md:text-sm text-gray-600">out of {writingResults.grammar.total}</div>
                     </div>
                   </div>
                   {/* Progress bar */}
-                  <div className="mt-4">
+                  <div className="mt-3 md:mt-4">
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
                         className="bg-red-500 h-2 rounded-full" 
@@ -304,16 +356,16 @@ const WritingResults = () => {
 
           {/* Detailed Feedback */}
           <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Detailed Feedback</h3>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Detailed Feedback</h3>
             <div className="space-y-4">
               {/* Overall Feedback - Moved to top */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center space-x-3 mb-3">
-                    <Star className="h-5 w-5 text-[#009dff]" />
-                    <h4 className="font-semibold text-gray-900 text-lg">Overall</h4>
+                    <Star className="h-4 w-4 md:h-5 md:w-5 text-[#009dff]" />
+                    <h4 className="font-semibold text-gray-900 text-base md:text-lg">Overall</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-base">
+                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
                     {writingResults.feedback.overall}
                   </p>
                 </CardContent>
@@ -321,12 +373,12 @@ const WritingResults = () => {
 
               {/* Creativity Feedback */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                    <h4 className="font-semibold text-gray-900 text-lg">Creativity</h4>
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full"></div>
+                    <h4 className="font-semibold text-gray-900 text-base md:text-lg">Creativity</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-base">
+                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
                     {writingResults.feedback.creativity}
                   </p>
                 </CardContent>
@@ -334,12 +386,12 @@ const WritingResults = () => {
 
               {/* Structure Feedback */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
-                    <h4 className="font-semibold text-gray-900 text-lg">Structure</h4>
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-orange-500 rounded-full"></div>
+                    <h4 className="font-semibold text-gray-900 text-base md:text-lg">Structure</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-base">
+                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
                     {writingResults.feedback.structure}
                   </p>
                 </CardContent>
@@ -347,12 +399,12 @@ const WritingResults = () => {
 
               {/* Grammar Feedback */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-                    <h4 className="font-semibold text-gray-900 text-lg">Grammar</h4>
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-red-500 rounded-full"></div>
+                    <h4 className="font-semibold text-gray-900 text-base md:text-lg">Grammar</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-base">
+                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
                     {writingResults.feedback.grammar}
                   </p>
                 </CardContent>
@@ -362,17 +414,17 @@ const WritingResults = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-center space-x-4 mt-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 md:mt-8">
           <Button
             variant="outline"
             onClick={() => navigate('/')}
-            className="border-gray-300 hover:bg-gray-50 hover:text-gray-900"
+            className="border-gray-300 hover:bg-gray-50 hover:text-gray-900 w-full sm:w-auto"
           >
             Back to Home
           </Button>
           <Button
             onClick={() => navigate('/writing-solution')}
-            className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+            className="bg-[#009dff] hover:bg-[#008ae6] text-white w-full sm:w-auto"
           >
             View Solution
           </Button>
