@@ -119,7 +119,7 @@ const WritingResults = () => {
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           {/* Mobile Header */}
-          <div className="grid md:hidden grid-cols-3 items-center">
+          <div className="grid md:hidden grid-cols-[auto_1fr_auto] items-center">
             <div className="flex justify-start">
               <button 
                 onClick={() => navigate(-1)}
