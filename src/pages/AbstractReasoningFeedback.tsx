@@ -69,19 +69,19 @@ const AbstractReasoningFeedback = () => {
 
               {/* Emoji Rating */}
               <div className="mb-8">
-                <div className="grid grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4">
                   {feedbackOptions.map((option) => (
                     <button
                       key={option.id}
                       onClick={() => setSelectedRating(option.id)}
-                      className={`flex flex-col items-center p-4 rounded-xl transition-all hover:scale-105 ${
+                      className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-all hover:scale-105 ${
                         selectedRating === option.id
                           ? 'bg-blue-50 border-2 border-[#009dff] shadow-md'
                           : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
                       }`}
                     >
-                      <div className="text-4xl mb-2">{option.emoji}</div>
-                      <span className={`text-sm font-medium text-center ${
+                      <div className="text-3xl sm:text-4xl mb-2">{option.emoji}</div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
                         selectedRating === option.id ? 'text-[#009dff]' : 'text-gray-700'
                       }`}>
                         {option.label}
