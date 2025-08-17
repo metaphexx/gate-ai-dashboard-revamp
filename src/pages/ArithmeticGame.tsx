@@ -271,18 +271,18 @@ const ArithmeticGame = () => {
             </div>
             
             {gameState.isPlaying && (
-              <div className="flex items-center space-x-2 sm:space-x-4">
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Clock className="h-4 w-4" />
+              <div className="flex items-center space-x-1 sm:space-x-4">
+                <div className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-600">
+                  <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
                   <span className={`font-mono font-bold ${gameState.timeLeft <= 10 ? 'text-red-500' : ''}`}>
                     {Math.floor(gameState.timeLeft / 60)}:{(gameState.timeLeft % 60).toString().padStart(2, '0')}
                   </span>
                 </div>
-                <Button variant="outline" size="sm" onClick={pauseGame}>
-                  <Pause className="h-4 w-4" />
+                <Button variant="outline" size="sm" onClick={pauseGame} className="px-2 sm:px-3">
+                  <Pause className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
-                <Button variant="outline" size="sm" onClick={restartGame}>
-                  <RotateCcw className="h-4 w-4" />
+                <Button variant="outline" size="sm" onClick={restartGame} className="px-2 sm:px-3">
+                  <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </div>
             )}
@@ -304,40 +304,40 @@ const ArithmeticGame = () => {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 <Card className="bg-white/70 backdrop-blur-sm">
-                  <CardContent className="p-4 text-center">
-                    <Target className="h-6 w-6 mx-auto mb-2 text-blue-500" />
-                    <div className="text-2xl font-bold">{gameState.currentQuestion}</div>
-                    <div className="text-sm text-gray-600">of {gameState.totalQuestions}</div>
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <Target className="h-5 w-5 sm:h-6 sm:w-6 mx-auto mb-2 text-blue-500" />
+                    <div className="text-xl sm:text-2xl font-bold">{gameState.currentQuestion}</div>
+                    <div className="text-xs sm:text-sm text-gray-600">of {gameState.totalQuestions}</div>
                   </CardContent>
                 </Card>
                 <Card className="bg-white/70 backdrop-blur-sm">
-                  <CardContent className="p-4 text-center">
-                    <Trophy className="h-6 w-6 mx-auto mb-2 text-yellow-500" />
-                    <div className="text-2xl font-bold">{gameState.score}</div>
-                    <div className="text-sm text-gray-600">Score</div>
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <Trophy className="h-5 w-5 sm:h-6 sm:w-6 mx-auto mb-2 text-yellow-500" />
+                    <div className="text-xl sm:text-2xl font-bold">{gameState.score}</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Score</div>
                   </CardContent>
                 </Card>
                 <Card className="bg-white/70 backdrop-blur-sm">
-                  <CardContent className="p-4 text-center">
-                    <Zap className="h-6 w-6 mx-auto mb-2 text-purple-500" />
-                    <div className="text-2xl font-bold">{gameState.streak}</div>
-                    <div className="text-sm text-gray-600">Streak</div>
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <Zap className="h-5 w-5 sm:h-6 sm:w-6 mx-auto mb-2 text-purple-500" />
+                    <div className="text-xl sm:text-2xl font-bold">{gameState.streak}</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Streak</div>
                   </CardContent>
                 </Card>
                 <Card className="bg-white/70 backdrop-blur-sm">
-                  <CardContent className="p-4 text-center">
-                    <CheckCircle className="h-6 w-6 mx-auto mb-2 text-green-500" />
-                    <div className="text-2xl font-bold">{accuracyPercentage}%</div>
-                    <div className="text-sm text-gray-600">Accuracy</div>
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 mx-auto mb-2 text-green-500" />
+                    <div className="text-xl sm:text-2xl font-bold">{accuracyPercentage}%</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Accuracy</div>
                   </CardContent>
                 </Card>
               </div>
 
               {/* Question Display */}
               <Card className={`border-0 shadow-lg ${currentOp.bgColor} backdrop-blur-sm`}>
-                <CardContent className="p-12 text-center">
+                <CardContent className="p-6 sm:p-12 text-center">
                   {gameState.isPaused ? (
                     <div className="space-y-6">
                       <h2 className="text-4xl font-bold text-gray-700">Game Paused</h2>
@@ -347,23 +347,23 @@ const ArithmeticGame = () => {
                     </div>
                   ) : gameState.currentProblem && (
                     <div className="space-y-8">
-                      <div className="text-6xl font-bold text-gray-800 font-mono tracking-wide">
+                      <div className="text-4xl sm:text-6xl font-bold text-gray-800 font-mono tracking-wide">
                         {gameState.currentProblem.num1} {currentOp.symbol} {gameState.currentProblem.num2} = ?
                       </div>
                       
-                      <div className="flex items-center justify-center space-x-4">
+                      <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                         <Input
                           type="number"
                           value={gameState.userAnswer}
                           onChange={(e) => setGameState(prev => ({ ...prev, userAnswer: e.target.value }))}
-                          className="text-4xl text-center font-bold w-48 h-16 bg-white/90 backdrop-blur-sm border-2"
+                          className="text-2xl sm:text-4xl text-center font-bold w-32 sm:w-48 h-12 sm:h-16 bg-white/90 backdrop-blur-sm border-2"
                           placeholder="?"
                           disabled={gameState.showFeedback}
                           autoFocus
                         />
                         <Button 
                           onClick={submitAnswer} 
-                          className="h-16 px-8 text-lg"
+                          className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg w-full sm:w-auto"
                           disabled={!gameState.userAnswer.trim() || gameState.showFeedback}
                         >
                           Submit (Enter)
@@ -394,13 +394,19 @@ const ArithmeticGame = () => {
 
               {/* Keyboard Shortcuts Help */}
               <Card className="bg-white/60 backdrop-blur-sm">
-                <CardContent className="p-4">
-                  <div className="text-center text-sm text-gray-600">
-                    <span className="font-medium">Shortcuts:</span>{' '}
-                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Enter</kbd> Submit{' '}
-                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Esc</kbd> Pause{' '}
-                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">R</kbd> Restart{' '}
-                    <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">0-9</kbd> Number Input
+                <CardContent className="p-3 sm:p-4">
+                  <div className="text-center text-xs sm:text-sm text-gray-600">
+                    <div className="hidden sm:block">
+                      <span className="font-medium">Shortcuts:</span>{' '}
+                      <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Enter</kbd> Submit{' '}
+                      <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">Esc</kbd> Pause{' '}
+                      <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">R</kbd> Restart{' '}
+                      <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">0-9</kbd> Number Input
+                    </div>
+                    <div className="sm:hidden space-y-1">
+                      <div><kbd className="bg-gray-200 px-1 py-0.5 rounded text-xs">Enter</kbd> Submit</div>
+                      <div><kbd className="bg-gray-200 px-1 py-0.5 rounded text-xs">Esc</kbd> Pause · <kbd className="bg-gray-200 px-1 py-0.5 rounded text-xs">R</kbd> Restart</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
