@@ -11,6 +11,7 @@ import DiscussionSystem from '@/components/video/DiscussionSystem';
 import SmartRecommendations from '@/components/video/SmartRecommendations';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatPanel from '@/components/chat/ChatPanel';
+import QuizIntegration from '@/components/video/QuizIntegration';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -654,48 +655,7 @@ const ReadingComprehensionLessons = () => {
                 </TabsContent>
 
                 <TabsContent value="practice">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Play className="w-5 h-5 text-blue-600" />
-                        Practice What You've Learned
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-gray-600">
-                        Ready to test your reading comprehension skills? Take the practice test to apply what you've learned.
-                      </p>
-                      
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <Button 
-                          onClick={() => navigate('/reading-comprehension-prestart')}
-                          className="flex-1"
-                          size="lg"
-                        >
-                          <Play className="w-4 h-4 mr-2" />
-                          Start Reading Test
-                        </Button>
-                        
-                        <Button 
-                          variant="outline"
-                          onClick={() => navigate('/practice')}
-                          className="flex-1"
-                        >
-                          View All Tests
-                        </Button>
-                      </div>
-
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-blue-900 mb-2">What's Next?</h4>
-                        <ul className="text-sm text-blue-800 space-y-1">
-                          <li>• Apply reading strategies you've learned</li>
-                          <li>• Practice with various text types and questions</li>
-                          <li>• Improve your reading speed and accuracy</li>
-                          <li>• Build confidence for the actual exam</li>
-                        </ul>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <QuizIntegration lessonId={lesson.id} onQuizComplete={handleQuizComplete} />
                 </TabsContent>
 
                 <TabsContent value="elliot">

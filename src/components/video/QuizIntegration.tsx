@@ -15,6 +15,7 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
 
   // Map lesson IDs to practice test topics
   const lessonToPracticeMap: { [key: string]: string } = {
+    // Quantitative Reasoning lessons
     'math-intro': 'problem-solving',
     'arithmetic-basics': 'multiplication-division', 
     'percentages': 'ratios-unit-conversions',
@@ -27,17 +28,73 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
     'spatial-reasoning': 'spatial-reasoning',
     'probability': 'probability',
     'patterns': 'patterns-sequences',
-    'problem-solving': 'problem-solving'
+    'problem-solving': 'problem-solving',
+    
+    // Reading Comprehension lessons
+    'reading-fundamentals': 'reading-comprehension',
+    'reading-strategies': 'reading-comprehension',
+    'critical-analysis': 'reading-comprehension',
+    'inference-skills': 'reading-comprehension',
+    'vocabulary-context': 'reading-comprehension',
+    'text-structure': 'reading-comprehension',
+    'main-ideas': 'reading-comprehension',
+    'supporting-details': 'reading-comprehension',
+    
+    // Abstract Reasoning lessons
+    'pattern-recognition': 'abstract-reasoning',
+    'spatial-visualization': 'abstract-reasoning',
+    'logical-sequences': 'abstract-reasoning',
+    'analogical-reasoning': 'abstract-reasoning',
+    'matrix-reasoning': 'abstract-reasoning',
+    'series-completion': 'abstract-reasoning',
+    'diagrammatic-reasoning': 'abstract-reasoning',
+    'conceptual-reasoning': 'abstract-reasoning',
+    
+    // Writing lessons
+    'essay-structure': 'writing',
+    'grammar-mechanics': 'writing',
+    'persuasive-writing': 'writing',
+    'argumentative-essays': 'writing',
+    'descriptive-writing': 'writing',
+    'narrative-techniques': 'writing',
+    'research-writing': 'writing',
+    'editing-revision': 'writing'
   };
 
   const practiceTopicId = lessonToPracticeMap[lessonId] || 'problem-solving';
 
   const handleStartPracticeTest = () => {
-    navigate(`/practice-test/mathematics?topic=${practiceTopicId}`);
+    // Determine the correct route based on the practice topic
+    let route = '/practice-test/mathematics';
+    
+    if (practiceTopicId === 'reading-comprehension') {
+      route = '/reading-comprehension-test';
+    } else if (practiceTopicId === 'abstract-reasoning') {
+      route = '/abstract-reasoning-test';
+    } else if (practiceTopicId === 'writing') {
+      route = '/writing-test';
+    } else {
+      route = `/practice-test/mathematics?topic=${practiceTopicId}`;
+    }
+    
+    navigate(route);
   };
 
   const handleViewAllTopics = () => {
-    navigate('/practice-test/mathematics');
+    // Determine the correct route based on the practice topic
+    let route = '/practice-test/mathematics';
+    
+    if (practiceTopicId === 'reading-comprehension') {
+      route = '/reading-comprehension-test';
+    } else if (practiceTopicId === 'abstract-reasoning') {
+      route = '/abstract-reasoning-test';
+    } else if (practiceTopicId === 'writing') {
+      route = '/writing-test';
+    } else {
+      route = '/practice-test/mathematics';
+    }
+    
+    navigate(route);
   };
 
   return (
