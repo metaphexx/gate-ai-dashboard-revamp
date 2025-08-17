@@ -329,7 +329,7 @@ const WritingTest = () => {
         {/* Responsive layout */}
         {isMobile ? (
           /* Mobile: Tabbed layout */
-          <div className="h-[calc(100vh-200px)]">
+          <div className="h-[calc(100vh-160px)]">
             <Tabs value={mobileActiveTab} onValueChange={setMobileActiveTab} className="h-full flex flex-col">
               <div className="px-4 mb-2">
                 <TabsList className="grid w-full grid-cols-2">
@@ -339,42 +339,40 @@ const WritingTest = () => {
               </div>
               
               <TabsContent value="prompt" className="flex-1 overflow-y-auto m-0 px-4">
-                <div className="bg-white rounded-lg p-4">
+                <div className="bg-white rounded-lg p-3 flex flex-col space-y-3">
                   {/* Category banner */}
-                  <div className="bg-[#009dff] py-2 px-4 text-white shadow-sm rounded-lg mb-4">
+                  <div className="bg-[#009dff] py-2 px-3 text-white shadow-sm rounded-lg">
                     <p className="text-sm font-medium">{currentQuestion.category}</p>
                   </div>
                   
                   {/* Question prompt */}
-                  <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                  <h2 className="text-lg font-semibold text-gray-800">
                     {currentQuestion.prompt}
                   </h2>
                   
                   {/* Image section */}
-                  <div className="mb-4">
-                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                      <div className="relative">
-                        <img 
-                          src={currentQuestion.image}
-                          alt="Writing prompt image" 
-                          className="w-full max-h-[200px] rounded-lg object-cover shadow-sm"
-                        />
-                      </div>
+                  <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div className="relative">
+                      <img 
+                        src={currentQuestion.image}
+                        alt="Writing prompt image" 
+                        className="w-full max-h-[150px] rounded-lg object-cover shadow-sm"
+                      />
                     </div>
                   </div>
                   
                   {/* Instructions */}
-                  <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
+                  <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
                     <div className="flex items-start">
                       <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
-                      <div className="space-y-2">
+                      <div>
                         <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
                       </div>
                     </div>
                   </div>
                   
                   {/* Writing Analytics - Mobile horizontal layout */}
-                  <div className="grid grid-cols-4 gap-2 mb-4">
+                  <div className="grid grid-cols-4 gap-2">
                     <div className="bg-gray-50 rounded-lg p-2 text-center">
                       <div className="text-lg font-bold text-gray-900">{writingAnalytics.words}</div>
                       <div className="text-xs text-gray-600">Words</div>
@@ -394,7 +392,7 @@ const WritingTest = () => {
                   </div>
                   
                   {/* Word count requirement */}
-                  <div className={`text-sm px-3 py-2 rounded-full text-center mb-4 ${
+                  <div className={`text-sm px-3 py-2 rounded-full text-center ${
                     canSubmit 
                       ? 'bg-green-100 text-green-700' 
                       : 'bg-orange-100 text-orange-700'
@@ -403,14 +401,14 @@ const WritingTest = () => {
                   </div>
                   
                   {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
-                    <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                    <div className="flex items-center justify-center text-sm text-orange-600">
                       <AlertCircle className="h-4 w-4 mr-1" />
                       Need {currentQuestion.minWords - writingAnalytics.words} more words
                     </div>
                   )}
                   
                   {writingAnalytics.words > currentQuestion.maxWords && (
-                    <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                    <div className="flex items-center justify-center text-sm text-orange-600">
                       <AlertCircle className="h-4 w-4 mr-1" />
                       {writingAnalytics.words - currentQuestion.maxWords} words over limit
                     </div>
