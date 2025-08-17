@@ -339,88 +339,94 @@ const WritingTest = () => {
               </div>
               
               <TabsContent value="prompt" className="flex-1 overflow-y-auto m-0 px-4">
-                <div className="bg-white rounded-lg p-3 h-full flex flex-col justify-between space-y-3">
-                  {/* Category banner */}
-                  <div className="bg-[#009dff] py-2 px-3 text-white shadow-sm rounded-lg">
-                    <p className="text-sm font-medium">{currentQuestion.category}</p>
-                  </div>
-                  
-                  {/* Question prompt */}
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {currentQuestion.prompt}
-                  </h2>
-                  
-                  {/* Image section */}
-                  <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                    <div className="relative">
-                      <img 
-                        src={currentQuestion.image}
-                        alt="Writing prompt image" 
-                        className="w-full max-h-[150px] rounded-lg object-cover shadow-sm"
-                      />
+                <div className="bg-white rounded-lg p-3 h-full flex flex-col justify-between">
+                  {/* Main content section */}
+                  <div className="space-y-3 flex-shrink-0">
+                    {/* Category banner */}
+                    <div className="bg-[#009dff] py-2 px-3 text-white shadow-sm rounded-lg">
+                      <p className="text-sm font-medium">{currentQuestion.category}</p>
                     </div>
-                  </div>
-                  
-                  {/* Instructions */}
-                  <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
-                    <div className="flex items-start">
-                      <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                    
+                    {/* Question prompt */}
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      {currentQuestion.prompt}
+                    </h2>
+                    
+                    {/* Image section */}
+                    <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                      <div className="relative">
+                        <img 
+                          src={currentQuestion.image}
+                          alt="Writing prompt image" 
+                          className="w-full max-h-[150px] rounded-lg object-cover shadow-sm"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Instructions */}
+                    <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
+                      <div className="flex items-start">
+                        <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Writing Analytics - Mobile horizontal layout */}
-                  <div className="grid grid-cols-4 gap-2">
-                    <div className="bg-gray-50 rounded-lg p-2 text-center">
-                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.words}</div>
-                      <div className="text-xs text-gray-600">Words</div>
+                  {/* Bottom section - Analytics and Actions */}
+                  <div className="space-y-2 flex-shrink-0">
+                    {/* Writing Analytics - Mobile horizontal layout */}
+                    <div className="grid grid-cols-4 gap-2">
+                      <div className="bg-gray-50 rounded-lg p-2 text-center">
+                        <div className="text-lg font-bold text-gray-900">{writingAnalytics.words}</div>
+                        <div className="text-xs text-gray-600">Words</div>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg p-2 text-center">
+                        <div className="text-lg font-bold text-gray-900">{writingAnalytics.characters}</div>
+                        <div className="text-xs text-gray-600">Chars</div>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg p-2 text-center">
+                        <div className="text-lg font-bold text-gray-900">{writingAnalytics.sentences}</div>
+                        <div className="text-xs text-gray-600">Sent.</div>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg p-2 text-center">
+                        <div className="text-lg font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
+                        <div className="text-xs text-gray-600">Para.</div>
+                      </div>
                     </div>
-                    <div className="bg-gray-50 rounded-lg p-2 text-center">
-                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.characters}</div>
-                      <div className="text-xs text-gray-600">Chars</div>
+                    
+                    {/* Word count requirement */}
+                    <div className={`text-sm px-3 py-2 rounded-full text-center ${
+                      canSubmit 
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-orange-100 text-orange-700'
+                    }`}>
+                      Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
                     </div>
-                    <div className="bg-gray-50 rounded-lg p-2 text-center">
-                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.sentences}</div>
-                      <div className="text-xs text-gray-600">Sent.</div>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-2 text-center">
-                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
-                      <div className="text-xs text-gray-600">Para.</div>
-                    </div>
+                    
+                    {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
+                      <div className="flex items-center justify-center text-sm text-orange-600">
+                        <AlertCircle className="h-4 w-4 mr-1" />
+                        Need {currentQuestion.minWords - writingAnalytics.words} more words
+                      </div>
+                    )}
+                    
+                    {writingAnalytics.words > currentQuestion.maxWords && (
+                      <div className="flex items-center justify-center text-sm text-orange-600">
+                        <AlertCircle className="h-4 w-4 mr-1" />
+                        {writingAnalytics.words - currentQuestion.maxWords} words over limit
+                      </div>
+                    )}
+                    
+                    {/* Quick switch to writing button */}
+                    <Button 
+                      onClick={() => setMobileActiveTab("writing")}
+                      className="w-full bg-[#009dff] hover:bg-[#008ae6] text-white"
+                    >
+                      Start Writing
+                    </Button>
                   </div>
-                  
-                  {/* Word count requirement */}
-                  <div className={`text-sm px-3 py-2 rounded-full text-center ${
-                    canSubmit 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-orange-100 text-orange-700'
-                  }`}>
-                    Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
-                  </div>
-                  
-                  {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
-                    <div className="flex items-center justify-center text-sm text-orange-600">
-                      <AlertCircle className="h-4 w-4 mr-1" />
-                      Need {currentQuestion.minWords - writingAnalytics.words} more words
-                    </div>
-                  )}
-                  
-                  {writingAnalytics.words > currentQuestion.maxWords && (
-                    <div className="flex items-center justify-center text-sm text-orange-600">
-                      <AlertCircle className="h-4 w-4 mr-1" />
-                      {writingAnalytics.words - currentQuestion.maxWords} words over limit
-                    </div>
-                  )}
-                  
-                  {/* Quick switch to writing button */}
-                  <Button 
-                    onClick={() => setMobileActiveTab("writing")}
-                    className="w-full bg-[#009dff] hover:bg-[#008ae6] text-white"
-                  >
-                    Start Writing
-                  </Button>
                 </div>
               </TabsContent>
               
