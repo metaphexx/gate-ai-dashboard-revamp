@@ -11,9 +11,12 @@ import DiscussionSystem from '@/components/video/DiscussionSystem';
 import SmartRecommendations from '@/components/video/SmartRecommendations';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatPanel from '@/components/chat/ChatPanel';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   ArrowLeft, 
   Heart, 
@@ -29,7 +32,11 @@ import {
   Trophy,
   Lightbulb,
   HelpCircle,
-  Bot
+  Bot,
+  ChevronLeft,
+  ChevronRight,
+  List,
+  MoreHorizontal
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
@@ -305,41 +312,147 @@ const QuantitativeReasoningLessons = () => {
     learningStyle: 'Visual learner with preference for step-by-step explanations'
   };
 
+  const isMobile = useIsMobile();
+  
+  // Primary tabs for mobile (scrollable)
+  const primaryTabs = [
+    { id: 'lesson', label: 'Lesson', icon: Play },
+    { id: 'elliot', label: 'Ask Elliot', icon: Bot },
+    { id: 'practice', label: 'Practice', icon: Trophy },
+    { id: 'notes', label: 'Notes', icon: MessageSquare },
+  ];
+
+  // Secondary tabs (in overflow menu on mobile)
+  const secondaryTabs = [
+    { id: 'discussion', label: 'Discussion', icon: MessageSquare },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'achievements', label: 'Achievements', icon: Trophy },
+  ];
+
   return (
     <MobileLayout>
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-        <div className="max-w-7xl mx-auto">
+      <div className="flex-1 overflow-y-auto">
+        <div className={`max-w-7xl mx-auto ${isMobile ? 'p-2' : 'p-4 sm:p-6'}`}>
           {/* Header */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className={`flex items-center gap-3 ${isMobile ? 'mb-3 px-2' : 'gap-4 mb-6'}`}>
             <Button 
               variant="ghost" 
-              size="sm" 
+              size={isMobile ? "sm" : "default"}
               onClick={() => navigate('/video-lessons')}
-              className="p-2"
+              className={isMobile ? "h-8 w-8 p-0" : "p-2"}
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Quantitative Reasoning</h1>
-              <p className="text-sm text-gray-600">GATE Exam Preparation</p>
+              <h1 className={`font-bold text-gray-900 ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
+                Quantitative Reasoning
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-600">GATE Exam Preparation</p>
             </div>
             
-            {/* Phase 1: Header Elliot Button */}
+            {/* Lesson Selector for Mobile */}
+            {isMobile && (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 px-3">
+                    <List className="w-4 h-4 mr-1" />
+                    <span className="text-xs">Lessons</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[85vw] p-0">
+                  <SheetHeader className="p-4 border-b">
+                    <SheetTitle>Lessons ({quantitativeReasoningLessons.lessons.length})</SheetTitle>
+                  </SheetHeader>
+                  <ScrollArea className="h-[calc(100vh-80px)]">
+                    <div className="p-2">
+                      <LessonSearch
+                        onSearch={handleSearch}
+                        onFilter={handleFilter}
+                        searchQuery={searchQuery}
+                        filters={filters}
+                      />
+                      <div className="mt-4 space-y-1">
+                        {filteredLessons.map((lessonItem, index) => {
+                          const progress = getVideoProgress('quantitative-reasoning', lessonItem.id);
+                          const isCompleted = progress?.completed || false;
+                          const isActive = index === currentLesson;
+                          const watchProgress = progress ? (progress.currentTime / progress.duration) * 100 : 0;
+                          
+                          return (
+                            <div
+                              key={lessonItem.id}
+                              className={`p-3 rounded-lg cursor-pointer transition-colors min-h-[64px] ${
+                                isActive ? 'bg-blue-50 border border-blue-200' : 'hover:bg-gray-50'
+                              }`}
+                              onClick={() => handleLessonSelect(index)}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 mt-1">
+                                  {isCompleted ? (
+                                    <CheckCircle className="w-5 h-5 text-green-600" />
+                                  ) : isActive ? (
+                                    <div className="w-5 h-5 rounded-full border-2 border-[#009dff] bg-[#009dff] flex items-center justify-center">
+                                      <Play className="w-2 h-2 text-white fill-white" />
+                                    </div>
+                                  ) : (
+                                    <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h4 className={`font-medium text-sm mb-1 line-clamp-2 ${
+                                    isActive ? 'text-[#009dff]' : 'text-gray-900'
+                                  }`}>
+                                    {lessonItem.title}
+                                  </h4>
+                                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                                    <Clock className="w-3 h-3" />
+                                    {lessonItem.duration}
+                                  </div>
+                                  {progress && watchProgress > 0 && !isCompleted && (
+                                    <div className="w-full bg-gray-200 rounded-full h-1">
+                                      <div 
+                                        className="bg-[#009dff] h-1 rounded-full transition-all"
+                                        style={{ width: `${Math.min(watchProgress, 100)}%` }}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </SheetContent>
+              </Sheet>
+            )}
             
+            {/* Elliot Quick Access for Mobile */}
+            {isMobile && (
+              <Button 
+                onClick={activateElliotChat}
+                size="sm" 
+                className="h-8 px-3 bg-[#009dff] hover:bg-[#0080ff] text-white"
+              >
+                <Bot className="w-4 h-4 mr-1" />
+                <span className="text-xs">Elliot</span>
+              </Button>
+            )}
           </div>
 
-          {/* Smart Prompt - Phase 5 */}
+          {/* Smart Prompt - Enhanced for Mobile */}
           {showSmartPrompt && (
-            <Card className="mb-4 border-blue-200 bg-blue-50">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
+            <Card className={`border-blue-200 bg-blue-50 ${isMobile ? 'mb-2 mx-2' : 'mb-4'}`}>
+              <CardContent className={isMobile ? "p-3" : "p-4"}>
+                <div className={`flex ${isMobile ? 'flex-col gap-3' : 'items-center justify-between'}`}>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
                       <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
                     </div>
-                    <div>
-                      <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
-                      <p className="text-sm text-blue-700">
+                    <div className="flex-1">
+                      <h4 className={`font-medium text-blue-900 ${isMobile ? 'text-sm' : ''}`}>Need help with this lesson?</h4>
+                      <p className={`text-blue-700 ${isMobile ? 'text-xs' : 'text-sm'}`}>
                         {pauseCount >= 3 ? "I noticed you've paused several times. Let me help explain this concept!" : 
                          getVideoProgress('quantitative-reasoning', lesson.id)?.completed ? "Great job completing this lesson! Ready for practice recommendations?" :
                          "I'm here to help you understand quantitative reasoning concepts better!"}
@@ -347,10 +460,19 @@ const QuantitativeReasoningLessons = () => {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button onClick={activateElliotChat} size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Button 
+                      onClick={activateElliotChat} 
+                      size="sm" 
+                      className="bg-blue-600 hover:bg-blue-700 min-h-[40px] px-4"
+                    >
                       Ask Elliot
                     </Button>
-                    <Button onClick={() => setShowSmartPrompt(false)} variant="ghost" size="sm">
+                    <Button 
+                      onClick={() => setShowSmartPrompt(false)} 
+                      variant="ghost" 
+                      size="sm"
+                      className="min-h-[40px] min-w-[40px] p-0"
+                    >
                       ×
                     </Button>
                   </div>
@@ -359,18 +481,20 @@ const QuantitativeReasoningLessons = () => {
             </Card>
           )}
 
-          {/* Analytics Dashboard */}
-          <AnalyticsDashboard
-            totalWatchTime={totalWatchTime}
-            completedLessons={completedLessons}
-            totalLessons={quantitativeReasoningLessons.lessons.length}
-            averageScore={averageScore}
-            streak={4}
-          />
+          {/* Analytics Dashboard - Optimized for Mobile */}
+          <div className={isMobile ? "px-2" : ""}>
+            <AnalyticsDashboard
+              totalWatchTime={totalWatchTime}
+              completedLessons={completedLessons}
+              totalLessons={quantitativeReasoningLessons.lessons.length}
+              averageScore={averageScore}
+              streak={4}
+            />
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6 ${isMobile ? 'px-2' : ''}`}>
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4">
               {/* Enhanced Video Player */}
               <Card className="overflow-hidden">
                 <EnhancedVideoPlayer
@@ -387,29 +511,91 @@ const QuantitativeReasoningLessons = () => {
                 />
               </Card>
 
-              {/* Tabbed Content */}
+              {/* Tabbed Content - Enhanced Mobile Navigation */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
-                <TabsList className="grid w-full grid-cols-7">
-                  <TabsTrigger value="lesson">Lesson</TabsTrigger>
-                  <TabsTrigger value="notes">Notes</TabsTrigger>
-                  <TabsTrigger value="practice">Practice</TabsTrigger>
-                  <TabsTrigger value="elliot">
-                    <Bot className="w-4 h-4 mr-1" />
-                    Ask Elliot
-                  </TabsTrigger>
-                  <TabsTrigger value="discussion">
-                    <MessageSquare className="w-4 h-4 mr-1" />
-                    Discussion
-                  </TabsTrigger>
-                  <TabsTrigger value="analytics">
-                    <BarChart3 className="w-4 h-4 mr-1" />
-                    Analytics
-                  </TabsTrigger>
-                  <TabsTrigger value="achievements">
-                    <Trophy className="w-4 h-4 mr-1" />
-                    Achievements
-                  </TabsTrigger>
-                </TabsList>
+                {isMobile ? (
+                  <div className="flex items-center gap-2">
+                    {/* Scrollable primary tabs */}
+                    <ScrollArea className="flex-1">
+                      <div className="flex gap-1 pb-2">
+                        {primaryTabs.map((tab) => {
+                          const Icon = tab.icon;
+                          const isActive = activeTab === tab.id;
+                          return (
+                            <Button
+                              key={tab.id}
+                              onClick={() => setActiveTab(tab.id)}
+                              variant={isActive ? "default" : "outline"}
+                              size="sm"
+                              className={`min-w-fit whitespace-nowrap h-9 px-3 ${
+                                isActive 
+                                  ? 'bg-[#009dff] hover:bg-[#0080ff] text-white' 
+                                  : 'text-gray-600 hover:text-gray-900'
+                              }`}
+                            >
+                              <Icon className="w-4 h-4 mr-1" />
+                              <span className="text-xs">{tab.label}</span>
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                    
+                    {/* Overflow menu for secondary tabs */}
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-9 px-2 flex-shrink-0">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="bottom" className="h-[50vh]">
+                        <SheetHeader>
+                          <SheetTitle>More Options</SheetTitle>
+                        </SheetHeader>
+                        <div className="grid grid-cols-1 gap-3 mt-4">
+                          {secondaryTabs.map((tab) => {
+                            const Icon = tab.icon;
+                            return (
+                              <Button
+                                key={tab.id}
+                                onClick={() => {
+                                  setActiveTab(tab.id);
+                                }}
+                                variant={activeTab === tab.id ? "default" : "outline"}
+                                className="justify-start h-12 text-left"
+                              >
+                                <Icon className="w-5 h-5 mr-3" />
+                                {tab.label}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                ) : (
+                  <TabsList className="grid w-full grid-cols-7">
+                    <TabsTrigger value="lesson">Lesson</TabsTrigger>
+                    <TabsTrigger value="notes">Notes</TabsTrigger>
+                    <TabsTrigger value="practice">Practice</TabsTrigger>
+                    <TabsTrigger value="elliot">
+                      <Bot className="w-4 h-4 mr-1" />
+                      Ask Elliot
+                    </TabsTrigger>
+                    <TabsTrigger value="discussion">
+                      <MessageSquare className="w-4 h-4 mr-1" />
+                      Discussion
+                    </TabsTrigger>
+                    <TabsTrigger value="analytics">
+                      <BarChart3 className="w-4 h-4 mr-1" />
+                      Analytics
+                    </TabsTrigger>
+                    <TabsTrigger value="achievements">
+                      <Trophy className="w-4 h-4 mr-1" />
+                      Achievements
+                    </TabsTrigger>
+                  </TabsList>
+                )}
 
                 <TabsContent value="lesson" className="space-y-4">
                   {/* Lesson Info */}
@@ -626,78 +812,122 @@ const QuantitativeReasoningLessons = () => {
               </Tabs>
             </div>
 
-            {/* Sidebar - Lesson List */}
-            <div className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Lessons ({quantitativeReasoningLessons.lessons.length})</CardTitle>
-                  <LessonSearch
-                    onSearch={handleSearch}
-                    onFilter={handleFilter}
-                    searchQuery={searchQuery}
-                    filters={filters}
-                  />
-                </CardHeader>
-                <CardContent className="p-0">
-                  {filteredLessons.map((lessonItem, index) => {
-                    const progress = getVideoProgress('quantitative-reasoning', lessonItem.id);
-                    const isCompleted = progress?.completed || false;
-                    const isActive = index === currentLesson;
-                    const watchProgress = progress ? (progress.currentTime / progress.duration) * 100 : 0;
-                    
-                    return (
-                      <div
-                        key={lessonItem.id}
-                        className={`p-4 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 transition-colors ${
-                          isActive ? 'bg-blue-50 border-l-4 border-l-[#009dff]' : ''
-                        }`}
-                        onClick={() => handleLessonSelect(index)}
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0 mt-1">
-                            {isCompleted ? (
-                              <CheckCircle className="w-5 h-5 text-green-600" />
-                            ) : isActive ? (
-                              <div className="w-5 h-5 rounded-full border-2 border-[#009dff] bg-[#009dff] flex items-center justify-center">
-                                <Play className="w-2 h-2 text-white fill-white" />
-                              </div>
-                            ) : (
-                              <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className={`font-medium text-sm mb-1 ${
-                              isActive ? 'text-[#009dff]' : 'text-gray-900'
-                            }`}>
-                              {lessonItem.title}
-                            </h4>
-                            <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                              <Clock className="w-3 h-3" />
-                              {lessonItem.duration}
+            {/* Sidebar - Hidden on Mobile (accessible via sheet) */}
+            {!isMobile && (
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Lessons ({quantitativeReasoningLessons.lessons.length})</CardTitle>
+                    <LessonSearch
+                      onSearch={handleSearch}
+                      onFilter={handleFilter}
+                      searchQuery={searchQuery}
+                      filters={filters}
+                    />
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    {filteredLessons.map((lessonItem, index) => {
+                      const progress = getVideoProgress('quantitative-reasoning', lessonItem.id);
+                      const isCompleted = progress?.completed || false;
+                      const isActive = index === currentLesson;
+                      const watchProgress = progress ? (progress.currentTime / progress.duration) * 100 : 0;
+                      
+                      return (
+                        <div
+                          key={lessonItem.id}
+                          className={`p-4 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 transition-colors min-h-[64px] ${
+                            isActive ? 'bg-blue-50 border-l-4 border-l-[#009dff]' : ''
+                          }`}
+                          onClick={() => handleLessonSelect(index)}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 mt-1">
+                              {isCompleted ? (
+                                <CheckCircle className="w-5 h-5 text-green-600" />
+                              ) : isActive ? (
+                                <div className="w-5 h-5 rounded-full border-2 border-[#009dff] bg-[#009dff] flex items-center justify-center">
+                                  <Play className="w-2 h-2 text-white fill-white" />
+                                </div>
+                              ) : (
+                                <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                              )}
                             </div>
-                            {/* Progress bar for partially watched videos */}
-                            {progress && watchProgress > 0 && !isCompleted && (
-                              <div className="w-full bg-gray-200 rounded-full h-1 mb-1">
-                                <div 
-                                  className="bg-[#009dff] h-1 rounded-full transition-all"
-                                  style={{ width: `${Math.min(watchProgress, 100)}%` }}
-                                />
+                            <div className="flex-1 min-w-0">
+                              <h4 className={`font-medium text-sm mb-1 ${
+                                isActive ? 'text-[#009dff]' : 'text-gray-900'
+                              }`}>
+                                {lessonItem.title}
+                              </h4>
+                              <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                                <Clock className="w-3 h-3" />
+                                {lessonItem.duration}
                               </div>
-                            )}
+                              {progress && watchProgress > 0 && !isCompleted && (
+                                <div className="w-full bg-gray-200 rounded-full h-1 mb-1">
+                                  <div 
+                                    className="bg-[#009dff] h-1 rounded-full transition-all"
+                                    style={{ width: `${Math.min(watchProgress, 100)}%` }}
+                                  />
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </CardContent>
-              </Card>
-            </div>
+                      );
+                    })}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Floating Chat Button */}
-      <FloatingChatButton onClick={activateElliotChat} />
+      {/* Sticky Bottom Navigation for Mobile */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-30">
+          <div className="flex items-center justify-between max-w-lg mx-auto">
+            <Button
+              onClick={handlePrevious}
+              disabled={currentLesson === 0}
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] px-4 disabled:opacity-50"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              <span className="text-xs">Previous</span>
+            </Button>
+            
+            <div className="text-center px-4">
+              <div className="text-xs text-gray-600 mb-1">
+                Lesson {currentLesson + 1} of {quantitativeReasoningLessons.lessons.length}
+              </div>
+              <div className="w-32 bg-gray-200 rounded-full h-1">
+                <div 
+                  className="bg-[#009dff] h-1 rounded-full transition-all"
+                  style={{ width: `${((currentLesson + 1) / quantitativeReasoningLessons.lessons.length) * 100}%` }}
+                />
+              </div>
+            </div>
+            
+            <Button
+              onClick={handleNext}
+              disabled={currentLesson === quantitativeReasoningLessons.lessons.length - 1}
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] px-4 disabled:opacity-50"
+            >
+              <span className="text-xs">Next</span>
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Chat Button - Enhanced positioning for mobile */}
+      <FloatingChatButton 
+        onClick={activateElliotChat}
+      />
     </MobileLayout>
   );
 };
