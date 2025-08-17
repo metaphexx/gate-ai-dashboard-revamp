@@ -338,10 +338,10 @@ const WritingTest = () => {
                 </TabsList>
               </div>
               
-              <TabsContent value="prompt" className="flex-1 overflow-y-auto m-0 px-4">
+              <TabsContent value="prompt" className="flex-1 m-0 px-4">
                 <div className="bg-white rounded-lg p-3 h-full flex flex-col justify-between">
                   {/* Main content section */}
-                  <div className="space-y-3 flex-shrink-0">
+                  <div className="space-y-3 flex-1">
                     {/* Category banner */}
                     <div className="bg-[#009dff] py-2 px-3 text-white shadow-sm rounded-lg">
                       <p className="text-sm font-medium">{currentQuestion.category}</p>
