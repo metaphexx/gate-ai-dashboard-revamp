@@ -119,29 +119,32 @@ const WritingResults = () => {
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           {/* Mobile Header */}
-          <div className="flex md:hidden items-center justify-between">
-            <div className="flex items-center space-x-3">
+          <div className="grid md:hidden grid-cols-3 items-center gap-4">
+            <div className="flex justify-start">
               <button 
                 onClick={() => navigate(-1)}
                 className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
+            </div>
+            <div className="flex justify-center">
               <EverestLogo />
             </div>
-            <Button
-              onClick={() => navigate('/')}
-              size="sm"
-              className="bg-[#009dff] hover:bg-[#008ae6] text-white"
-            >
-              <Home className="h-4 w-4" />
-            </Button>
+            <div className="flex justify-end">
+              <Button
+                onClick={() => navigate('/')}
+                size="sm"
+                className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+              >
+                <Home className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           
           {/* Desktop Header */}
           <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <EverestLogo />
               <div className="flex items-center space-x-2">
                 <button 
                   onClick={() => navigate(-1)}
@@ -153,6 +156,9 @@ const WritingResults = () => {
                 <span className="text-gray-300">|</span>
                 <h1 className="text-xl font-bold text-[#009dff]">Writing Assessment Results</h1>
               </div>
+            </div>
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <EverestLogo />
             </div>
             <Button
               onClick={() => navigate('/')}
