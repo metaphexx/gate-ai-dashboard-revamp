@@ -332,7 +332,7 @@ const QuantitativeReasoningLessons = () => {
   return (
     <MobileLayout>
       <div className="flex-1 overflow-y-auto">
-        <div className={`max-w-7xl mx-auto ${isMobile ? 'p-2 pb-28' : 'p-4 sm:p-6'}`}>
+        <div className={`max-w-7xl mx-auto ${isMobile ? 'p-2' : 'p-4 sm:p-6'}`}>
           {/* Header */}
           <div className={`flex items-center gap-3 ${isMobile ? 'mb-3 px-2' : 'gap-4 mb-6'}`}>
             <Button 
@@ -433,14 +433,10 @@ const QuantitativeReasoningLessons = () => {
               <Button 
                 onClick={activateElliotChat}
                 size="sm" 
-                className="h-10 px-4 bg-[#009dff] hover:bg-[#0080ff] text-white flex items-center gap-2"
+                className="h-8 px-3 bg-[#009dff] hover:bg-[#0080ff] text-white"
               >
-                <img 
-                  src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
-                  alt="Elliot" 
-                  className="w-5 h-5 rounded-full flex-shrink-0"
-                />
-                <span className="text-sm font-medium">Elliot</span>
+                <Bot className="w-4 h-4 mr-1" />
+                <span className="text-xs">Elliot</span>
               </Button>
             )}
           </div>
@@ -517,11 +513,11 @@ const QuantitativeReasoningLessons = () => {
 
               {/* Tabbed Content - Enhanced Mobile Navigation */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
-                 {isMobile ? (
+                {isMobile ? (
                   <div className="flex items-center gap-2">
                     {/* Scrollable primary tabs */}
-                    <ScrollArea className="flex-1 overflow-x-auto">
-                      <div className="flex gap-1 pb-2 min-w-max px-1">
+                    <ScrollArea className="flex-1">
+                      <div className="flex gap-1 pb-2">
                         {primaryTabs.map((tab) => {
                           const Icon = tab.icon;
                           const isActive = activeTab === tab.id;
@@ -531,14 +527,14 @@ const QuantitativeReasoningLessons = () => {
                               onClick={() => setActiveTab(tab.id)}
                               variant={isActive ? "default" : "outline"}
                               size="sm"
-                              className={`min-w-fit whitespace-nowrap h-10 px-4 flex-shrink-0 ${
+                              className={`min-w-fit whitespace-nowrap h-9 px-3 ${
                                 isActive 
                                   ? 'bg-[#009dff] hover:bg-[#0080ff] text-white' 
-                                  : 'text-gray-600 hover:text-gray-900 bg-white'
+                                  : 'text-gray-600 hover:text-gray-900'
                               }`}
                             >
-                              <Icon className="w-4 h-4 mr-2" />
-                              <span className="text-sm font-medium">{tab.label}</span>
+                              <Icon className="w-4 h-4 mr-1" />
+                              <span className="text-xs">{tab.label}</span>
                             </Button>
                           );
                         })}
@@ -889,26 +885,26 @@ const QuantitativeReasoningLessons = () => {
 
       {/* Sticky Bottom Navigation for Mobile */}
       {isMobile && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-30 safe-area-pb">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-30">
           <div className="flex items-center justify-between max-w-lg mx-auto">
             <Button
               onClick={handlePrevious}
               disabled={currentLesson === 0}
               variant="outline"
               size="sm"
-              className="min-h-[48px] px-6 disabled:opacity-50 text-sm font-medium"
+              className="min-h-[44px] px-4 disabled:opacity-50"
             >
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              <span>Previous</span>
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              <span className="text-xs">Previous</span>
             </Button>
             
             <div className="text-center px-4">
-              <div className="text-sm text-gray-600 mb-2 font-medium">
-                {currentLesson + 1} of {quantitativeReasoningLessons.lessons.length}
+              <div className="text-xs text-gray-600 mb-1">
+                Lesson {currentLesson + 1} of {quantitativeReasoningLessons.lessons.length}
               </div>
-              <div className="w-32 bg-gray-200 rounded-full h-2">
+              <div className="w-32 bg-gray-200 rounded-full h-1">
                 <div 
-                  className="bg-[#009dff] h-2 rounded-full transition-all"
+                  className="bg-[#009dff] h-1 rounded-full transition-all"
                   style={{ width: `${((currentLesson + 1) / quantitativeReasoningLessons.lessons.length) * 100}%` }}
                 />
               </div>
@@ -919,27 +915,19 @@ const QuantitativeReasoningLessons = () => {
               disabled={currentLesson === quantitativeReasoningLessons.lessons.length - 1}
               variant="outline"
               size="sm"
-              className="min-h-[48px] px-6 disabled:opacity-50 text-sm font-medium"
+              className="min-h-[44px] px-4 disabled:opacity-50"
             >
-              <span>Next</span>
-              <ChevronRight className="w-4 h-4 ml-2" />
+              <span className="text-xs">Next</span>
+              <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
         </div>
       )}
 
-      {/* Floating Chat Button - Positioned above bottom navigation */}
-      {isMobile ? (
-        <div className="fixed bottom-24 right-4 z-40">
-          <FloatingChatButton 
-            onClick={activateElliotChat}
-          />
-        </div>
-      ) : (
-        <FloatingChatButton 
-          onClick={activateElliotChat}
-        />
-      )}
+      {/* Floating Chat Button - Enhanced positioning for mobile */}
+      <FloatingChatButton 
+        onClick={activateElliotChat}
+      />
     </MobileLayout>
   );
 };
