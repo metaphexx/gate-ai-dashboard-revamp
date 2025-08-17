@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Search, Clock, FileText, ChevronRight } from 'lucide-react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import UserProfileBadge from '@/components/UserProfileBadge';
 import { studyNotesData } from '@/data/studyNotesData';
 
@@ -18,18 +18,17 @@ const StudyNotesSubject = () => {
 
   if (!subject) {
     return (
-      <div className="flex h-screen bg-gray-50">
-        <DashboardSidebar />
-        <div className="flex-1 flex items-center justify-center">
+      <MobileLayout>
+        <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Subject Not Found</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Subject Not Found</h1>
             <Button onClick={() => navigate('/study-notes')}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Study Notes
             </Button>
           </div>
         </div>
-      </div>
+      </MobileLayout>
     );
   }
 
@@ -39,13 +38,11 @@ const StudyNotesSubject = () => {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <DashboardSidebar />
-      
+    <MobileLayout>
       <div className="flex-1 overflow-auto">
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
+        <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
@@ -56,16 +53,18 @@ const StudyNotesSubject = () => {
                 Back to Study Notes
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{subject.title}</h1>
-                <p className="text-gray-600 mt-1">{subject.description}</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{subject.title}</h1>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">{subject.description}</p>
               </div>
             </div>
-            <UserProfileBadge />
+            <div className="self-start sm:self-center">
+              <UserProfileBadge />
+            </div>
           </div>
         </div>
 
         {/* Search Bar */}
-        <div className="p-6 pb-4">
+        <div className="p-4 sm:p-6 pb-4">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
@@ -79,7 +78,7 @@ const StudyNotesSubject = () => {
         </div>
 
         {/* Topics List */}
-        <div className="px-6 pb-6">
+        <div className="px-4 sm:px-6 pb-6">
           <div className="space-y-4">
             {filteredTopics.map((topic) => (
               <Link key={topic.id} to={`/study-notes/${subjectId}/${topic.id}`}>
@@ -119,7 +118,7 @@ const StudyNotesSubject = () => {
           )}
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

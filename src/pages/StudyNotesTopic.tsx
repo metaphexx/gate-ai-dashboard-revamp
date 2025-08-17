@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, ArrowRight, Clock, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import UserProfileBadge from '@/components/UserProfileBadge';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatPanel from '@/components/chat/ChatPanel';
@@ -27,18 +27,17 @@ const StudyNotesTopic = () => {
 
   if (!subject || !topic) {
     return (
-      <div className="flex h-screen bg-gray-50">
-        <DashboardSidebar />
-        <div className="flex-1 flex items-center justify-center">
+      <MobileLayout>
+        <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Topic Not Found</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Topic Not Found</h1>
             <Button onClick={() => navigate(`/study-notes/${subjectId}`)}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to {subject?.title || 'Subject'}
             </Button>
           </div>
         </div>
-      </div>
+      </MobileLayout>
     );
   }
 
@@ -166,13 +165,11 @@ const StudyNotesTopic = () => {
 
   return (
     <ChatProvider>
-      <div className="flex h-screen bg-gray-50">
-        <DashboardSidebar />
-        
+      <MobileLayout>
         <div className="flex-1 overflow-auto">
           {/* Header */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4">
-              <div className="flex items-center justify-between">
+          <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
+              <div className="flex flex-col space-y-4">
                 <div className="flex items-center space-x-4">
                   <Button
                     variant="ghost"
@@ -182,18 +179,18 @@ const StudyNotesTopic = () => {
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back to {subject.title}
                   </Button>
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">{topic.title}</h1>
-                    <p className="text-gray-600 mt-1">{topic.description}</p>
-                    <div className="flex items-center space-x-4 mt-2">
-                      <Badge variant="secondary" className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        ~{topic.estimatedTime} min read
-                      </Badge>
-                    </div>
+                </div>
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{topic.title}</h1>
+                  <p className="text-gray-600 mt-1 text-sm sm:text-base">{topic.description}</p>
+                  <div className="flex items-center space-x-4 mt-2">
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      ~{topic.estimatedTime} min read
+                    </Badge>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   {/* Topic Navigation */}
                   <div className="flex items-center space-x-2">
                     <Button
@@ -201,9 +198,9 @@ const StudyNotesTopic = () => {
                       size="sm"
                       onClick={() => navigate(`/study-notes/${subjectId}/${prevTopic?.id}`)}
                       disabled={!prevTopic}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 text-xs sm:text-sm"
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
                       {prevTopic ? 'Previous' : 'First Topic'}
                     </Button>
                     <Button
@@ -211,10 +208,10 @@ const StudyNotesTopic = () => {
                       size="sm"
                       onClick={() => navigate(`/study-notes/${subjectId}/${nextTopic?.id}`)}
                       disabled={!nextTopic}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 text-xs sm:text-sm"
                     >
                       {nextTopic ? 'Next' : 'Last Topic'}
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                   </div>
                   <UserProfileBadge />
@@ -223,7 +220,7 @@ const StudyNotesTopic = () => {
           </div>
 
           {/* Main Content */}
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <div className="max-w-4xl mx-auto">
               <Card className="shadow-sm">
                 <CardHeader>
@@ -296,7 +293,7 @@ const StudyNotesTopic = () => {
           isOpen={isChatOpen} 
           onClose={() => setIsChatOpen(false)}
         />
-      </div>
+      </MobileLayout>
     </ChatProvider>
   );
 };

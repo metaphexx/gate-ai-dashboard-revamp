@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Play, Pause, RotateCcw, CheckCircle, XCircle, Clock, Target, Zap } from 'lucide-react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 
 interface GameState {
   currentRound: number;
@@ -237,10 +237,8 @@ const MemoryGame = () => {
     ((30 - gameState.timeLeft) / 30) * 100;
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <DashboardSidebar />
-      
-      <main className="flex-1 p-6 overflow-y-auto">
+    <MobileLayout>
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center mb-6">
@@ -473,7 +471,7 @@ const MemoryGame = () => {
           </Card>
         </div>
       </main>
-    </div>
+    </MobileLayout>
   );
 };
 
