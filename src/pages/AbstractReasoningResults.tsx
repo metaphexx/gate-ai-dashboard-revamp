@@ -263,8 +263,8 @@ const AbstractReasoningResults = () => {
           {/* Chat Prompt Banner */}
           <Card className="bg-gradient-to-r from-blue-50 to-[#009dff]/5 rounded-2xl shadow-lg border border-[#009dff]/20 mb-8 hover:shadow-xl transition-shadow duration-300">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center gap-4 flex-1">
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center shadow-lg animate-pulse">
                     <img 
                       src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
@@ -279,7 +279,7 @@ const AbstractReasoningResults = () => {
                 </div>
                 <Button 
                   onClick={handleOpenChat}
-                  className="bg-[#009dff] hover:bg-[#0080ff] text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+                  className="bg-[#009dff] hover:bg-[#0080ff] text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 w-full sm:w-auto"
                 >
                   <MessageCircle className="h-5 w-5" />
                   Chat Now
