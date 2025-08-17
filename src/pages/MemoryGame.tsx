@@ -459,7 +459,7 @@ const MemoryGame = () => {
           </Card>
 
           {/* Keyboard Shortcuts Guide */}
-          <Card className="mt-6 bg-white/60 backdrop-blur-sm border-0">
+          <Card className="mt-6 bg-white/60 backdrop-blur-sm border-0 hidden sm:block">
             <CardContent className="p-4">
               <div className="text-center text-sm text-gray-600">
                 <span className="font-medium">Shortcuts:</span>{' '}

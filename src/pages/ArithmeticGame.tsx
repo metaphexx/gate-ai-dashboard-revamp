@@ -396,7 +396,7 @@ const ArithmeticGame = () => {
                       <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">R</kbd> Restart{' '}
                       <kbd className="bg-gray-200 px-2 py-1 rounded mx-1">0-9</kbd> Number Input
                     </div>
-                    <div className="sm:hidden space-y-1">
+                    <div className="hidden">
                       <div><kbd className="bg-gray-200 px-1 py-0.5 rounded text-xs">Enter</kbd> Submit</div>
                       <div><kbd className="bg-gray-200 px-1 py-0.5 rounded text-xs">Esc</kbd> Pause · <kbd className="bg-gray-200 px-1 py-0.5 rounded text-xs">R</kbd> Restart</div>
                     </div>
