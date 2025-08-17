@@ -96,7 +96,7 @@ const NoteTaking: React.FC<NoteTakingProps> = ({ videoId, currentTime }) => {
           Notes ({notes.length})
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pb-20 md:pb-6">
         {/* Add new note */}
         <div className="space-y-2">
           <Textarea
