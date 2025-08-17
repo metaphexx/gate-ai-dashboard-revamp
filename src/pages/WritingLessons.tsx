@@ -396,7 +396,7 @@ const WritingLessons = () => {
 
               {/* Tabbed Content */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
-                {isMobile ? (
+                {isMobile || window.innerWidth < 1024 ? (
                   <div className="flex items-center gap-2 w-full overflow-hidden">
                     {/* Scrollable primary tabs */}
                     <ScrollArea className="flex-1 overflow-hidden">

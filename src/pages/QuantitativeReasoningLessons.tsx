@@ -510,7 +510,7 @@ const QuantitativeReasoningLessons = () => {
 
               {/* Tabbed Content - Enhanced Mobile Navigation */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
-                {isMobile ? (
+                {isMobile || window.innerWidth < 1024 ? (
                   <div className="w-full overflow-hidden">
                     {/* All tabs scrollable horizontally */}
                     <ScrollArea className="w-full">
