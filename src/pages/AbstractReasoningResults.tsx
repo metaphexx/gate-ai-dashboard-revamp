@@ -218,14 +218,14 @@ const AbstractReasoningResults = () => {
                     <div className="flex justify-between text-xl font-medium">
                       <span>Time Taken</span>
                       <span className="font-bold flex items-center">
-                         <Clock className="h-6 w-6 mr-1" />
+                         <Clock className="h-5 w-5 mr-1" />
                         00h 20m 0s
                       </span>
                     </div>
                     <div className="flex justify-between text-lg font-medium text-gray-600">
                       <span>Completed</span>
                       <span className="flex items-center">
-                        <Calendar className="h-6 w-6 mr-1" />
+                        <Calendar className="h-5 w-5 mr-1" />
                         {formatCompletionDate(completionDate)}
                       </span>
                     </div>
@@ -342,7 +342,7 @@ const AbstractReasoningResults = () => {
                 ></div>
               </div>
               <div className="text-right text-sm text-gray-600 flex items-center justify-end">
-                <Clock className="h-6 w-6 mr-1" />
+                <Clock className="h-5 w-5 mr-1" />
                 00h 20m 0s Time Taken
               </div>
             </CardHeader>
