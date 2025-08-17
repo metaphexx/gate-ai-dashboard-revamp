@@ -32,6 +32,8 @@ import {
   Lightbulb,
   HelpCircle,
   Bot,
+  ChevronLeft,
+  ChevronRight,
   MoreHorizontal
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
@@ -802,6 +804,47 @@ const WritingLessons = () => {
           </div>
         </div>
       </div>
+
+      {/* Sticky Bottom Navigation for Mobile */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-30">
+          <div className="flex items-center justify-between max-w-sm sm:max-w-lg mx-auto px-2 gap-2">
+            <Button
+              onClick={handlePrevious}
+              disabled={currentLesson === 0}
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] px-3 disabled:opacity-50 flex-shrink-0"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              <span className="text-xs">Previous</span>
+            </Button>
+            
+            <div className="text-center px-2 flex-1 min-w-0">
+              <div className="text-xs text-gray-600 mb-1">
+                Lesson {currentLesson + 1} of {writingLessons.lessons.length}
+              </div>
+              <div className="w-24 sm:w-32 bg-gray-200 rounded-full h-1 mx-auto">
+                <div 
+                  className="bg-[#009dff] h-1 rounded-full transition-all"
+                  style={{ width: `${((currentLesson + 1) / writingLessons.lessons.length) * 100}%` }}
+                />
+              </div>
+            </div>
+            
+            <Button
+              onClick={handleNext}
+              disabled={currentLesson === writingLessons.lessons.length - 1}
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] px-3 disabled:opacity-50 flex-shrink-0"
+            >
+              <span className="text-xs">Next</span>
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Floating Chat Button */}
       <FloatingChatButton onClick={activateElliotChat} />
