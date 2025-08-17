@@ -567,7 +567,7 @@ const QuantitativeReasoningLessons = () => {
                   {/* Lesson Info */}
                   <Card>
                     <CardContent className="p-4 sm:p-6">
-                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between md:justify-start md:gap-6 lg:justify-between gap-4 mb-4">
                         <div className="flex-1">
                           <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
                           <p className="text-gray-600 text-sm mb-3">{lesson.description}</p>
