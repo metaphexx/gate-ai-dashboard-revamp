@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp, Calendar } from 'lucide-react';
+import { ArrowLeft, Eye, MessageSquare, Clock, TrendingUp, Calendar, MessageCircle } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 import TimeAnalysisSection from '@/components/results/TimeAnalysisSection';
 import AverageTimeSection from '@/components/results/AverageTimeSection';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatPanel from '@/components/chat/ChatPanel';
-import ChatBanner from '@/components/chat/ChatBanner';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 import { useChatContext } from '@/contexts/ChatContext';
 
@@ -256,10 +255,33 @@ const ReadingComprehensionResults = () => {
             </Card>
           </div>
 
-        {/* Chat Prompt Banner */}
-        <div className="mb-8">
-          <ChatBanner onOpenChat={handleOpenChat} />
-        </div>
+          {/* Chat Prompt Banner */}
+          <Card className="bg-gradient-to-r from-blue-50 to-[#009dff]/5 rounded-2xl shadow-lg border border-[#009dff]/20 mb-8 hover:shadow-xl transition-shadow duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center shadow-lg animate-pulse">
+                    <img 
+                      src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" 
+                      alt="Elliot Avatar" 
+                      className="w-10 h-10 rounded-full"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-gray-900 mb-1">💬 Need personalized study tips? Chat with Elliot!</h3>
+                    <p className="text-gray-600 text-sm">I can analyze your test results and provide targeted recommendations to improve your reading comprehension skills.</p>
+                  </div>
+                </div>
+                <Button 
+                  onClick={handleOpenChat}
+                  className="bg-[#009dff] hover:bg-[#0080ff] text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  Chat Now
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Action buttons with swapped colors */}
           <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none mb-8">
