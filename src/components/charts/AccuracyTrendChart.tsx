@@ -125,11 +125,11 @@ const AccuracyTrendChart = () => {
   return (
     <Card className="animate-fade-in">
       <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
           <h3 className="text-lg font-semibold">Performance Trend</h3>
           
-          <div className="flex items-center space-x-4">
-            <div className="w-40">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="w-full sm:w-40">
               <Select 
                 defaultValue="All" 
                 onValueChange={(value) => setSubject(value)}
@@ -147,7 +147,7 @@ const AccuracyTrendChart = () => {
               </Select>
             </div>
             
-            <Badge className={cn("ml-2", trend.isPositive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")}>
+            <Badge className={cn("w-fit", trend.isPositive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")}>
               {trend.isPositive ? (
                 <ArrowUp className="h-3 w-3 mr-1" />
               ) : (

@@ -9,6 +9,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import DashboardSidebar from '@/components/DashboardSidebar';
+import UserProfileBadge from '@/components/UserProfileBadge';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MobileLayoutProps {
@@ -49,8 +50,9 @@ const MobileLayout = ({ children }: MobileLayoutProps) => {
           </DrawerContent>
         </Drawer>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <span className="text-sm font-medium">GATE AI</span>
+          <UserProfileBadge />
         </div>
       </header>
 

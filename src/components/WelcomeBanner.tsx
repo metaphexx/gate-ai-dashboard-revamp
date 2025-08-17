@@ -39,12 +39,12 @@ const WelcomeBanner = () => {
           <p className="text-base opacity-90 mb-3">
             The next GATE exam is in {daysRemaining} days. Ready to continue your preparation?
           </p>
-          <div className="flex gap-3">
-            <Button variant="secondary" className="rounded-md text-[#009dff] text-base px-5 py-2">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button variant="secondary" className="rounded-md text-[#009dff] text-base px-5 py-2 w-full sm:w-auto">
               <Play size={18} className="mr-2" />
               Resume Last Session
             </Button>
-            <Button variant="outline" className="rounded-md bg-white/10 text-white border-white/20 hover:bg-white/20 text-base px-5 py-2">
+            <Button variant="outline" className="rounded-md bg-white/10 text-white border-white/20 hover:bg-white/20 text-base px-5 py-2 w-full sm:w-auto">
               Start New Practice
               <ArrowRight size={16} className="ml-2" />
             </Button>

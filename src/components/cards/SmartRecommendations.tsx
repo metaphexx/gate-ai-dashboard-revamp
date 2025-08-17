@@ -48,19 +48,20 @@ const SmartRecommendations = () => {
       
       <div className="space-y-4">
         {recommendations.map((item) => (
-          <div key={item.id} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-            <div className="flex items-start gap-3">
-              <div className="p-2 bg-white rounded-full">
+          <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-3 bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-start gap-3 flex-1 min-w-0">
+              <div className="p-2 bg-white rounded-full flex-shrink-0">
                 {item.icon}
               </div>
-              <div>
-                <p className="font-medium text-sm">{item.title}</p>
-                <p className="text-xs text-gray-500">{item.description}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm leading-tight mb-1">{item.title}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.description}</p>
               </div>
             </div>
             <Button 
               size="sm"
               variant={item.actionType}
+              className="w-full sm:w-auto min-h-[36px]"
             >
               {item.action}
             </Button>

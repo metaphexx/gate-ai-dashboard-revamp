@@ -10,7 +10,6 @@ import StudyStreakCard from '@/components/cards/StudyStreakCard';
 import QuestionBankStatus from '@/components/cards/QuestionBankStatus';
 import VideoTutorialCard from '@/components/cards/VideoTutorialCard';
 import AccuracyTrendChart from '@/components/charts/AccuracyTrendChart';
-import UserProfileBadge from '@/components/UserProfileBadge';
 import ChatBanner from '@/components/chat/ChatBanner';
 import ChatPanel from '@/components/chat/ChatPanel';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
@@ -22,13 +21,10 @@ const Index = () => {
     <MobileLayout>
       <main className="flex-1 p-3 sm:p-6 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <header className="mb-4">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold mb-2">GATE AI Online Question Bank</h1>
               <p className="text-gray-500 text-sm sm:text-base">Track your GATE exam preparation progress on the Dashboard!</p>
-            </div>
-            <div className="flex justify-end">
-              <UserProfileBadge />
             </div>
           </header>
           

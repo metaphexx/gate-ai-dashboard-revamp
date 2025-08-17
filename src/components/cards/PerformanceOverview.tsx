@@ -49,7 +49,7 @@ const PerformanceOverview = () => {
   
   return (
     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
         <h3 className="text-lg font-semibold">Performance by Subject</h3>
         <div className="flex items-center gap-2">
           <Button 
@@ -79,7 +79,7 @@ const PerformanceOverview = () => {
         </div>
       </div>
       
-      <div className="h-64 mb-4">
+      <div className="h-64 mb-6">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
