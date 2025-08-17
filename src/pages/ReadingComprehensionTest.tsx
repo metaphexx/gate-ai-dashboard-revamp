@@ -373,7 +373,7 @@ const ReadingComprehensionTest = () => {
         </Card>
         
         {/* Keyboard shortcuts info */}
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center hidden sm:block">
           <p className="text-sm text-gray-500">
             Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate, 
             <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">F</span> to flag, 

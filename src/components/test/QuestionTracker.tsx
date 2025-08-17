@@ -19,7 +19,7 @@ interface QuestionTrackerProps {
 
 const QuestionTracker = ({ questions, currentIndex, getStatus, onSelect }: QuestionTrackerProps) => {
   return (
-    <div className="mb-8 overflow-visible">
+    <div className="mb-8 overflow-visible mt-6">
       <div className="flex space-x-3 overflow-visible">
         {questions.map((question, index) => {
           const status = getStatus(index);
