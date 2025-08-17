@@ -36,7 +36,8 @@ import {
   ChevronLeft,
   ChevronRight,
   List,
-  MoreHorizontal
+  MoreHorizontal,
+  FileText
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
@@ -317,9 +318,9 @@ const QuantitativeReasoningLessons = () => {
   // Primary tabs for mobile (scrollable)
   const primaryTabs = [
     { id: 'lesson', label: 'Lesson', icon: Play },
+    { id: 'notes', label: 'Notes', icon: FileText },
     { id: 'elliot', label: 'Ask Elliot', icon: Bot },
     { id: 'practice', label: 'Practice', icon: Trophy },
-    { id: 'notes', label: 'Notes', icon: MessageSquare },
   ];
 
   // Secondary tabs (in overflow menu on mobile)
