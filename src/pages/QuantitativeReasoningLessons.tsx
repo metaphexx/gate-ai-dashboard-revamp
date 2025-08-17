@@ -602,22 +602,22 @@ const QuantitativeReasoningLessons = () => {
 
                       {/* Elliot Quick Help Section */}
                       <Card className="mb-4 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-3 mb-3">
+                        <CardContent className="p-4 md:p-6">
+                          <div className="flex items-center gap-3 mb-3 md:mb-4">
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
                               <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-9 h-9 rounded-full object-cover" />
                             </div>
                             <div>
-                              <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
-                              <p className="text-sm text-blue-700">Elliot can explain concepts, provide study tips, and answer questions about {lesson.title.toLowerCase()}.</p>
+                              <h4 className="font-medium text-blue-900 md:text-base">Need help with this lesson?</h4>
+                              <p className="text-sm md:text-base text-blue-700">Elliot can explain concepts, provide study tips, and answer questions about {lesson.title.toLowerCase()}.</p>
                             </div>
                           </div>
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-2 md:gap-3 md:flex-row md:justify-start">
                             <Button 
                               size="sm" 
                               variant="outline" 
                               onClick={activateElliotChat}
-                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
+                              className="text-blue-700 border-blue-200 hover:bg-blue-100 md:px-4 md:py-2"
                             >
                               <HelpCircle className="w-4 h-4 mr-1" />
                               Explain this concept
@@ -626,7 +626,7 @@ const QuantitativeReasoningLessons = () => {
                               size="sm" 
                               variant="outline" 
                               onClick={activateElliotChat}
-                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
+                              className="text-blue-700 border-blue-200 hover:bg-blue-100 md:px-4 md:py-2"
                             >
                               <Lightbulb className="w-4 h-4 mr-1" />
                               Study tips
@@ -635,7 +635,7 @@ const QuantitativeReasoningLessons = () => {
                               size="sm" 
                               variant="outline" 
                               onClick={activateElliotChat}
-                              className="text-blue-700 border-blue-200 hover:bg-blue-100"
+                              className="text-blue-700 border-blue-200 hover:bg-blue-100 md:px-4 md:py-2"
                             >
                               <MessageSquare className="w-4 h-4 mr-1" />
                               Ask questions
@@ -645,7 +645,7 @@ const QuantitativeReasoningLessons = () => {
                       </Card>
 
                       {/* Auto-play toggle */}
-                      <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3 mb-4 p-3 md:p-4 bg-gray-50 rounded-lg">
                         <input 
                           type="checkbox" 
                           id="autoplay" 
@@ -653,7 +653,7 @@ const QuantitativeReasoningLessons = () => {
                           onChange={(e) => setAutoPlayNext(e.target.checked)}
                           className="rounded"
                         />
-                        <label htmlFor="autoplay" className="text-sm text-gray-700">
+                        <label htmlFor="autoplay" className="text-sm md:text-base text-gray-700">
                           Auto-play next lesson
                         </label>
                       </div>
@@ -704,7 +704,7 @@ const QuantitativeReasoningLessons = () => {
                       <CardTitle className="text-lg">Course Details</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-sm md:text-base">
                         <div>
                           <div className="text-gray-500">Total Lessons</div>
                           <div className="font-semibold">{quantitativeReasoningLessons.totalLessons}</div>
