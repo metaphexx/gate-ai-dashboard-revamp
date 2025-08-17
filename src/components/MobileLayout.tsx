@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/drawer';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import UserProfileBadge from '@/components/UserProfileBadge';
+import Logo from '@/components/Logo';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MobileLayoutProps {
@@ -40,20 +41,21 @@ const MobileLayout = ({ children }: MobileLayoutProps) => {
               <span className="sr-only">Open menu</span>
             </Button>
           </DrawerTrigger>
-          <DrawerContent className="h-[85vh]">
-            <DrawerHeader className="text-left">
-              <DrawerTitle>Navigation</DrawerTitle>
+          <DrawerContent className="h-[90vh] w-full max-w-none">
+            <DrawerHeader className="text-left border-b border-gray-200">
+              <DrawerTitle className="text-lg font-semibold">Navigation</DrawerTitle>
             </DrawerHeader>
-            <div className="px-4 pb-4 overflow-y-auto">
-              <DashboardSidebar />
+            <div className="flex-1 overflow-y-auto">
+              <DashboardSidebar isMobile={true} />
             </div>
           </DrawerContent>
         </Drawer>
         
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium">GATE AI</span>
-          <UserProfileBadge />
+        <div className="flex-1 flex justify-center">
+          <Logo />
         </div>
+        
+        <UserProfileBadge />
       </header>
 
       {/* Mobile Content */}

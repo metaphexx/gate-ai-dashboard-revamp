@@ -15,7 +15,11 @@ import {
   NotebookPen
 } from 'lucide-react';
 
-const DashboardSidebar = () => {
+interface DashboardSidebarProps {
+  isMobile?: boolean;
+}
+
+const DashboardSidebar = ({ isMobile = false }: DashboardSidebarProps) => {
   const menuItems = [
     {
       title: "Learn",
@@ -41,6 +45,41 @@ const DashboardSidebar = () => {
       ]
     }
   ];
+
+  if (isMobile) {
+    return (
+      <div className="bg-white flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto p-4">
+          {menuItems.map((section, idx) => (
+            <div key={idx} className="mb-8">
+              <div className="text-sm font-semibold text-gray-700 px-2 mb-4 uppercase tracking-wide">
+                {section.title}
+              </div>
+              <div className="space-y-2">
+                {section.items.map((item, i) => (
+                  <Link 
+                    key={i} 
+                    to={item.path}
+                    className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group min-h-[48px]"
+                  >
+                    <span className="text-gray-500 group-hover:text-[#009dff] mr-4 flex-shrink-0">
+                      {item.icon}
+                    </span>
+                    <span className="text-base">{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+          
+          {/* Mobile upgrade card */}
+          <div className="mt-6">
+            <UpgradeAccountCard />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <aside className="bg-white border-r border-gray-200 w-64 h-screen flex flex-col">
