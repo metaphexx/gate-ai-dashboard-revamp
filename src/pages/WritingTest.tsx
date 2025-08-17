@@ -339,7 +339,7 @@ const WritingTest = () => {
               </div>
               
               <TabsContent value="prompt" className="flex-1 overflow-y-auto m-0 px-4">
-                <div className="bg-white rounded-lg p-3 flex flex-col space-y-3">
+                <div className="bg-white rounded-lg p-3 h-full flex flex-col justify-between space-y-3">
                   {/* Category banner */}
                   <div className="bg-[#009dff] py-2 px-3 text-white shadow-sm rounded-lg">
                     <p className="text-sm font-medium">{currentQuestion.category}</p>
