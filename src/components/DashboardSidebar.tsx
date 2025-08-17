@@ -49,11 +49,6 @@ const DashboardSidebar = ({ isMobile = false }: DashboardSidebarProps) => {
   if (isMobile) {
     return (
       <div className="bg-white flex flex-col h-full">
-        {/* Sticky upgrade card at top */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 z-10">
-          <UpgradeAccountCard />
-        </div>
-        
         {/* Scrollable navigation content */}
         <div className="flex-1 overflow-y-auto p-4">
           {menuItems.map((section, idx) => (
@@ -77,6 +72,11 @@ const DashboardSidebar = ({ isMobile = false }: DashboardSidebarProps) => {
               </div>
             </div>
           ))}
+        </div>
+        
+        {/* Sticky upgrade card at bottom */}
+        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 z-10">
+          <UpgradeAccountCard />
         </div>
       </div>
     );
