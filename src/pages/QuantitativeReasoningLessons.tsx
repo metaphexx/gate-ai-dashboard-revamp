@@ -516,7 +516,7 @@ const QuantitativeReasoningLessons = () => {
                 {isMobile ? (
                   <div className="flex items-center gap-2">
                     {/* Scrollable primary tabs */}
-                    <ScrollArea className="flex-1">
+                    <ScrollArea className="w-[calc(100%-3rem)]">
                       <div className="flex gap-1 pb-2">
                         {primaryTabs.map((tab) => {
                           const Icon = tab.icon;
