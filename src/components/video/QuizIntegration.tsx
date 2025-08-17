@@ -56,7 +56,7 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
               onClick={handleStartPracticeTest}
-              className="flex-1 h-20 sm:h-11 text-base sm:text-sm"
+              className="flex-1 h-24 sm:h-11 text-base sm:text-sm"
               size="lg"
             >
               <Play className="w-4 h-4 mr-2" />
