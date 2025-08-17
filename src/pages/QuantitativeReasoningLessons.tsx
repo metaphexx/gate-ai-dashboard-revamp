@@ -567,38 +567,41 @@ const QuantitativeReasoningLessons = () => {
                   {/* Lesson Info */}
                   <Card>
                     <CardContent className="p-4 sm:p-6">
-                      <div className="flex flex-col sm:flex-row sm:items-start justify-between md:justify-start md:gap-6 lg:justify-between gap-4 mb-4">
-                        <div className="flex-1">
-                          <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
-                          <p className="text-gray-600 text-sm mb-3">{lesson.description}</p>
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              {lesson.duration}
-                            </span>
-                            <span>Lesson {currentLesson + 1} of {quantitativeReasoningLessons.lessons.length}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={handleAddToFavorites}
-                          >
-                            <Heart className="w-4 h-4 mr-2" />
-                            <span className="hidden sm:inline">Favorite</span>
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={handleAddToWatchLater}
-                          >
-                            <BookmarkPlus className="w-4 h-4 mr-2" />
-                            <span className="hidden sm:inline">Watch Later</span>
-                          </Button>
-                        </div>
-                      </div>
+                       <div className="mb-4">
+                         <div className="mb-4">
+                           <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
+                           <p className="text-gray-600 text-sm mb-3">{lesson.description}</p>
+                         </div>
+                         
+                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                           <div className="flex items-center gap-4 text-sm text-gray-500">
+                             <span className="flex items-center gap-1">
+                               <Clock className="w-4 h-4" />
+                               {lesson.duration}
+                             </span>
+                             <span>Lesson {currentLesson + 1} of {quantitativeReasoningLessons.lessons.length}</span>
+                           </div>
+                           
+                           <div className="flex gap-2 sm:flex-shrink-0">
+                             <Button 
+                               variant="outline" 
+                               size="sm"
+                               onClick={handleAddToFavorites}
+                             >
+                               <Heart className="w-4 h-4 mr-2" />
+                               <span className="hidden sm:inline">Favorite</span>
+                             </Button>
+                             <Button 
+                               variant="outline" 
+                               size="sm"
+                               onClick={handleAddToWatchLater}
+                             >
+                               <BookmarkPlus className="w-4 h-4 mr-2" />
+                               <span className="hidden sm:inline">Watch Later</span>
+                             </Button>
+                           </div>
+                         </div>
+                       </div>
 
                       {/* Elliot Quick Help Section */}
                       <Card className="mb-4 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
