@@ -69,12 +69,12 @@ const TestCard: React.FC<TestCardProps> = ({
       </div>
       
       <CardHeader className="pb-3">
-        <CardTitle className="text-base sm:text-lg">{title}</CardTitle>
-        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{description}</p>
+        <CardTitle className="text-lg sm:text-xl">{title}</CardTitle>
+        <p className="text-sm sm:text-sm text-gray-600 line-clamp-2">{description}</p>
       </CardHeader>
       
       <CardContent className="pt-0">
-        <div className="flex justify-between items-center text-xs sm:text-sm text-gray-500 mb-4">
+        <div className="flex justify-between items-center text-sm sm:text-base text-gray-500 mb-4">
           <span className="flex items-center gap-1">
             <FileText className="w-4 h-4" />
             {questions} {questions === 1 ? 'question' : 'questions'}
