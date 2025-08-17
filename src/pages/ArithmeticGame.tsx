@@ -230,13 +230,6 @@ const ArithmeticGame = () => {
           }
           break;
         default:
-          // Handle number input
-          if (/^[0-9]$/.test(e.key) && gameState.isPlaying && !gameState.isPaused) {
-            setGameState(prev => ({ 
-              ...prev, 
-              userAnswer: prev.userAnswer + e.key 
-            }));
-          }
           break;
       }
     };
@@ -267,7 +260,7 @@ const ArithmeticGame = () => {
               <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Arithmetic Training
               </h1>
-              <p className="text-gray-600">{currentOp.name} Practice</p>
+              <p className="text-gray-600 text-center">{currentOp.name} Practice</p>
             </div>
             
             {gameState.isPlaying && (

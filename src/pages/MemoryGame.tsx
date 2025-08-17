@@ -241,7 +241,7 @@ const MemoryGame = () => {
       <main className="flex-1 p-4 sm:p-6 overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="flex items-center mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
             <button 
               onClick={() => navigate('/skills-trainer')}
               className="flex items-center text-gray-600 hover:text-primary transition-colors"
@@ -250,37 +250,37 @@ const MemoryGame = () => {
               Back to Skills Trainer
             </button>
             
-            <div className="flex-1 text-center">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="flex-1 text-center mx-0 sm:mx-8">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Memory Challenge
               </h1>
-              <p className="text-gray-600">Round {gameState.currentRound}: {currentRoundData.title}</p>
+              <p className="text-gray-600 text-center">Round {gameState.currentRound}: {currentRoundData.title}</p>
             </div>
             
-            <div className="w-48">
-              {(gameState.isPlaying || gameState.isComplete) && (
+            {(gameState.isPlaying || gameState.isComplete) && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Target className="h-4 w-4" />
+                  <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
+                    <Target className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="font-bold">Score: {gameState.score}</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <XCircle className="h-4 w-4" />
+                  <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
+                    <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="font-bold">Mistakes: {gameState.mistakes}</span>
                   </div>
-                  {gameState.isPlaying && (
-                    <>
-                      <Button variant="outline" size="sm" onClick={() => setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }))}>
-                        <Pause className="h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={resetGame}>
-                        <RotateCcw className="h-4 w-4" />
-                      </Button>
-                    </>
-                  )}
                 </div>
-              )}
-            </div>
+                {gameState.isPlaying && (
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm" onClick={() => setGameState(prev => ({ ...prev, isPaused: !prev.isPaused }))}>
+                      <Pause className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={resetGame}>
+                      <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Round Selection */}
@@ -352,26 +352,26 @@ const MemoryGame = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-8">
-                      <h3 className="text-xl font-semibold">Enter the sequence you saw:</h3>
-                      <div className="flex items-center justify-center space-x-4">
-                        <Input
-                          type="text"
-                          value={gameState.userInput}
-                          onChange={(e) => setGameState(prev => ({ ...prev, userInput: e.target.value }))}
-                          placeholder={gameState.currentRound === 3 ? "Enter words separated by spaces" : "Enter the sequence"}
-                          className="text-4xl text-center font-bold w-96 h-16 bg-white/90 backdrop-blur-sm border-2 font-mono"
-                          autoFocus
-                        />
-                        <Button 
-                          onClick={handleSubmit} 
-                          className="h-16 px-8 text-lg"
-                          disabled={!gameState.userInput.trim()}
-                        >
-                          Submit (Enter)
-                        </Button>
+                      <div className="space-y-6 sm:space-y-8">
+                        <h3 className="text-lg sm:text-xl font-semibold">Enter the sequence you saw:</h3>
+                        <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                          <Input
+                            type="text"
+                            value={gameState.userInput}
+                            onChange={(e) => setGameState(prev => ({ ...prev, userInput: e.target.value }))}
+                            placeholder={gameState.currentRound === 3 ? "Enter words separated by spaces" : "Enter the sequence"}
+                            className="text-2xl sm:text-4xl text-center font-bold w-full sm:w-96 h-12 sm:h-16 bg-white/90 backdrop-blur-sm border-2 font-mono"
+                            autoFocus
+                          />
+                          <Button 
+                            onClick={handleSubmit} 
+                            className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg w-full sm:w-auto"
+                            disabled={!gameState.userInput.trim()}
+                          >
+                            Submit (Enter)
+                          </Button>
+                        </div>
                       </div>
-                    </div>
                   )}
                 </div>
               )}
@@ -407,9 +407,9 @@ const MemoryGame = () => {
                     Correct answer: <span className="font-mono font-semibold">{gameState.correctAnswer}</span>
                   </p>
                   
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button onClick={() => startRound(gameState.currentRound)} className="text-lg px-8 py-4">
-                      <RotateCcw className="h-5 w-5 mr-2" />
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <Button onClick={() => startRound(gameState.currentRound)} className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+                      <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       Try Again (Enter)
                     </Button>
                     {gameState.currentRound < 3 && (
@@ -422,13 +422,13 @@ const MemoryGame = () => {
                             isComplete: false 
                           }));
                         }}
-                        className="text-lg px-8 py-4"
+                        className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
                       >
-                        <Zap className="h-5 w-5 mr-2" />
+                        <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                         Next Round
                       </Button>
                     )}
-                    <Button variant="outline" onClick={resetGame} className="text-lg px-8 py-4">
+                    <Button variant="outline" onClick={resetGame} className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
                       Back to Selection
                     </Button>
                   </div>
