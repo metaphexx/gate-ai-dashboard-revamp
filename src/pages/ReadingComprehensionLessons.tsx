@@ -14,6 +14,8 @@ import ChatPanel from '@/components/chat/ChatPanel';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   ArrowLeft, 
   Heart, 
@@ -29,10 +31,12 @@ import {
   Trophy,
   Lightbulb,
   HelpCircle,
-  Bot
+  Bot,
+  MoreHorizontal
 } from 'lucide-react';
 import { useVideoProgress } from '@/contexts/VideoProgressContext';
 import { useToast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const readingComprehensionLessons = {
   title: 'Reading Comprehension',
@@ -292,6 +296,23 @@ const ReadingComprehensionLessons = () => {
     learningStyle: 'Detail-oriented learner with preference for systematic approaches'
   };
 
+  const isMobile = useIsMobile();
+  
+  // Primary tabs for mobile (scrollable)
+  const primaryTabs = [
+    { id: 'lesson', label: 'Lesson', icon: Play },
+    { id: 'notes', label: 'Notes', icon: MessageSquare },
+    { id: 'practice', label: 'Practice', icon: Trophy },
+    { id: 'elliot', label: 'Ask Elliot', icon: Bot },
+  ];
+
+  // Secondary tabs (in overflow menu on mobile)
+  const secondaryTabs = [
+    { id: 'discussion', label: 'Discussion', icon: MessageSquare },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'achievements', label: 'Achievements', icon: Trophy },
+  ];
+
   return (
     <MobileLayout>
       <div className="flex-1 overflow-y-auto p-4 sm:p-6">
@@ -373,27 +394,89 @@ const ReadingComprehensionLessons = () => {
 
               {/* Tabbed Content */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
-                <TabsList className="grid w-full grid-cols-7">
-                  <TabsTrigger value="lesson">Lesson</TabsTrigger>
-                  <TabsTrigger value="notes">Notes</TabsTrigger>
-                  <TabsTrigger value="practice">Practice</TabsTrigger>
-                  <TabsTrigger value="elliot">
-                    <Bot className="w-4 h-4 mr-1" />
-                    Ask Elliot
-                  </TabsTrigger>
-                  <TabsTrigger value="discussion">
-                    <MessageSquare className="w-4 h-4 mr-1" />
-                    Discussion
-                  </TabsTrigger>
-                  <TabsTrigger value="analytics">
-                    <BarChart3 className="w-4 h-4 mr-1" />
-                    Analytics
-                  </TabsTrigger>
-                  <TabsTrigger value="achievements">
-                    <Trophy className="w-4 h-4 mr-1" />
-                    Achievements
-                  </TabsTrigger>
-                </TabsList>
+                {isMobile ? (
+                  <div className="flex items-center gap-2 w-full overflow-hidden">
+                    {/* Scrollable primary tabs */}
+                    <ScrollArea className="flex-1 overflow-hidden">
+                      <div className="flex gap-1 pb-2">
+                        {primaryTabs.map((tab) => {
+                          const Icon = tab.icon;
+                          const isActive = activeTab === tab.id;
+                          return (
+                            <Button
+                              key={tab.id}
+                              onClick={() => setActiveTab(tab.id)}
+                              variant={isActive ? "default" : "outline"}
+                              size="sm"
+                              className={`min-w-[65px] whitespace-nowrap flex-shrink-0 h-9 px-2 ${
+                                isActive 
+                                  ? 'bg-[#009dff] hover:bg-[#0080ff] text-white' 
+                                  : 'text-gray-600 hover:text-gray-900'
+                              }`}
+                            >
+                              <Icon className="w-4 h-4 mr-1" />
+                              <span className="text-xs">{tab.label}</span>
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                    
+                    {/* Overflow menu for secondary tabs */}
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-9 w-9 px-0 flex-shrink-0">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="bottom" className="h-[50vh]">
+                        <SheetHeader>
+                          <SheetTitle>More Options</SheetTitle>
+                        </SheetHeader>
+                        <div className="grid grid-cols-1 gap-3 mt-4">
+                          {secondaryTabs.map((tab) => {
+                            const Icon = tab.icon;
+                            return (
+                              <Button
+                                key={tab.id}
+                                onClick={() => {
+                                  setActiveTab(tab.id);
+                                }}
+                                variant={activeTab === tab.id ? "default" : "outline"}
+                                className="justify-start h-12 text-left"
+                              >
+                                <Icon className="w-5 h-5 mr-3" />
+                                {tab.label}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                ) : (
+                  <TabsList className="grid w-full grid-cols-7">
+                    <TabsTrigger value="lesson">Lesson</TabsTrigger>
+                    <TabsTrigger value="notes">Notes</TabsTrigger>
+                    <TabsTrigger value="practice">Practice</TabsTrigger>
+                    <TabsTrigger value="elliot">
+                      <Bot className="w-4 h-4 mr-1" />
+                      Ask Elliot
+                    </TabsTrigger>
+                    <TabsTrigger value="discussion">
+                      <MessageSquare className="w-4 h-4 mr-1" />
+                      Discussion
+                    </TabsTrigger>
+                    <TabsTrigger value="analytics">
+                      <BarChart3 className="w-4 h-4 mr-1" />
+                      Analytics
+                    </TabsTrigger>
+                    <TabsTrigger value="achievements">
+                      <Trophy className="w-4 h-4 mr-1" />
+                      Achievements
+                    </TabsTrigger>
+                  </TabsList>
+                )}
 
                 <TabsContent value="lesson" className="space-y-4">
                   {/* Lesson Info */}
