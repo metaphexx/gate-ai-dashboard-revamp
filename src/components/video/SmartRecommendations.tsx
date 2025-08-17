@@ -109,7 +109,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
           Smart Recommendations
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pb-20 md:pb-6">
         <div className="text-sm text-gray-600 mb-4">
           Based on your performance and learning patterns, here are personalized recommendations:
         </div>
