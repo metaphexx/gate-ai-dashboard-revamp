@@ -3,6 +3,7 @@ import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Question {
   id: number;
@@ -34,6 +35,8 @@ interface ChatPanelProps {
 }
 
 const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, type }: ChatPanelProps) => {
+  const isMobile = useIsMobile();
+  
   const getInitialMessage = () => {
     if (type === 'writing-solution') {
       return {
@@ -77,7 +80,6 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
   };
 
   const [messages, setMessages] = useState<Message[]>([getInitialMessage()]);
-  
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -273,11 +275,158 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
 
   if (!isOpen) return null;
 
-  // Always render as side panel - no modal version
+  // Mobile: Full-screen overlay
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 z-50 bg-white">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b bg-white">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-6 h-6 rounded-full" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-gray-900">Elliot</h2>
+              <p className="text-xs text-gray-500">AI Study Assistant</p>
+            </div>
+          </div>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <X size={20} />
+          </Button>
+        </div>
+
+        {/* Messages Area */}
+        <div className="flex-1 h-[calc(100vh-140px)]">
+          <ScrollArea className="h-full py-4 px-4">
+            <div className="space-y-4">
+              {messages.map(message => (
+                <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className="max-w-[85%]">
+                    {message.type === 'assistant' && (
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                          <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-5 h-5 rounded-full" />
+                        </div>
+                        <span className="text-xs font-medium text-gray-600">Elliot</span>
+                      </div>
+                    )}
+                    <div className={`p-3 rounded-2xl ${
+                      message.type === 'user' 
+                        ? 'bg-[#009dff] text-white ml-auto' 
+                        : 'bg-gray-100 text-gray-900'
+                    }`}>
+                      <p className="text-sm whitespace-pre-line leading-relaxed">{message.content}</p>
+                    </div>
+                    
+                    {message.type === 'assistant' && (
+                      <div className="flex items-center gap-2 mt-2 ml-8">
+                        <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
+                          <ThumbsUp size={12} />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
+                          <ThumbsDown size={12} />
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {message.quickReplies && (
+                      <div className="flex flex-wrap gap-2 mt-3 ml-8">
+                        {message.quickReplies.map((reply, index) => (
+                          <Button
+                            key={index}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleQuickReply(reply)}
+                            className="text-xs bg-white text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-gray-900 h-7"
+                          >
+                            {reply}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="max-w-[85%]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+                        <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-5 h-5 rounded-full" />
+                      </div>
+                      <span className="text-xs font-medium text-gray-600">Elliot</span>
+                    </div>
+                    <div className="bg-gray-100 p-3 rounded-2xl">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div ref={messagesEndRef} />
+            </div>
+          </ScrollArea>
+        </div>
+
+        {/* Input Area */}
+        <div className="p-4 border-t bg-white">
+          <div className="flex gap-2">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Type your message..."
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              className="flex-1"
+            />
+            <Button 
+              onClick={handleSendMessage}
+              size="sm"
+              className="bg-[#009dff] hover:bg-[#0080ff] text-white px-3"
+            >
+              <Send size={16} />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop: Side panel
   return (
-    <div className="h-full flex flex-col bg-white">
-      {/* Messages Area - This should take all available space except input */}
-      <div className="flex-1 min-h-0">
+    <div className="fixed right-0 top-0 h-full w-96 bg-white border-l border-gray-200 shadow-xl z-50">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b bg-white">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
+            <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-6 h-6 rounded-full" />
+          </div>
+          <div>
+            <h2 className="font-semibold text-gray-900">Elliot</h2>
+            <p className="text-xs text-gray-500">AI Study Assistant</p>
+          </div>
+        </div>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <X size={20} />
+        </Button>
+      </div>
+
+      {/* Messages Area */}
+      <div className="flex-1 h-[calc(100vh-140px)]">
         <ScrollArea className="h-full py-4 px-4">
           <div className="space-y-4">
             {messages.map(message => (
@@ -351,33 +500,29 @@ const ChatPanel = ({ isOpen, onClose, questions = [], currentQuestionIndex = 0, 
               </div>
             )}
             
-            {/* Invisible element to scroll to */}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
       </div>
 
-      {/* Input - Fixed at bottom of chat panel */}
-      <div className="border-t border-gray-200 p-3 bg-white">
+      {/* Input Area */}
+      <div className="p-4 border-t bg-white">
         <div className="flex gap-2">
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask Elliot about any question or concept..."
+            placeholder="Type your message..."
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             className="flex-1"
           />
-          <Button
+          <Button 
             onClick={handleSendMessage}
-            size="icon"
-            className="bg-[#009dff] hover:bg-[#0080ff]"
+            size="sm"
+            className="bg-[#009dff] hover:bg-[#0080ff] text-white px-3"
           >
             <Send size={16} />
           </Button>
         </div>
-        <p className="text-xs text-gray-500 mt-1 text-center">
-          {type === 'writing-solution' ? `Elliot can see your text and all highlighted errors.` : type ? `Elliot has access to all questions and explanations.` : `Elliot is here to help with your studies.`}
-        </p>
       </div>
     </div>
   );

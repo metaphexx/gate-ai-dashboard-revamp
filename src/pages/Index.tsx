@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import WelcomeBanner from '@/components/WelcomeBanner';
 import TierSummary from '@/components/cards/TierSummary';
 import RecentActivityCard from '@/components/cards/RecentActivityCard';
@@ -19,21 +19,21 @@ const Index = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <DashboardSidebar />
-      
-      <main className="flex-1 p-6 overflow-y-auto">
+    <MobileLayout>
+      <main className="flex-1 p-3 sm:p-6 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-4 flex justify-between items-center">
+          <header className="mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold mb-2">GATE AI Online Question Bank</h1>
-              <p className="text-gray-500">Track your GATE exam preparation progress on the Dashboard!</p>
+              <h1 className="text-xl sm:text-2xl font-bold mb-2">GATE AI Online Question Bank</h1>
+              <p className="text-gray-500 text-sm sm:text-base">Track your GATE exam preparation progress on the Dashboard!</p>
             </div>
-            <UserProfileBadge />
+            <div className="flex justify-end">
+              <UserProfileBadge />
+            </div>
           </header>
           
           {/* Welcome Banner and Video Tutorial - At the top */}
-          <section className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
+          <section className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
             <div className="lg:col-span-3">
               <WelcomeBanner />
             </div>
@@ -53,7 +53,7 @@ const Index = () => {
           </section>
           
           {/* Performance Overview & Study Progress Section */}
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
             <div className="lg:col-span-2">
               <PerformanceOverview />
             </div>
@@ -63,7 +63,7 @@ const Index = () => {
           </section>
           
           {/* Recent Activity & Smart Recommendations */}
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4">
             <RecentActivityCard />
             <SmartRecommendations />
           </section>
@@ -85,7 +85,7 @@ const Index = () => {
 
       {/* Chat Panel */}
       <ChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-    </div>
+    </MobileLayout>
   );
 };
 

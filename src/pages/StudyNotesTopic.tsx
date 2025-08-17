@@ -237,47 +237,51 @@ const StudyNotesTopic = () => {
                     {renderContent(topic.content)}
                   </div>
                   
-                  {/* Video Examples Section */}
-                  {topic.examples && topic.examples.some(example => example.videoId) && (
-                    <div className="mt-8 pt-6 border-t border-gray-200">
-                      <h3 className="text-xl font-semibold text-purple-600 mb-4">Practice Videos</h3>
-                      <div className="mb-4">
-                        <iframe
-                          width="100%"
-                          height="315"
-                          src={`https://www.youtube.com/embed/${topic.examples.find(example => example.videoId)?.videoId}`}
-                          title={topic.examples.find(example => example.videoId)?.title}
-                          frameBorder="0"
-                          allowFullScreen
-                          className="rounded-lg"
-                        />
+                    {/* Video Examples Section */}
+                    {topic.examples && topic.examples.some(example => example.videoId) && (
+                      <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+                        <h3 className="text-lg sm:text-xl font-semibold text-purple-600 mb-3 sm:mb-4">Practice Videos</h3>
+                        <div className="mb-4">
+                          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                            <iframe
+                              src={`https://www.youtube.com/embed/${topic.examples.find(example => example.videoId)?.videoId}`}
+                              title={topic.examples.find(example => example.videoId)?.title}
+                              frameBorder="0"
+                              allowFullScreen
+                              className="absolute top-0 left-0 w-full h-full rounded-lg"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Bottom Navigation */}
+                    <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
+                        <Button
+                          variant="outline"
+                          onClick={() => navigate(`/study-notes/${subjectId}/${prevTopic?.id}`)}
+                          disabled={!prevTopic}
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto text-xs sm:text-sm"
+                        >
+                          <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <span className="truncate">
+                            {prevTopic ? `Previous: ${prevTopic.title}` : 'First Topic'}
+                          </span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => navigate(`/study-notes/${subjectId}/${nextTopic?.id}`)}
+                          disabled={!nextTopic}
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto text-xs sm:text-sm"
+                        >
+                          <span className="truncate">
+                            {nextTopic ? `Next: ${nextTopic.title}` : 'Last Topic'}
+                          </span>
+                          <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                        </Button>
                       </div>
                     </div>
-                  )}
-                  
-                  {/* Bottom Navigation */}
-                  <div className="mt-8 pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-between">
-                      <Button
-                        variant="outline"
-                        onClick={() => navigate(`/study-notes/${subjectId}/${prevTopic?.id}`)}
-                        disabled={!prevTopic}
-                        className="flex items-center gap-2"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                        {prevTopic ? `Previous: ${prevTopic.title}` : 'First Topic'}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => navigate(`/study-notes/${subjectId}/${nextTopic?.id}`)}
-                        disabled={!nextTopic}
-                        className="flex items-center gap-2"
-                      >
-                        {nextTopic ? `Next: ${nextTopic.title}` : 'Last Topic'}
-                        <ChevronRight className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             </div>
