@@ -189,7 +189,7 @@ const DiscussionSystem: React.FC<DiscussionSystemProps> = ({ lessonId }) => {
           Discussion ({comments.length})
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4 pb-16 md:pb-4">
+      <CardContent className="space-y-4 pb-24 md:pb-4">
         {/* Add new comment */}
         <div className="space-y-2">
           <Textarea
