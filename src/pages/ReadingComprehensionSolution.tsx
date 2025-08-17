@@ -191,17 +191,19 @@ const ReadingComprehensionSolution = () => {
               {/* Chat with Elliot Prompt */}
               {!isChatOpen && (
                 <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
-                      <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-blue-800 font-medium">Need help understanding any question?</p>
-                      <p className="text-blue-600 text-sm">Chat with Elliot about passages, answers, and explanations!</p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4 flex-1">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
+                        <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-10 h-10 rounded-full" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-blue-800 font-medium">Need help understanding any question?</p>
+                        <p className="text-blue-600 text-sm">Chat with Elliot about passages, answers, and explanations!</p>
+                      </div>
                     </div>
                     <Button
                       onClick={() => setIsChatOpen(true)}
-                      className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+                      className="bg-[#009dff] hover:bg-[#008ae6] text-white w-full sm:w-auto"
                     >
                       <MessageCircle className="h-4 w-4 mr-2" />
                       Chat with Elliot
