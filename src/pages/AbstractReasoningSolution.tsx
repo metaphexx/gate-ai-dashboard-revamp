@@ -119,7 +119,7 @@ const AbstractReasoningSolution = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
-      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
+      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-20">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <EverestLogo />
@@ -317,7 +317,7 @@ const AbstractReasoningSolution = () => {
         </div>
         
         {/* Fixed bottom navigation */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-20">
           <div className="container mx-auto px-4 py-3 flex items-center justify-between">
             <Button 
               variant="outline"
