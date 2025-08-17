@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { 
   ArrowLeft, 
   Heart, 
@@ -368,15 +368,18 @@ const ReadingComprehensionLessons = () => {
           )}
 
           {/* Analytics Dashboard */}
-          <AnalyticsDashboard
-            totalWatchTime={totalWatchTime}
-            completedLessons={completedLessons}
-            totalLessons={readingComprehensionLessons.lessons.length}
-            averageScore={averageScore}
-            streak={4}
-          />
+          {/* Analytics Dashboard - Optimized for Mobile */}
+          <div className={isMobile ? "px-2" : ""}>
+            <AnalyticsDashboard
+              totalWatchTime={totalWatchTime}
+              completedLessons={completedLessons}
+              totalLessons={readingComprehensionLessons.lessons.length}
+              averageScore={averageScore}
+              streak={4}
+            />
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6 ${isMobile ? 'px-2' : ''}`}>
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Enhanced Video Player */}
@@ -484,7 +487,7 @@ const ReadingComprehensionLessons = () => {
                 <TabsContent value="lesson" className="space-y-4">
                   {/* Lesson Info */}
                   <Card>
-                    <CardContent className="p-4 sm:p-6">
+                    <CardContent className={isMobile ? "p-3" : "p-4 sm:p-6"}>
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
                         <div className="flex-1">
                           <h2 className="text-lg sm:text-xl font-semibold mb-2">{lesson.title}</h2>
