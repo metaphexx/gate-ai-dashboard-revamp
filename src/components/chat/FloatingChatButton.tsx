@@ -11,7 +11,7 @@ const FloatingChatButton = ({ onClick }: FloatingChatButtonProps) => {
   return (
     <Button
       onClick={onClick}
-      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 bg-[#009dff] hover:bg-[#0080ff] text-white rounded-full w-12 h-12 md:w-14 md:h-14 shadow-lg z-40 flex items-center justify-center"
+      className="fixed bottom-20 right-4 md:bottom-6 md:right-6 bg-[#009dff] hover:bg-[#0080ff] text-white rounded-full w-12 h-12 md:w-14 md:h-14 shadow-lg z-40 flex items-center justify-center"
       size="icon"
     >
       <img 
