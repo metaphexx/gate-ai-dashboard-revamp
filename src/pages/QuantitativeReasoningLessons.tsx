@@ -315,16 +315,12 @@ const QuantitativeReasoningLessons = () => {
 
   const isMobile = useIsMobile();
   
-  // Primary tabs for mobile (scrollable)
-  const primaryTabs = [
+  // All tabs for mobile (horizontally scrollable)
+  const allTabs = [
     { id: 'lesson', label: 'Lesson', icon: Play },
     { id: 'notes', label: 'Notes', icon: FileText },
     { id: 'elliot', label: 'Ask Elliot', icon: Bot },
     { id: 'practice', label: 'Practice', icon: Trophy },
-  ];
-
-  // Secondary tabs (in overflow menu on mobile)
-  const secondaryTabs = [
     { id: 'discussion', label: 'Discussion', icon: MessageSquare },
     { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'achievements', label: 'Achievements', icon: Trophy },
@@ -515,11 +511,11 @@ const QuantitativeReasoningLessons = () => {
               {/* Tabbed Content - Enhanced Mobile Navigation */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4" ref={tabsRef}>
                 {isMobile ? (
-                  <div className="flex items-center gap-2 w-full overflow-hidden">
-                    {/* Scrollable primary tabs */}
-                    <ScrollArea className="flex-1 overflow-hidden">
+                  <div className="w-full overflow-hidden">
+                    {/* All tabs scrollable horizontally */}
+                    <ScrollArea className="w-full">
                       <div className="flex gap-1 pb-2">
-                        {primaryTabs.map((tab) => {
+                        {allTabs.map((tab) => {
                           const Icon = tab.icon;
                           const isActive = activeTab === tab.id;
                           return (
@@ -528,51 +524,19 @@ const QuantitativeReasoningLessons = () => {
                               onClick={() => setActiveTab(tab.id)}
                               variant={isActive ? "default" : "outline"}
                               size="sm"
-                              className={`min-w-[65px] whitespace-nowrap flex-shrink-0 h-9 px-2 ${
+                              className={`min-w-[70px] whitespace-nowrap flex-shrink-0 h-9 px-3 ${
                                 isActive 
                                   ? 'bg-[#009dff] hover:bg-[#0080ff] text-white' 
                                   : 'text-gray-600 hover:text-gray-900'
                               }`}
                             >
-                              <Icon className="w-4 h-4 mr-1" />
+                              <Icon className="w-4 h-4 mr-1.5" />
                               <span className="text-xs">{tab.label}</span>
                             </Button>
                           );
                         })}
                       </div>
                     </ScrollArea>
-                    
-                    {/* Overflow menu for secondary tabs */}
-                    <Sheet>
-                      <SheetTrigger asChild>
-                        <Button variant="outline" size="sm" className="h-9 w-9 px-0 flex-shrink-0">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </SheetTrigger>
-                      <SheetContent side="bottom" className="h-[50vh]">
-                        <SheetHeader>
-                          <SheetTitle>More Options</SheetTitle>
-                        </SheetHeader>
-                        <div className="grid grid-cols-1 gap-3 mt-4">
-                          {secondaryTabs.map((tab) => {
-                            const Icon = tab.icon;
-                            return (
-                              <Button
-                                key={tab.id}
-                                onClick={() => {
-                                  setActiveTab(tab.id);
-                                }}
-                                variant={activeTab === tab.id ? "default" : "outline"}
-                                className="justify-start h-12 text-left"
-                              >
-                                <Icon className="w-5 h-5 mr-3" />
-                                {tab.label}
-                              </Button>
-                            );
-                          })}
-                        </div>
-                      </SheetContent>
-                    </Sheet>
                   </div>
                 ) : (
                   <TabsList className="grid w-full grid-cols-7">
