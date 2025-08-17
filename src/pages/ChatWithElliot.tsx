@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,12 +19,20 @@ const ChatWithElliot = () => {
   } = useChatContext();
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
-  }, [messages]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = (smooth = true) => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ 
+        behavior: smooth ? 'smooth' : 'auto',
+        block: 'end' 
+      });
+    }, 0);
+  };
+
+  useLayoutEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
     const newMessage: Message = {
@@ -35,6 +43,7 @@ const ChatWithElliot = () => {
     };
     setMessages(prev => [...prev, newMessage]);
     setInputValue('');
+    scrollToBottom(); // Immediate scroll for user message
     setIsTyping(true);
 
     // Simulate AI response with 3-dot loading
@@ -60,6 +69,7 @@ const ChatWithElliot = () => {
       timestamp: new Date()
     };
     setMessages(prev => [...prev, newMessage]);
+    scrollToBottom(); // Immediate scroll for quick reply
     setIsTyping(true);
 
     // Handle quick reply responses
@@ -102,7 +112,7 @@ const ChatWithElliot = () => {
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
+        <ScrollArea className="flex-1 p-6">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
               {messages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -157,6 +167,9 @@ const ChatWithElliot = () => {
                     </div>
                   </div>
                 </div>}
+              
+              {/* Scroll target element */}
+              <div ref={messagesEndRef} />
             </div>
           </div>
         </ScrollArea>
