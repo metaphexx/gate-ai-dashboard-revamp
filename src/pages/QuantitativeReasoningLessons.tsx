@@ -783,7 +783,7 @@ const QuantitativeReasoningLessons = () => {
 
             {/* Sidebar - Hidden on Mobile (accessible via sheet) */}
             {!isMobile && (
-              <div className="space-y-4">
+               <div className="space-y-4 md:space-y-2 lg:space-y-4">
                 <Card>
                    <CardHeader className="md:pt-3 lg:pt-6">
                     <CardTitle className="text-lg">Lessons ({quantitativeReasoningLessons.lessons.length})</CardTitle>
