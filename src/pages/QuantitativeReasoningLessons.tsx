@@ -785,7 +785,7 @@ const QuantitativeReasoningLessons = () => {
             {!isMobile && (
               <div className="space-y-4">
                 <Card>
-                  <CardHeader>
+                   <CardHeader className="md:pt-3 lg:pt-6">
                     <CardTitle className="text-lg">Lessons ({quantitativeReasoningLessons.lessons.length})</CardTitle>
                     <LessonSearch
                       onSearch={handleSearch}
