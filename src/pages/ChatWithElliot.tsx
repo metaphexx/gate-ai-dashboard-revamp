@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { X, Send, ThumbsUp, ThumbsDown, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -19,12 +19,52 @@ const ChatWithElliot = () => {
   } = useChatContext();
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollViewportRef = useRef<HTMLDivElement>(null);
+  // Smooth scroll to bottom function
+  const scrollToBottom = (smooth = true) => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: smooth ? 'smooth' : 'auto',
+        block: 'end'
+      });
     }
-  }, [messages]);
+  };
+
+  // Check if user is near bottom of chat
+  const checkScrollPosition = () => {
+    if (scrollViewportRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollViewportRef.current;
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      setShowScrollButton(!isNearBottom);
+      setIsUserScrolling(!isNearBottom);
+    }
+  };
+
+  // Enhanced auto-scroll effect
+  useLayoutEffect(() => {
+    // Only auto-scroll if user isn't manually scrolling up
+    if (!isUserScrolling) {
+      scrollToBottom(true);
+    }
+  }, [messages, isTyping]);
+
+  // Initial scroll to bottom
+  useEffect(() => {
+    scrollToBottom(false);
+  }, []);
+
+  // Set up scroll listener
+  useEffect(() => {
+    const viewport = scrollViewportRef.current;
+    if (viewport) {
+      viewport.addEventListener('scroll', checkScrollPosition, { passive: true });
+      return () => viewport.removeEventListener('scroll', checkScrollPosition);
+    }
+  }, []);
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
     const newMessage: Message = {
@@ -35,7 +75,14 @@ const ChatWithElliot = () => {
     };
     setMessages(prev => [...prev, newMessage]);
     setInputValue('');
+    
+    // Immediately scroll to user message
+    setTimeout(() => scrollToBottom(true), 50);
+    
     setIsTyping(true);
+    
+    // Scroll when typing indicator appears
+    setTimeout(() => scrollToBottom(true), 100);
 
     // Simulate AI response with 3-dot loading
     setTimeout(() => {
@@ -50,6 +97,9 @@ const ChatWithElliot = () => {
       };
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
+      
+      // Scroll to new AI message
+      setTimeout(() => scrollToBottom(true), 100);
     }, 2000);
   };
   const handleQuickReply = (reply: string) => {
@@ -60,7 +110,14 @@ const ChatWithElliot = () => {
       timestamp: new Date()
     };
     setMessages(prev => [...prev, newMessage]);
+    
+    // Scroll to quick reply message
+    setTimeout(() => scrollToBottom(true), 50);
+    
     setIsTyping(true);
+    
+    // Scroll when typing indicator appears
+    setTimeout(() => scrollToBottom(true), 100);
 
     // Handle quick reply responses
     setTimeout(() => {
@@ -80,6 +137,9 @@ const ChatWithElliot = () => {
       };
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
+      
+      // Scroll to new AI response
+      setTimeout(() => scrollToBottom(true), 100);
     }, 1500);
   };
   return (
@@ -102,11 +162,24 @@ const ChatWithElliot = () => {
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-6">
-              {messages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className="max-w-[70%]">
+        <div className="flex-1 relative">
+          <ScrollArea className="h-full p-4 sm:p-6" ref={scrollAreaRef}>
+            <div 
+              ref={scrollViewportRef}
+              className="h-full"
+              style={{ 
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                overflow: 'auto'
+              }}
+            >
+              <div className="max-w-4xl mx-auto">
+                <div className="space-y-4 sm:space-y-6 pb-4">
+                  {messages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className="max-w-[70%]">
                     {message.type === 'assistant' && <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
                           <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-8 h-8 rounded-full" />
@@ -133,10 +206,10 @@ const ChatWithElliot = () => {
                             {reply}
                           </Button>)}
                       </div>}
-                  </div>
-                </div>)}
-              
-              {isTyping && <div className="flex justify-start">
+                      </div>
+                    </div>)}
+                  
+                  {isTyping && <div className="flex justify-start">
                   <div className="max-w-[70%]">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden">
@@ -152,25 +225,61 @@ const ChatWithElliot = () => {
                     }}></div>
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{
                       animationDelay: '0.2s'
-                    }}></div>
+                     }}></div>
                       </div>
                     </div>
-                  </div>
-                </div>}
+                    </div>
+                  </div>}
+                  
+                  {/* Invisible element to mark end of messages */}
+                  <div ref={messagesEndRef} />
+                </div>
+              </div>
             </div>
-          </div>
-        </ScrollArea>
+          </ScrollArea>
 
-        {/* Input */}
-        <div className="p-6 border-t border-gray-200 bg-white">
+          {/* Scroll to bottom button */}
+          {showScrollButton && (
+            <Button
+              onClick={() => {
+                setIsUserScrolling(false);
+                scrollToBottom(true);
+              }}
+              className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 rounded-full w-12 h-12 bg-primary hover:bg-primary/90 shadow-lg z-10 transition-all duration-200 animate-fade-in"
+              size="icon"
+            >
+              <ChevronDown size={20} />
+            </Button>
+          )}
+        </div>
+
+        {/* Input - Enhanced for mobile */}
+        <div className="p-4 sm:p-6 border-t border-gray-200 bg-white safe-area-padding-bottom">
           <div className="max-w-4xl mx-auto">
-            <div className="flex gap-3">
-              <Input value={inputValue} onChange={e => setInputValue(e.target.value)} placeholder="Type any question" onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 h-12 text-base" />
-              <Button onClick={handleSendMessage} size="icon" className="bg-[#009dff] hover:bg-[#0080ff] h-12 w-12">
-                <Send size={20} />
+            <div className="flex gap-2 sm:gap-3">
+              <Input 
+                value={inputValue} 
+                onChange={e => setInputValue(e.target.value)} 
+                placeholder="Type any question" 
+                onKeyPress={e => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                className="flex-1 h-11 sm:h-12 text-base resize-none"
+                disabled={isTyping}
+              />
+              <Button 
+                onClick={handleSendMessage} 
+                size="icon" 
+                className="bg-primary hover:bg-primary/90 h-11 sm:h-12 w-11 sm:w-12 shrink-0 transition-all duration-200"
+                disabled={!inputValue.trim() || isTyping}
+              >
+                <Send size={18} className="sm:w-5 sm:h-5" />
               </Button>
             </div>
-            <p className="text-xs text-gray-500 mt-3 text-center">
+            <p className="text-xs text-muted-foreground mt-2 sm:mt-3 text-center">
               Elliot can make mistakes. Check important info.
             </p>
           </div>
