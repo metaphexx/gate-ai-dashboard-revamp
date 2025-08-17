@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -56,8 +57,7 @@ const QuizIntegration: React.FC<QuizIntegrationProps> = ({ lessonId }) => {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
               onClick={handleStartPracticeTest}
-              className="flex-1 h-24 sm:h-11 text-base sm:text-sm"
-              size="lg"
+              className="flex-1 h-24 sm:h-11 text-base sm:text-sm px-8"
             >
               <Play className="w-4 h-4 mr-2" />
               Practice This Topic
