@@ -516,7 +516,7 @@ const QuantitativeReasoningLessons = () => {
                 {isMobile ? (
                   <div className="flex items-center gap-2">
                     {/* Scrollable primary tabs */}
-                    <ScrollArea className="w-[calc(100%-3rem)]">
+                    <ScrollArea className="w-[calc(100%-3.5rem)]">
                       <div className="flex gap-1 pb-2">
                         {primaryTabs.map((tab) => {
                           const Icon = tab.icon;
@@ -527,7 +527,7 @@ const QuantitativeReasoningLessons = () => {
                               onClick={() => setActiveTab(tab.id)}
                               variant={isActive ? "default" : "outline"}
                               size="sm"
-                              className={`min-w-fit whitespace-nowrap h-9 px-3 ${
+                              className={`min-w-fit whitespace-nowrap flex-shrink-0 h-9 px-3 ${
                                 isActive 
                                   ? 'bg-[#009dff] hover:bg-[#0080ff] text-white' 
                                   : 'text-gray-600 hover:text-gray-900'
@@ -544,7 +544,7 @@ const QuantitativeReasoningLessons = () => {
                     {/* Overflow menu for secondary tabs */}
                     <Sheet>
                       <SheetTrigger asChild>
-                        <Button variant="outline" size="sm" className="h-9 px-2 flex-shrink-0">
+                        <Button variant="outline" size="sm" className="h-9 px-3 flex-shrink-0">
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
                       </SheetTrigger>
