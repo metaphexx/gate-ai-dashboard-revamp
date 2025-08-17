@@ -3,7 +3,7 @@ import { X, Send, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import { useChatContext } from '@/contexts/ChatContext';
 interface Message {
   id: string;
@@ -82,22 +82,21 @@ const ChatWithElliot = () => {
       setIsTyping(false);
     }, 1500);
   };
-  return <div className="flex min-h-screen bg-gray-50">
-      <DashboardSidebar />
-      
+  return (
+    <MobileLayout>
       <main className="flex-1 flex flex-col bg-white">
         {/* Header - Centered with large avatar and name */}
-        <div className="flex items-center justify-center p-8 border-b border-gray-200 bg-gradient-to-r from-[#009dff]/5 to-[#33a9ff]/5">
+        <div className="flex items-center justify-center p-6 sm:p-8 border-b border-gray-200 bg-gradient-to-r from-[#009dff]/5 to-[#33a9ff]/5 relative">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
-              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-16 h-16 rounded-full" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center overflow-hidden shadow-lg">
+              <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot Avatar" className="w-12 h-12 sm:w-16 sm:h-16 rounded-full" />
             </div>
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-gray-900">Hey, I'm Elliot, your AI Virtual Assistant</h1>
-              <p className="text-lg text-gray-500 mt-1">You can ask me anything related to your GATE exam preparation.</p>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Hey, I'm Elliot, your AI Virtual Assistant</h1>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-500 mt-1">You can ask me anything related to your GATE exam preparation.</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="absolute top-6 right-6" onClick={() => window.history.back()}>
+          <Button variant="ghost" size="icon" className="absolute top-4 right-4 sm:top-6 sm:right-6" onClick={() => window.history.back()}>
             <X size={24} />
           </Button>
         </div>
@@ -177,6 +176,7 @@ const ChatWithElliot = () => {
           </div>
         </div>
       </main>
-    </div>;
+    </MobileLayout>
+  );
 };
 export default ChatWithElliot;

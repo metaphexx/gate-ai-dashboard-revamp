@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft, Play, Pause, RotateCcw, CheckCircle, XCircle, Clock, Trophy, Target, Zap } from 'lucide-react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 
 interface GameState {
   isPlaying: boolean;
@@ -250,13 +250,11 @@ const ArithmeticGame = () => {
   const accuracyPercentage = gameState.currentQuestion > 1 ? Math.round((gameState.correctAnswers / (gameState.currentQuestion - 1)) * 100) : 0;
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <DashboardSidebar />
-      
-      <main className="flex-1 p-6 overflow-y-auto">
+    <MobileLayout>
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
             <button 
               onClick={() => navigate('/skills-trainer')}
               className="flex items-center text-gray-600 hover:text-primary transition-colors"
@@ -265,15 +263,15 @@ const ArithmeticGame = () => {
               Back to Skills Trainer
             </button>
             
-            <div className="flex-1 text-center mx-8">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="flex-1 text-center mx-0 sm:mx-8">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Arithmetic Training
               </h1>
               <p className="text-gray-600">{currentOp.name} Practice</p>
             </div>
             
             {gameState.isPlaying && (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Clock className="h-4 w-4" />
                   <span className={`font-mono font-bold ${gameState.timeLeft <= 10 ? 'text-red-500' : ''}`}>
@@ -451,7 +449,7 @@ const ArithmeticGame = () => {
           )}
         </div>
       </main>
-    </div>
+    </MobileLayout>
   );
 };
 

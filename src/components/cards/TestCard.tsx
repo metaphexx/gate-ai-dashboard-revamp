@@ -48,12 +48,12 @@ const TestCard: React.FC<TestCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group w-full">
       <div className="relative">
         <img 
           src={imagePath} 
           alt={title}
-          className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-200"
+          className="w-full h-32 sm:h-40 object-cover group-hover:scale-105 transition-transform duration-200"
         />
         {isNew && (
           <Badge className="absolute top-2 right-2 bg-green-500 hover:bg-green-600">
@@ -69,12 +69,12 @@ const TestCard: React.FC<TestCardProps> = ({
       </div>
       
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <p className="text-sm text-gray-600 line-clamp-2">{description}</p>
+        <CardTitle className="text-base sm:text-lg">{title}</CardTitle>
+        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{description}</p>
       </CardHeader>
       
       <CardContent className="pt-0">
-        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+        <div className="flex justify-between items-center text-xs sm:text-sm text-gray-500 mb-4">
           <span className="flex items-center gap-1">
             <FileText className="w-4 h-4" />
             {questions} {questions === 1 ? 'question' : 'questions'}

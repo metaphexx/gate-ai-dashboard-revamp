@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -82,17 +82,15 @@ const SkillsTrainer = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <DashboardSidebar />
-      
-      <main className="flex-1 p-6 overflow-y-auto">
+    <MobileLayout>
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
           <header className="mb-6">
-            <h1 className="text-2xl font-bold mb-2">Skill Trainers</h1>
+            <h1 className="text-xl sm:text-2xl font-bold mb-2">Skill Trainers</h1>
             <p className="text-gray-500">Enhance your preparation with interactive exercises</p>
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {/* Arithmetic Game Card */}
             <Card className="border border-gray-100 shadow-sm bg-white">
               <CardContent className="p-6">
@@ -237,7 +235,7 @@ const SkillsTrainer = () => {
           </div>
         </div>
       </main>
-    </div>
+    </MobileLayout>
   );
 };
 

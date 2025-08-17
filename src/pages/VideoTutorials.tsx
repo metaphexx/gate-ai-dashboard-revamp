@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Clock, Search } from 'lucide-react';
@@ -67,13 +67,12 @@ const VideoTutorials = () => {
   });
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
+    <MobileLayout>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Video Tutorials</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Video Tutorials</h1>
               <p className="text-sm text-gray-500 mt-1">Explore walkthroughs, teaching clips, and revision tips.</p>
             </div>
             
@@ -156,7 +155,7 @@ const VideoTutorials = () => {
           )}
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

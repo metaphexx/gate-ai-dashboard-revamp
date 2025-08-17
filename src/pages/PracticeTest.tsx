@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TestCard from '@/components/cards/TestCard';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 
 // Mock data for the test cards
 const testData = [
@@ -50,15 +50,14 @@ const testData = [
 
 const PracticeTest = () => {
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
-      <div className="flex-1 overflow-y-auto p-6">
+    <MobileLayout>
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="pb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Practice Test</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Practice Test</h1>
           <p className="text-gray-500">Select a test to practice your skills</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {testData.map((test) => (
             <TestCard
               key={test.id}
@@ -74,7 +73,7 @@ const PracticeTest = () => {
           ))}
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

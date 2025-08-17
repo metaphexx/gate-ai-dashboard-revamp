@@ -8,7 +8,7 @@ import {
   ChevronUp, 
   ChevronDown 
 } from 'lucide-react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import { 
   Collapsible,
   CollapsibleContent,
@@ -40,12 +40,11 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
+    <MobileLayout>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-screen-md mx-auto px-4 md:px-8 pt-6 pb-16">
           <div className="pb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Settings</h1>
             <p className="text-sm text-gray-500 mt-1">Manage your account settings and preferences</p>
           </div>
 
@@ -295,7 +294,7 @@ const Settings = () => {
           </div>
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

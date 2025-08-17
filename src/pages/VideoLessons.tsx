@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlayCircle, Clock, BookOpen } from 'lucide-react';
@@ -57,12 +57,11 @@ const VideoLessons = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
+    <MobileLayout>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Video Lessons</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Video Lessons</h1>
             <p className="text-sm sm:text-base text-gray-600">
               Comprehensive video tutorials for each section of the GATE exam
             </p>
@@ -131,7 +130,7 @@ const VideoLessons = () => {
           </div>
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import TestCard from '@/components/cards/TestCard';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 
 // Mock data for the mock exam
 const mockExamData = [
@@ -59,15 +59,14 @@ const mockExamData = [
 
 const MockExam = () => {
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
-      <div className="flex-1 overflow-y-auto p-6">
+    <MobileLayout>
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="pb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Mock Exam</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Mock Exam</h1>
           <p className="text-gray-500">Complete full-length exams that simulate the real test experience</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {mockExamData.map((exam) => (
             <TestCard
               key={exam.id}
@@ -82,7 +81,7 @@ const MockExam = () => {
           ))}
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

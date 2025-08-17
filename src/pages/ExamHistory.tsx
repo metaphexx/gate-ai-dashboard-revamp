@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import HistoryCard from '@/components/cards/HistoryCard';
 
 // Enhanced mock data structure with individual attempts
@@ -259,11 +259,10 @@ const ExamHistory = () => {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-8">
+    <MobileLayout>
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-8">
         <div className="pb-2">
-          <h1 className="text-2xl font-bold text-gray-900">History</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">History</h1>
           <p className="text-gray-500">View your past exams and performance</p>
         </div>
 
@@ -328,7 +327,7 @@ const ExamHistory = () => {
           </div>
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

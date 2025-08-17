@@ -1,6 +1,6 @@
 
 import React from 'react';
-import DashboardSidebar from '@/components/DashboardSidebar';
+import MobileLayout from '@/components/MobileLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -23,12 +23,11 @@ const Support = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
+    <MobileLayout>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-screen-md mx-auto px-4 md:px-8 pt-6 pb-20">
           <div className="pb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Support</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Support</h1>
             <p className="text-sm text-gray-500 mt-1">
               Need help with something? Contact us or check out the common issues below.
             </p>
@@ -155,7 +154,7 @@ const Support = () => {
           </div>
         </div>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 
