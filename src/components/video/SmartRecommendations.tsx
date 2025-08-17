@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Lightbulb, TrendingUp, Clock, Star } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Recommendation {
   id: string;
@@ -28,6 +29,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   currentLessonId,
   userPerformance
 }) => {
+  const isMobile = useIsMobile();
   // Mock recommendations based on current lesson and performance
   const recommendations: Recommendation[] = [
     {
@@ -76,6 +78,13 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
     }
   };
 
+  const getPriorityText = (priority: Recommendation['priority'], isMobile: boolean = false) => {
+    if (isMobile) {
+      return priority; // Just "high", "medium", "low"
+    }
+    return `${priority} priority`;
+  };
+
   const getTypeIcon = (type: Recommendation['type']) => {
     switch (type) {
       case 'lesson': return <Star className="w-4 h-4" />;
@@ -106,15 +115,15 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
         </div>
 
         {recommendations.map((rec) => (
-          <div key={rec.id} className="p-4 border rounded-lg space-y-3">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
+          <div key={rec.id} className="p-3 sm:p-4 border rounded-lg space-y-3 overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div className="flex items-center gap-2 min-w-0 flex-1">
                 {getTypeIcon(rec.type)}
-                <h4 className="font-medium">{rec.title}</h4>
+                <h4 className="font-medium break-words">{rec.title}</h4>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:flex-shrink-0">
                 <Badge className={getPriorityColor(rec.priority)}>
-                  {rec.priority} priority
+                  {getPriorityText(rec.priority, isMobile)}
                 </Badge>
                 <Badge className={getDifficultyColor(rec.difficulty)}>
                   {rec.difficulty}
@@ -122,9 +131,9 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
               </div>
             </div>
 
-            <p className="text-sm text-gray-600">{rec.reason}</p>
+            <p className="text-sm text-gray-600 break-words">{rec.reason}</p>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center gap-4 text-xs text-gray-500">
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
@@ -132,7 +141,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                 </span>
                 <span className="capitalize">{rec.type}</span>
               </div>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" className="w-full sm:w-auto">
                 Start {rec.type}
               </Button>
             </div>
