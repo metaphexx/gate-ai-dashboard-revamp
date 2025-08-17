@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -6,6 +5,8 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   Clock, 
   ChevronLeft, 
@@ -48,6 +49,7 @@ const mockQuestions = [
 const WritingTest = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const editorRef = useRef<HTMLDivElement>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<(string | null)[]>(Array(mockQuestions.length).fill(null));
@@ -55,6 +57,7 @@ const WritingTest = () => {
   const [time, setTime] = useState(1500); // 25 minutes in seconds for writing
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
+  const [mobileActiveTab, setMobileActiveTab] = useState("prompt");
   const [writingAnalytics, setWritingAnalytics] = useState({
     words: 0,
     characters: 0,
@@ -293,7 +296,8 @@ const WritingTest = () => {
               className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
               <ChevronLeft className="h-5 w-5 mr-1" />
-              <span>Back to Tests</span>
+              <span className="hidden sm:inline">Back to Tests</span>
+              <span className="sm:hidden">Back</span>
             </button>
             
             <QuestionTimer 
@@ -309,8 +313,8 @@ const WritingTest = () => {
         {/* Test title and progress */}
         <div className="w-full px-4 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-            <h1 className="text-2xl font-bold text-blue-900">
-              Writing Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
+            <h1 className="text-xl md:text-2xl font-bold text-blue-900">
+              Writing Test <span className="text-sm md:text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
             </h1>
           </div>
           
@@ -322,225 +326,438 @@ const WritingTest = () => {
           </div>
         </div>
         
-        {/* Two-column layout */}
-        <div className="h-[calc(100vh-200px)] flex">
-          {/* Left column - Prompt panel (sticky) */}
-          <div className="w-1/2 border-r border-gray-200 bg-white overflow-y-auto">
-            <div className="p-6">
-              {/* Category banner */}
-              <div className="bg-[#009dff] py-2 px-4 text-white shadow-sm rounded-lg mb-4">
-                <p className="text-sm font-medium">{currentQuestion.category}</p>
+        {/* Responsive layout */}
+        {isMobile ? (
+          /* Mobile: Tabbed layout */
+          <div className="h-[calc(100vh-200px)]">
+            <Tabs value={mobileActiveTab} onValueChange={setMobileActiveTab} className="h-full flex flex-col">
+              <div className="px-4 mb-2">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="prompt">Prompt</TabsTrigger>
+                  <TabsTrigger value="writing">Writing</TabsTrigger>
+                </TabsList>
               </div>
               
-              {/* Question prompt */}
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                {currentQuestion.prompt}
-              </h2>
+              <TabsContent value="prompt" className="flex-1 overflow-y-auto m-0 px-4">
+                <div className="bg-white rounded-lg p-4">
+                  {/* Category banner */}
+                  <div className="bg-[#009dff] py-2 px-4 text-white shadow-sm rounded-lg mb-4">
+                    <p className="text-sm font-medium">{currentQuestion.category}</p>
+                  </div>
+                  
+                  {/* Question prompt */}
+                  <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                    {currentQuestion.prompt}
+                  </h2>
+                  
+                  {/* Image section */}
+                  <div className="mb-4">
+                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                      <div className="relative">
+                        <img 
+                          src={currentQuestion.image}
+                          alt="Writing prompt image" 
+                          className="w-full max-h-[200px] rounded-lg object-cover shadow-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Instructions */}
+                  <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
+                    <div className="flex items-start">
+                      <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Writing Analytics - Mobile horizontal layout */}
+                  <div className="grid grid-cols-4 gap-2 mb-4">
+                    <div className="bg-gray-50 rounded-lg p-2 text-center">
+                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.words}</div>
+                      <div className="text-xs text-gray-600">Words</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-2 text-center">
+                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.characters}</div>
+                      <div className="text-xs text-gray-600">Chars</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-2 text-center">
+                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.sentences}</div>
+                      <div className="text-xs text-gray-600">Sent.</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-2 text-center">
+                      <div className="text-lg font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
+                      <div className="text-xs text-gray-600">Para.</div>
+                    </div>
+                  </div>
+                  
+                  {/* Word count requirement */}
+                  <div className={`text-sm px-3 py-2 rounded-full text-center mb-4 ${
+                    canSubmit 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-orange-100 text-orange-700'
+                  }`}>
+                    Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
+                  </div>
+                  
+                  {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
+                    <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                      <AlertCircle className="h-4 w-4 mr-1" />
+                      Need {currentQuestion.minWords - writingAnalytics.words} more words
+                    </div>
+                  )}
+                  
+                  {writingAnalytics.words > currentQuestion.maxWords && (
+                    <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                      <AlertCircle className="h-4 w-4 mr-1" />
+                      {writingAnalytics.words - currentQuestion.maxWords} words over limit
+                    </div>
+                  )}
+                  
+                  {/* Quick switch to writing button */}
+                  <Button 
+                    onClick={() => setMobileActiveTab("writing")}
+                    className="w-full bg-[#009dff] hover:bg-[#008ae6] text-white"
+                  >
+                    Start Writing
+                  </Button>
+                </div>
+              </TabsContent>
               
-              {/* Image section */}
-              <div className="mb-4">
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                  <div className="relative">
-                    <img 
-                      src={currentQuestion.image}
-                      alt="Writing prompt image" 
-                      className="w-full max-h-[250px] rounded-lg object-cover shadow-sm"
-                    />
+              <TabsContent value="writing" className="flex-1 flex flex-col m-0 px-4">
+                <div className="bg-white rounded-lg p-4 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <label className="text-lg font-semibold text-gray-900">Your Response:</label>
+                    
+                    {/* Flag button */}
+                    <Button 
+                      variant="outline"
+                      onClick={toggleFlagQuestion}
+                      size="sm"
+                      className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
+                    >
+                      <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
+                      {flaggedQuestions[currentQuestionIndex] ? 'Flagged' : 'Flag'}
+                    </Button>
+                  </div>
+                  
+                  {/* Mobile toolbar - responsive grid */}
+                  <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 mb-0">
+                    <div className="grid grid-cols-4 gap-1 mb-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('bold')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Bold"
+                      >
+                        <Bold className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('italic')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Italic"
+                      >
+                        <Italic className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('underline')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Underline"
+                      >
+                        <Underline className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('bulletList')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Bullet List"
+                      >
+                        <List className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-4 gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('alignLeft')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Align Left"
+                      >
+                        <AlignLeft className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('alignCenter')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Align Center"
+                      >
+                        <AlignCenter className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('alignRight')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Align Right"
+                      >
+                        <AlignRight className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => applyFormat('quote')}
+                        className="h-8 hover:bg-gray-200"
+                        title="Quote"
+                      >
+                        <Quote className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Writing editor - mobile optimized */}
+                  <div
+                    ref={editorRef}
+                    contentEditable
+                    onInput={handleEditorChange}
+                    className="flex-1 w-full text-base leading-relaxed focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0 focus:outline-none overflow-y-auto"
+                    style={{ wordWrap: 'break-word', overflowWrap: 'break-word', minHeight: '300px' }}
+                    suppressContentEditableWarning={true}
+                    data-placeholder="Write something here..."
+                  />
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        ) : (
+          /* Desktop: Two-column layout */
+          <div className="h-[calc(100vh-200px)] flex">
+            {/* Left column - Prompt panel (sticky) */}
+            <div className="w-1/2 border-r border-gray-200 bg-white overflow-y-auto">
+              <div className="p-6">
+                {/* Category banner */}
+                <div className="bg-[#009dff] py-2 px-4 text-white shadow-sm rounded-lg mb-4">
+                  <p className="text-sm font-medium">{currentQuestion.category}</p>
+                </div>
+                
+                {/* Question prompt */}
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                  {currentQuestion.prompt}
+                </h2>
+                
+                {/* Image section */}
+                <div className="mb-4">
+                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div className="relative">
+                      <img 
+                        src={currentQuestion.image}
+                        alt="Writing prompt image" 
+                        className="w-full max-h-[250px] rounded-lg object-cover shadow-sm"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              {/* Instructions */}
-              <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
-                <div className="flex items-start">
-                  <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                
+                {/* Instructions */}
+                <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-[#009dff]">
+                  <div className="flex items-start">
+                    <FileText className="h-5 w-5 text-[#009dff] mr-3 mt-0.5 flex-shrink-0" />
+                    <div className="space-y-2">
+                      <p className="text-sm text-gray-700 leading-relaxed">{currentQuestion.instruction}</p>
+                    </div>
                   </div>
                 </div>
+                
+                {/* Writing Analytics */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xl font-bold text-gray-900">{writingAnalytics.words}</div>
+                    <div className="text-xs text-gray-600">Words</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xl font-bold text-gray-900">{writingAnalytics.characters}</div>
+                    <div className="text-xs text-gray-600">Characters</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xl font-bold text-gray-900">{writingAnalytics.sentences}</div>
+                    <div className="text-xs text-gray-600">Sentences</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-xl font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
+                    <div className="text-xs text-gray-600">Paragraphs</div>
+                  </div>
+                </div>
+                
+                {/* Word count requirement */}
+                <div className={`text-sm px-3 py-2 rounded-full text-center mb-4 ${
+                  canSubmit 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-orange-100 text-orange-700'
+                }`}>
+                  Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
+                </div>
+                
+                {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
+                  <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                    <AlertCircle className="h-4 w-4 mr-1" />
+                    Need {currentQuestion.minWords - writingAnalytics.words} more words
+                  </div>
+                )}
+                
+                {writingAnalytics.words > currentQuestion.maxWords && (
+                  <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
+                    <AlertCircle className="h-4 w-4 mr-1" />
+                    {writingAnalytics.words - currentQuestion.maxWords} words over limit
+                  </div>
+                )}
               </div>
-              
-              {/* Writing Analytics */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.words}</div>
-                  <div className="text-xs text-gray-600">Words</div>
+            </div>
+            
+            {/* Right column - Writing panel */}
+            <div className="w-1/2 bg-white flex flex-col">
+              <div className="flex-1 p-6 flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <label className="text-lg font-semibold text-gray-900">Your Response:</label>
+                  
+                  {/* Flag button */}
+                  <Button 
+                    variant="outline"
+                    onClick={toggleFlagQuestion}
+                    size="sm"
+                    className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
+                  >
+                    <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
+                    {flaggedQuestions[currentQuestionIndex] ? 'Flagged' : 'Flag'}
+                  </Button>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.characters}</div>
-                  <div className="text-xs text-gray-600">Characters</div>
+                
+                {/* Text formatting toolbar */}
+                <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap items-center gap-1 mb-0">
+                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('bold')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Bold"
+                    >
+                      <Bold className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('italic')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Italic"
+                    >
+                      <Italic className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('underline')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Underline"
+                    >
+                      <Underline className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('strikethrough')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Strikethrough"
+                    >
+                      <Strikethrough className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('alignLeft')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Align Left"
+                    >
+                      <AlignLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('alignCenter')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Align Center"
+                    >
+                      <AlignCenter className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('alignRight')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Align Right"
+                    >
+                      <AlignRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('bulletList')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Bullet List"
+                    >
+                      <List className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('numberedList')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Numbered List"
+                    >
+                      <ListOrdered className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => applyFormat('quote')}
+                      className="h-8 w-8 p-0 hover:bg-gray-200"
+                      title="Quote"
+                    >
+                      <Quote className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.sentences}</div>
-                  <div className="text-xs text-gray-600">Sentences</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold text-gray-900">{writingAnalytics.paragraphs}</div>
-                  <div className="text-xs text-gray-600">Paragraphs</div>
-                </div>
+                
+                {/* Writing editor - takes up remaining space */}
+                <div
+                  ref={editorRef}
+                  contentEditable
+                  onInput={handleEditorChange}
+                  className="flex-1 w-full text-base leading-relaxed focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0 focus:outline-none overflow-y-auto"
+                  style={{ wordWrap: 'break-word', overflowWrap: 'break-word', minHeight: '400px' }}
+                  suppressContentEditableWarning={true}
+                  data-placeholder="Write something here..."
+                />
               </div>
-              
-              {/* Word count requirement */}
-              <div className={`text-sm px-3 py-2 rounded-full text-center mb-4 ${
-                canSubmit 
-                  ? 'bg-green-100 text-green-700' 
-                  : 'bg-orange-100 text-orange-700'
-              }`}>
-                Write between {currentQuestion.minWords}-{currentQuestion.maxWords} words
-              </div>
-              
-              {writingAnalytics.words < currentQuestion.minWords && writingAnalytics.words > 0 && (
-                <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  Need {currentQuestion.minWords - writingAnalytics.words} more words
-                </div>
-              )}
-              
-              {writingAnalytics.words > currentQuestion.maxWords && (
-                <div className="flex items-center justify-center text-sm text-orange-600 mb-2">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  {writingAnalytics.words - currentQuestion.maxWords} words over limit
-                </div>
-              )}
             </div>
           </div>
-          
-          {/* Right column - Writing panel */}
-          <div className="w-1/2 bg-white flex flex-col">
-            <div className="flex-1 p-6 flex flex-col">
-              <div className="flex items-center justify-between mb-4">
-                <label className="text-lg font-semibold text-gray-900">Your Response:</label>
-                
-                {/* Flag button */}
-                <Button 
-                  variant="outline"
-                  onClick={toggleFlagQuestion}
-                  size="sm"
-                  className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
-                >
-                  <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
-                  {flaggedQuestions[currentQuestionIndex] ? 'Flagged' : 'Flag'}
-                </Button>
-              </div>
-              
-              {/* Text formatting toolbar */}
-              <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap items-center gap-1 mb-0">
-                <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('bold')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Bold"
-                  >
-                    <Bold className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('italic')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Italic"
-                  >
-                    <Italic className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('underline')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Underline"
-                  >
-                    <Underline className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('strikethrough')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Strikethrough"
-                  >
-                    <Strikethrough className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('alignLeft')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Align Left"
-                  >
-                    <AlignLeft className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('alignCenter')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Align Center"
-                  >
-                    <AlignCenter className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('alignRight')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Align Right"
-                  >
-                    <AlignRight className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                <div className="flex items-center space-x-1 border-r border-gray-300 pr-2 mr-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('bulletList')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Bullet List"
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('numberedList')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Numbered List"
-                  >
-                    <ListOrdered className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                <div className="flex items-center space-x-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => applyFormat('quote')}
-                    className="h-8 w-8 p-0 hover:bg-gray-200"
-                    title="Quote"
-                  >
-                    <Quote className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              
-              {/* Writing editor - takes up remaining space */}
-              <div
-                ref={editorRef}
-                contentEditable
-                onInput={handleEditorChange}
-                className="flex-1 w-full text-base leading-relaxed focus:ring-2 focus:ring-[#009dff] focus:border-[#009dff] border border-gray-200 rounded-b-lg rounded-t-none p-4 border-t-0 focus:outline-none overflow-y-auto"
-                style={{ wordWrap: 'break-word', overflowWrap: 'break-word', minHeight: '400px' }}
-                suppressContentEditableWarning={true}
-                data-placeholder="Write something here..."
-              />
-            </div>
-          </div>
-        </div>
+        )}
         
         {/* Keyboard shortcuts info */}
         <div className="w-full px-4 mt-4 text-center hidden sm:block">
@@ -559,7 +776,8 @@ const WritingTest = () => {
               className="border-gray-200 hover:bg-gray-50"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Previous
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden">Prev</span>
             </Button>
             
             <div className="flex items-center space-x-2">
@@ -568,7 +786,8 @@ const WritingTest = () => {
                   onClick={goToNextQuestion}
                   className="bg-[#009dff] hover:bg-[#008ae6] text-white"
                 >
-                  Next
+                  <span className="hidden sm:inline">Next</span>
+                  <span className="sm:hidden">Next</span>
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               ) : (
