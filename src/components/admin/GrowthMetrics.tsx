@@ -587,7 +587,7 @@ export const GrowthMetrics = () => {
                   <div className="p-3 bg-accent/10 rounded-lg">
                     <div className="font-semibold text-accent">Successful Experiments</div>
                     <div className="text-2xl font-bold">73%</div>
-                    <div className="text-sm text-muted-foreground">Beat control by >5%</div>
+                    <div className="text-sm text-muted-foreground">Beat control by &gt;5%</div>
                   </div>
                   
                   <div className="p-3 bg-primary/10 rounded-lg">
