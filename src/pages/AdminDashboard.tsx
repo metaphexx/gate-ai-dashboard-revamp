@@ -48,15 +48,22 @@ const AdminDashboard = () => {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-muted/50">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-muted/20 to-background relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-float [animation-delay:2s]" />
+        
         <AdminSidebar 
           activeSection={activeSection} 
           onSectionChange={setActiveSection} 
         />
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden relative">
           <AdminHeader />
-          <main className="flex-1 overflow-auto p-6">
-            {renderContent()}
+          <main className="flex-1 overflow-auto p-6 relative">
+            <div className="backdrop-blur-sm">
+              {renderContent()}
+            </div>
           </main>
         </div>
       </div>

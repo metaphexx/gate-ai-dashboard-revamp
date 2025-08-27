@@ -12,7 +12,9 @@ import {
   Activity,
   BarChart3,
   RefreshCw,
-  Download
+  Download,
+  Zap,
+  Eye
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { generateRealTimeMetrics, generateEngagementData } from '@/utils/mockData';
@@ -28,11 +30,11 @@ const generateActivityFeed = () => [
 
 // Mock feature usage data
 const featureUsageData = [
-  { feature: 'Mock Exams', usage: 45, color: '#009dff' },
-  { feature: 'Video Lessons', usage: 35, color: '#38C172' },
-  { feature: 'Practice Tests', usage: 25, color: '#F59E0B' },
-  { feature: 'Study Notes', usage: 20, color: '#EF4444' },
-  { feature: 'Skills Trainer', usage: 15, color: '#8B5CF6' }
+  { feature: 'Mock Exams', usage: 45, color: 'hsl(var(--primary))' },
+  { feature: 'Video Lessons', usage: 35, color: 'hsl(var(--accent))' },
+  { feature: 'Practice Tests', usage: 25, color: 'hsl(var(--warning))' },
+  { feature: 'Study Notes', usage: 20, color: 'hsl(var(--destructive))' },
+  { feature: 'Skills Trainer', usage: 15, color: 'hsl(var(--muted-foreground))' }
 ];
 
 // Mock user journey data
@@ -53,130 +55,181 @@ export const AnalyticsHub = () => {
 
   const handleRefresh = () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1000);
+    setTimeout(() => setRefreshing(false), 2000);
   };
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Enhanced Analytics Hub</h2>
-          <p className="text-muted-foreground">Real-time metrics dashboard and user engagement analytics</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh Data
-          </Button>
-          <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Export Report
-          </Button>
-        </div>
-      </div>
-
-      <Tabs defaultValue="realtime" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="realtime">Real-Time Metrics</TabsTrigger>
-          <TabsTrigger value="engagement">User Engagement</TabsTrigger>
-          <TabsTrigger value="features">Feature Analytics</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="realtime" className="space-y-6">
-          {/* Real-Time Metrics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard
-              title="Online Users"
-              value={realTimeMetrics.onlineUsers}
-              icon={<Users className="w-5 h-5" />}
-              trend={{ value: 12.5, isPositive: true }}
-            />
-            <StatCard
-              title="Active Sessions"
-              value={realTimeMetrics.activeTests}
-              icon={<Activity className="w-5 h-5" />}
-              trend={{ value: 8.3, isPositive: true }}
-            />
-            <StatCard
-              title="Avg Response Time"
-              value={realTimeMetrics.responseTime}
-              icon={<Clock className="w-5 h-5" />}
-              trend={{ value: 5.2, isPositive: false }}
-            />
-            <StatCard
-              title="System Health"
-              value={realTimeMetrics.systemHealth}
-              icon={<BarChart3 className="w-5 h-5" />}
-              trend={{ value: 2.1, isPositive: true }}
-            />
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+      <div className="space-y-8 p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in">
+          <div>
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+              Analytics Hub
+            </h2>
+            <p className="text-muted-foreground text-lg mt-2">
+              Real-time metrics, user engagement, and feature performance analytics
+            </p>
           </div>
+          <div className="flex items-center gap-3">
+            <Button 
+              onClick={handleRefresh} 
+              disabled={refreshing}
+              className="shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh Data'}
+            </Button>
+            <Button variant="outline" className="shadow-lg hover:shadow-xl transition-shadow">
+              <Download className="w-4 h-4 mr-2" />
+              Export Report
+            </Button>
+          </div>
+        </div>
 
-          {/* Real-Time Charts & Activity Feed */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Live Activity Feed */}
-            <Card className="lg:col-span-1">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="w-5 h-5" />
-                  Live Activity Feed
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 max-h-80 overflow-auto">
-                  {activityFeed.map((activity) => (
-                    <div key={activity.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/30">
-                      <div className={`w-2 h-2 rounded-full ${
-                        activity.type === 'exam' ? 'bg-primary' :
-                        activity.type === 'completion' ? 'bg-accent' :
-                        activity.type === 'registration' ? 'bg-warning' :
-                        activity.type === 'video' ? 'bg-blue-500' : 'bg-destructive'
-                      }`} />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">{activity.user}</p>
-                        <p className="text-xs text-muted-foreground">{activity.action}</p>
-                        <p className="text-xs text-muted-foreground">{activity.time}</p>
+        <Tabs defaultValue="realtime" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 lg:w-fit glass-card">
+            <TabsTrigger value="realtime" className="text-sm font-medium">Real-Time Metrics</TabsTrigger>
+            <TabsTrigger value="engagement" className="text-sm font-medium">User Engagement</TabsTrigger>
+            <TabsTrigger value="features" className="text-sm font-medium">Feature Analytics</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="realtime" className="space-y-6">
+            {/* Real-Time Metrics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <StatCard
+                title="Online Users"
+                value={realTimeMetrics.onlineUsers}
+                icon={<Users className="w-5 h-5" />}
+                trend={{ value: 12.5, isPositive: true }}
+                variant="primary"
+                className="animate-bounce-subtle"
+              />
+              <StatCard
+                title="Active Sessions"
+                value={realTimeMetrics.activeTests}
+                icon={<Activity className="w-5 h-5" />}
+                trend={{ value: 8.3, isPositive: true }}
+                variant="accent"
+                className="animate-bounce-subtle [animation-delay:200ms]"
+              />
+              <StatCard
+                title="Avg Response Time"
+                value={realTimeMetrics.responseTime}
+                icon={<Clock className="w-5 h-5" />}
+                trend={{ value: 5.2, isPositive: false }}
+                variant="warning"
+                className="animate-bounce-subtle [animation-delay:400ms]"
+              />
+              <StatCard
+                title="System Health"
+                value={realTimeMetrics.systemHealth}
+                icon={<BarChart3 className="w-5 h-5" />}
+                trend={{ value: 2.1, isPositive: true }}
+                variant="destructive"
+                className="animate-bounce-subtle [animation-delay:600ms]"
+              />
+            </div>
+
+            {/* Real-Time Charts & Activity Feed */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Live Activity Feed */}
+              <Card className="glass-card border-primary/10 hover:shadow-glow-primary transition-all duration-500">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <Activity className="w-5 h-5 text-primary animate-pulse" />
+                    Live Activity Feed
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4 max-h-80 overflow-y-auto">
+                    {activityFeed.map((activity, index) => (
+                      <div 
+                        key={activity.id} 
+                        className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors duration-200 animate-slide-up"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <div className={`w-2 h-2 rounded-full mt-2 ${
+                          activity.type === 'exam' ? 'bg-primary animate-pulse' :
+                          activity.type === 'completion' ? 'bg-accent' :
+                          activity.type === 'registration' ? 'bg-warning' :
+                          activity.type === 'video' ? 'bg-blue-500' : 'bg-destructive'
+                        }`} />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">{activity.user}</p>
+                          <p className="text-xs text-muted-foreground">{activity.action}</p>
+                          <p className="text-xs text-muted-foreground">{activity.time}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Real-Time Performance Chart */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>System Performance (Last 24 Hours)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={engagementData.slice(-24)}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line 
-                        type="monotone" 
-                        dataKey="dau" 
-                        stroke="hsl(var(--primary))" 
-                        strokeWidth={2}
-                        name="Online Users"
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="testsCompleted" 
-                        stroke="hsl(var(--accent))" 
-                        strokeWidth={2}
-                        name="Tests Completed"
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+              {/* Real-Time Performance Chart */}
+              <Card className="lg:col-span-2 glass-card border-accent/10 hover:shadow-glow-accent transition-all duration-500">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <TrendingUp className="w-5 h-5 text-accent" />
+                    System Performance (Last 24 Hours)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={engagementData.slice(-24)}>
+                        <defs>
+                          <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                          </linearGradient>
+                          <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis 
+                          dataKey="date" 
+                          stroke="hsl(var(--muted-foreground))"
+                          fontSize={12}
+                        />
+                        <YAxis 
+                          stroke="hsl(var(--muted-foreground))"
+                          fontSize={12}
+                        />
+                        <Tooltip 
+                          contentStyle={{
+                            backgroundColor: 'hsl(var(--card))',
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: '12px',
+                            boxShadow: '0 10px 40px hsl(var(--shadow-medium))'
+                          }}
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="dau" 
+                          stroke="hsl(var(--primary))" 
+                          fillOpacity={1} 
+                          fill="url(#colorUsers)"
+                          strokeWidth={3}
+                          name="Online Users"
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="testsCompleted" 
+                          stroke="hsl(var(--accent))" 
+                          fillOpacity={1} 
+                          fill="url(#colorSessions)"
+                          strokeWidth={3}
+                          name="Tests Completed"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
         <TabsContent value="engagement" className="space-y-6">
           {/* Engagement Charts */}
@@ -350,8 +403,8 @@ export const AnalyticsHub = () => {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   );
 };
