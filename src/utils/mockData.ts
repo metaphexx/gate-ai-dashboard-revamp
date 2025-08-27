@@ -25,6 +25,8 @@ export const generateMockUsers = (count: number = 100) => {
 
 export const generateRealTimeMetrics = () => ({
   onlineUsers: Math.floor(Math.random() * 150) + 50,
+  newUsersToday: Math.floor(Math.random() * 25) + 10,
+  avgSessionLength: Math.floor(Math.random() * 30) + 15 + ' min',
   activeTests: Math.floor(Math.random() * 30) + 10,
   systemHealth: Math.random() > 0.1 ? 'Healthy' : 'Warning',
   errorRate: (Math.random() * 2).toFixed(2) + '%',
@@ -45,6 +47,7 @@ export const generateEngagementData = () => {
       wau: Math.floor(Math.random() * 2000) + 1000,
       mau: Math.floor(Math.random() * 5000) + 3000,
       sessionDuration: Math.floor(Math.random() * 30) + 15,
+      sessionDurationMinutes: Math.floor(Math.random() * 45) + 10,
       testsCompleted: Math.floor(Math.random() * 100) + 50,
       newRegistrations: Math.floor(Math.random() * 50) + 10
     });
@@ -226,3 +229,60 @@ export const generateSystemMetrics = () => ({
   bandwidthUsed: '892GB',
   apiCalls: 1547829
 });
+
+export const generateUserGrowthData = () => {
+  const days = 30;
+  const data = [];
+  
+  for (let i = 0; i < days; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() - (days - i));
+    
+    const totalNew = Math.floor(Math.random() * 50) + 20;
+    const manuallyAdded = Math.floor(totalNew * 0.2);
+    const selfRegistered = totalNew - manuallyAdded;
+    
+    data.push({
+      date: date.toISOString().split('T')[0],
+      manuallyAdded,
+      selfRegistered,
+      total: totalNew
+    });
+  }
+  
+  return data;
+};
+
+export const generateUserTypeData = () => {
+  const totalUsers = 12547;
+  const paidUsers = Math.floor(totalUsers * 0.35);
+  const freeUsers = totalUsers - paidUsers;
+  
+  return [
+    { name: 'Paid Users', value: paidUsers, color: '#10b981' },
+    { name: 'Free Users', value: freeUsers, color: '#e5e7eb' }
+  ];
+};
+
+export const generateActivityFeed = () => {
+  const activities = [
+    'completed a Mock Exam',
+    'started a Reading Comprehension test',
+    'watched Abstract Reasoning tutorial',
+    'registered for Premium',
+    'completed Quantitative Reasoning practice',
+    'shared progress on social media',
+    'joined a study group',
+    'achieved a new streak milestone'
+  ];
+  
+  const users = ['John D.', 'Sarah M.', 'Mike R.', 'Emma L.', 'David K.', 'Lisa P.', 'Tom W.', 'Anna S.'];
+  
+  return Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    user: users[Math.floor(Math.random() * users.length)],
+    activity: activities[Math.floor(Math.random() * activities.length)],
+    timestamp: new Date(Date.now() - Math.random() * 60 * 60 * 1000).toISOString(),
+    score: Math.random() > 0.5 ? Math.floor(Math.random() * 40) + 60 : null
+  }));
+};
