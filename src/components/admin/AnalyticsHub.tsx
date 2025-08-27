@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -231,178 +232,179 @@ export const AnalyticsHub = () => {
             </div>
           </TabsContent>
 
-        <TabsContent value="engagement" className="space-y-6">
-          {/* Engagement Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* DAU/WAU/MAU Trend */}
-            <Card>
-              <CardHeader>
-                <CardTitle>User Engagement Trends</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={engagementData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area 
-                        type="monotone" 
-                        dataKey="dau" 
-                        stackId="1" 
-                        stroke="hsl(var(--primary))" 
-                        fill="hsl(var(--primary))" 
-                        fillOpacity={0.3}
-                        name="DAU"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="wau" 
-                        stackId="2" 
-                        stroke="hsl(var(--accent))" 
-                        fill="hsl(var(--accent))" 
-                        fillOpacity={0.3}
-                        name="WAU"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* User Journey Funnel */}
-            <Card>
-              <CardHeader>
-                <CardTitle>User Journey Funnel</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={userJourneyData} layout="horizontal">
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" />
-                      <YAxis dataKey="stage" type="category" width={100} />
-                      <Tooltip formatter={(value, name) => [`${value} users`, 'Users']} />
-                      <Bar dataKey="users" fill="hsl(var(--primary))" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Session Duration & Drop-off Analysis */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Session Duration Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={engagementData.slice(-7)}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="sessionDuration" fill="hsl(var(--accent))" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Login Frequency Patterns</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[
-                    { time: '6-9 AM', users: 245, percentage: 15 },
-                    { time: '12-2 PM', users: 389, percentage: 24 },
-                    { time: '6-9 PM', users: 567, percentage: 35 },
-                    { time: '9-12 PM', users: 423, percentage: 26 }
-                  ].map((period) => (
-                    <div key={period.time} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{period.time}</span>
-                        <span className="text-sm text-muted-foreground">{period.users} users</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div 
-                          className="bg-primary h-2 rounded-full" 
-                          style={{ width: `${period.percentage}%` }}
+          <TabsContent value="engagement" className="space-y-6">
+            {/* Engagement Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* DAU/WAU/MAU Trend */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>User Engagement Trends</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={engagementData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area 
+                          type="monotone" 
+                          dataKey="dau" 
+                          stackId="1" 
+                          stroke="hsl(var(--primary))" 
+                          fill="hsl(var(--primary))" 
+                          fillOpacity={0.3}
+                          name="DAU"
                         />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="features" className="space-y-6">
-          {/* Feature Usage Analytics */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Feature Usage Heatmap</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={featureUsageData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="usage"
-                        label={({ feature, usage }) => `${feature}: ${usage}%`}
-                      >
-                        {featureUsageData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Feature Adoption Trends</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {featureUsageData.map((feature, index) => (
-                    <div key={feature.feature} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{feature.feature}</span>
-                        <Badge variant="secondary">{feature.usage}% adoption</Badge>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div 
-                          className="h-2 rounded-full" 
-                          style={{ 
-                            width: `${feature.usage}%`,
-                            backgroundColor: feature.color
-                          }}
+                        <Area 
+                          type="monotone" 
+                          dataKey="wau" 
+                          stackId="2" 
+                          stroke="hsl(var(--accent))" 
+                          fill="hsl(var(--accent))" 
+                          fillOpacity={0.3}
+                          name="WAU"
                         />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* User Journey Funnel */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>User Journey Funnel</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={userJourneyData} layout="horizontal">
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" />
+                        <YAxis dataKey="stage" type="category" width={100} />
+                        <Tooltip formatter={(value, name) => [`${value} users`, 'Users']} />
+                        <Bar dataKey="users" fill="hsl(var(--primary))" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Session Duration & Drop-off Analysis */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Session Duration Distribution</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={engagementData.slice(-7)}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="sessionDuration" fill="hsl(var(--accent))" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Login Frequency Patterns</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { time: '6-9 AM', users: 245, percentage: 15 },
+                      { time: '12-2 PM', users: 389, percentage: 24 },
+                      { time: '6-9 PM', users: 567, percentage: 35 },
+                      { time: '9-12 PM', users: 423, percentage: 26 }
+                    ].map((period) => (
+                      <div key={period.time} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{period.time}</span>
+                          <span className="text-sm text-muted-foreground">{period.users} users</span>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full" 
+                            style={{ width: `${period.percentage}%` }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="features" className="space-y-6">
+            {/* Feature Usage Analytics */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Feature Usage Heatmap</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={featureUsageData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="usage"
+                          label={({ feature, usage }) => `${feature}: ${usage}%`}
+                        >
+                          {featureUsageData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Feature Adoption Trends</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {featureUsageData.map((feature, index) => (
+                      <div key={feature.feature} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{feature.feature}</span>
+                          <Badge variant="secondary">{feature.usage}% adoption</Badge>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div 
+                            className="h-2 rounded-full" 
+                            style={{ 
+                              width: `${feature.usage}%`,
+                              backgroundColor: feature.color
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
