@@ -12,10 +12,16 @@ import { CommunicationHub } from '@/components/admin/CommunicationHub';
 import { TutorInsights } from '@/components/admin/TutorInsights';
 import { DataVisualization } from '@/components/admin/DataVisualization';
 import { AdminOverview } from '@/components/admin/AdminOverview';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('overview');
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const renderContent = () => {
     switch (activeSection) {
@@ -49,13 +55,47 @@ const AdminDashboard = () => {
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex flex-col w-full bg-gray-50">
-        <AdminHeader />
+        {/* Mobile Header with Menu Button */}
+        {isMobile && (
+          <div className="sticky top-0 z-50 flex items-center justify-between p-4 bg-card border-b border-border">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setMobileOpen(true)}
+                className="h-9 w-9 p-0"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <h1 className="font-semibold text-foreground">Admin Dashboard</h1>
+            </div>
+          </div>
+        )}
+        
+        {/* Desktop Header */}
+        {!isMobile && <AdminHeader />}
+        
         <div className="flex flex-1 w-full">
+          {/* Desktop Sidebar Trigger */}
+          {!isMobile && (
+            <div className="absolute top-20 left-4 z-10">
+              <SidebarTrigger className="h-8 w-8" />
+            </div>
+          )}
+          
+          {/* Sidebar */}
           <AdminSidebar 
             activeSection={activeSection} 
-            onSectionChange={setActiveSection} 
+            onSectionChange={setActiveSection}
+            mobileOpen={mobileOpen}
+            onMobileClose={() => setMobileOpen(false)}
           />
-          <main className="flex-1 overflow-auto p-6">
+          
+          {/* Main Content */}
+          <main className={cn(
+            "flex-1 overflow-auto",
+            isMobile ? "p-4" : "p-6"
+          )}>
             {renderContent()}
           </main>
         </div>
