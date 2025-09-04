@@ -150,10 +150,11 @@ export const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarPro
               </SidebarGroupLabel>
             )}
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-3">
                 {section.items.map((item) => (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
+                      size="lg"
                       onClick={() => onSectionChange(item.id)}
                       className={cn(
                         "w-full justify-start transition-all duration-200",
