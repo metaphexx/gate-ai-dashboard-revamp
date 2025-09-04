@@ -375,53 +375,6 @@ export const AdminOverview = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Recent Alerts - Moved Down */}
-      <Card className="bg-card border-border">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-yellow-600" />
-            Recent Alerts
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {alerts.map((alert) => (
-              <div 
-                key={alert.id} 
-                className={`p-4 rounded-lg border transition-colors hover:bg-muted/50 ${
-                  alert.severity === 'high' 
-                    ? 'bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-800' 
-                    : alert.severity === 'medium'
-                    ? 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/20 dark:border-yellow-800'
-                    : 'bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge 
-                        className={`text-xs px-2 py-0 ${
-                          alert.severity === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                          alert.severity === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                          'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                        }`}
-                      >
-                        {alert.severity.toUpperCase()}
-                      </Badge>
-                      <span className="text-sm font-medium text-foreground">{alert.title}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{alert.message}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {new Date(alert.timestamp).toLocaleTimeString()}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
