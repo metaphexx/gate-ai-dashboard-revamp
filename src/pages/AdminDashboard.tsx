@@ -6,7 +6,6 @@ import { ContentPerformance } from '@/components/admin/ContentPerformance';
 import { ExamTracking } from '@/components/admin/ExamTracking';
 import { RetentionAnalytics } from '@/components/admin/RetentionAnalytics';
 import { GrowthMetrics } from '@/components/admin/GrowthMetrics';
-import { PredictiveInsights } from '@/components/admin/PredictiveInsights';
 import { CommunicationHub } from '@/components/admin/CommunicationHub';
 import { TutorInsights } from '@/components/admin/TutorInsights';
 import { DataVisualization } from '@/components/admin/DataVisualization';
@@ -43,8 +42,6 @@ const AdminDashboard = () => {
         return <RetentionAnalytics />;
       case 'growth':
         return <GrowthMetrics />;
-      case 'insights':
-        return <PredictiveInsights />;
       case 'communication':
         return <CommunicationHub />;
       case 'tutors':

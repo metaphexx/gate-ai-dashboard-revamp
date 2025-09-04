@@ -19,7 +19,6 @@ import {
   GraduationCap,
   Repeat,
   BarChart3,
-  Brain,
   MessageSquare,
   UserCheck,
   PieChart,
@@ -82,12 +81,6 @@ const adminMenuItems = [
         name: "Growth Metrics", 
         icon: BarChart3,
         description: "Acquisition & conversion"
-      },
-      { 
-        id: 'insights', 
-        name: "AI Insights", 
-        icon: Brain,
-        description: "Predictive analytics & alerts"
       }
     ]
   },
