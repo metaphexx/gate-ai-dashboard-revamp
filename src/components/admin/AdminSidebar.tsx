@@ -75,35 +75,6 @@ const adminMenuItems = [
         name: "Retention Analytics", 
         icon: Repeat,
         description: "Cohort & churn analysis"
-      },
-      { 
-        id: 'growth', 
-        name: "Growth Metrics", 
-        icon: BarChart3,
-        description: "Acquisition & conversion"
-      }
-    ]
-  },
-  {
-    title: "Operations",
-    items: [
-      { 
-        id: 'communication', 
-        name: "Communication Hub", 
-        icon: MessageSquare,
-        description: "Messaging & support"
-      },
-      { 
-        id: 'tutors', 
-        name: "Tutor Insights", 
-        icon: UserCheck,
-        description: "Staff performance & activity"
-      },
-      { 
-        id: 'visualization', 
-        name: "Data Export", 
-        icon: PieChart,
-        description: "Reports & visualizations"
       }
     ]
   }

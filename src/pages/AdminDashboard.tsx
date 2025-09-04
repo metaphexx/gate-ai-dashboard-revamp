@@ -5,10 +5,6 @@ import { UserManagement } from '@/components/admin/UserManagement';
 import { ContentPerformance } from '@/components/admin/ContentPerformance';
 import { ExamTracking } from '@/components/admin/ExamTracking';
 import { RetentionAnalytics } from '@/components/admin/RetentionAnalytics';
-import { GrowthMetrics } from '@/components/admin/GrowthMetrics';
-import { CommunicationHub } from '@/components/admin/CommunicationHub';
-import { TutorInsights } from '@/components/admin/TutorInsights';
-import { DataVisualization } from '@/components/admin/DataVisualization';
 import { AdminOverview } from '@/components/admin/AdminOverview';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
@@ -40,14 +36,6 @@ const AdminDashboard = () => {
         return <ExamTracking />;
       case 'retention':
         return <RetentionAnalytics />;
-      case 'growth':
-        return <GrowthMetrics />;
-      case 'communication':
-        return <CommunicationHub />;
-      case 'tutors':
-        return <TutorInsights />;
-      case 'visualization':
-        return <DataVisualization />;
       default:
         return <AdminOverview />;
     }
