@@ -38,14 +38,20 @@ const featureUsageData = [
   { feature: 'Skills Trainer', usage: 15, color: 'hsl(var(--muted-foreground))' }
 ];
 
-// Mock user journey data
+// Enhanced user journey data with realistic conversion stages
 const userJourneyData = [
-  { stage: 'Registration', users: 1000, conversion: 100 },
-  { stage: 'First Login', users: 850, conversion: 85 },
-  { stage: 'First Test', users: 680, conversion: 68 },
-  { stage: 'Video Lesson', users: 540, conversion: 54 },
-  { stage: 'Second Test', users: 450, conversion: 45 },
-  { stage: 'Premium Upgrade', users: 120, conversion: 12 }
+  { stage: 'Registration', users: 2500, conversion: 100 },
+  { stage: 'Email Verification', users: 2200, conversion: 88 },
+  { stage: 'Profile Setup', users: 1980, conversion: 79 },
+  { stage: 'First Login', users: 1850, conversion: 74 },
+  { stage: 'Tutorial Completion', users: 1665, conversion: 67 },
+  { stage: 'First Practice Test', users: 1400, conversion: 56 },
+  { stage: 'First Mock Exam', users: 1120, conversion: 45 },
+  { stage: 'Video Lesson View', users: 896, conversion: 36 },
+  { stage: 'Second Mock Exam', users: 672, conversion: 27 },
+  { stage: 'Study Notes Access', users: 504, conversion: 20 },
+  { stage: 'Premium Upgrade', users: 300, conversion: 12 },
+  { stage: 'Active User (7+ days)', users: 180, conversion: 7 }
 ];
 
 export const AnalyticsHub = () => {
@@ -66,7 +72,7 @@ export const AnalyticsHub = () => {
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Analytics Hub</h2>
           <p className="text-gray-600 mt-2">
-            Real-time metrics, user engagement, and feature performance analytics
+            User engagement insights and feature performance analytics
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -85,144 +91,12 @@ export const AnalyticsHub = () => {
         </div>
       </div>
 
-        <Tabs defaultValue="realtime" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-fit bg-white border border-gray-200">
-            <TabsTrigger value="realtime" className="text-sm font-medium">Real-Time Metrics</TabsTrigger>
+        <Tabs defaultValue="engagement" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 lg:w-fit bg-white border border-gray-200">
             <TabsTrigger value="engagement" className="text-sm font-medium">User Engagement</TabsTrigger>
             <TabsTrigger value="features" className="text-sm font-medium">Feature Analytics</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="realtime" className="space-y-6">
-            {/* Real-Time Metrics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <StatCard
-                title="Online Users"
-                value={realTimeMetrics.onlineUsers}
-                icon={<Users className="w-5 h-5" />}
-                trend={{ value: 12.5, isPositive: true }}
-                variant="primary"
-                className="animate-bounce-subtle"
-              />
-              <StatCard
-                title="Active Sessions"
-                value={realTimeMetrics.activeTests}
-                icon={<Activity className="w-5 h-5" />}
-                trend={{ value: 8.3, isPositive: true }}
-                variant="accent"
-                className="animate-bounce-subtle [animation-delay:200ms]"
-              />
-              <StatCard
-                title="Avg Response Time"
-                value={realTimeMetrics.responseTime}
-                icon={<Clock className="w-5 h-5" />}
-                trend={{ value: 5.2, isPositive: false }}
-                variant="warning"
-                className="animate-bounce-subtle [animation-delay:400ms]"
-              />
-              <StatCard
-                title="System Health"
-                value={realTimeMetrics.systemHealth}
-                icon={<BarChart3 className="w-5 h-5" />}
-                trend={{ value: 2.1, isPositive: true }}
-                variant="destructive"
-                className="animate-bounce-subtle [animation-delay:600ms]"
-              />
-            </div>
-
-            {/* Real-Time Charts & Activity Feed */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Live Activity Feed */}
-              <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-primary" />
-                    Live Activity Feed
-                  </h3>
-                </div>
-                <div className="space-y-4 max-h-80 overflow-y-auto">
-                  {activityFeed.map((activity, index) => (
-                    <div 
-                      key={activity.id} 
-                      className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-                    >
-                      <div className={`w-2 h-2 rounded-full mt-2 ${
-                        activity.type === 'exam' ? 'bg-primary' :
-                        activity.type === 'completion' ? 'bg-green-600' :
-                        activity.type === 'registration' ? 'bg-yellow-600' :
-                        activity.type === 'video' ? 'bg-blue-500' : 'bg-red-600'
-                      }`} />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{activity.user}</p>
-                        <p className="text-xs text-gray-600">{activity.action}</p>
-                        <p className="text-xs text-gray-500">{activity.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Real-Time Performance Chart */}
-              <div className="lg:col-span-2 bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-green-600" />
-                    System Performance (Last 24 Hours)
-                  </h3>
-                </div>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={engagementData.slice(-24)}>
-                      <defs>
-                        <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                        </linearGradient>
-                        <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis 
-                        dataKey="date" 
-                        stroke="#6b7280"
-                        fontSize={12}
-                      />
-                      <YAxis 
-                        stroke="#6b7280"
-                        fontSize={12}
-                      />
-                      <Tooltip 
-                        contentStyle={{
-                          backgroundColor: 'white',
-                          border: '1px solid #e5e7eb',
-                          borderRadius: '8px'
-                        }}
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="dau" 
-                        stroke="hsl(var(--primary))" 
-                        fillOpacity={1} 
-                        fill="url(#colorUsers)"
-                        strokeWidth={3}
-                        name="Online Users"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="testsCompleted" 
-                        stroke="#10b981" 
-                        fillOpacity={1} 
-                        fill="url(#colorSessions)"
-                        strokeWidth={3}
-                        name="Tests Completed"
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
 
           <TabsContent value="engagement" className="space-y-6">
             {/* Engagement Charts */}
@@ -302,7 +176,7 @@ export const AnalyticsHub = () => {
                 </div>
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={engagementData.slice(-7)}>
+                    <LineChart data={engagementData.slice(-7)}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis dataKey="date" stroke="#6b7280" />
                       <YAxis stroke="#6b7280" />
@@ -313,8 +187,14 @@ export const AnalyticsHub = () => {
                           borderRadius: '8px'
                         }}
                       />
-                      <Bar dataKey="sessionDuration" fill="#10b981" />
-                    </BarChart>
+                      <Line 
+                        type="monotone" 
+                        dataKey="sessionDuration" 
+                        stroke="#10b981" 
+                        strokeWidth={3}
+                        dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
