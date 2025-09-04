@@ -67,7 +67,7 @@ export const AdminOverview = () => {
       </div>
 
       {/* Real-time Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCard
           title="Online Users"
           value={realTimeMetrics.onlineUsers}
@@ -89,13 +89,6 @@ export const AdminOverview = () => {
           trend={{ value: 5.8, isPositive: true }}
           variant="warning"
         />
-        <StatCard
-          title="System Health"
-          value={`${realTimeMetrics.activeTests} tests • ${realTimeMetrics.responseTime} • ${realTimeMetrics.errorRate} errors`}
-          icon={<Shield className="w-5 h-5" />}
-          trend={{ value: 2.1, isPositive: false }}
-          variant="destructive"
-        />
       </div>
 
       {/* Real-time Activity & System Performance */}
@@ -113,7 +106,7 @@ export const AdminOverview = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 <div className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
@@ -131,33 +124,10 @@ export const AdminOverview = () => {
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Storage Used</span>
-                      <span className="font-bold text-yellow-600">{systemMetrics.storageUsed}</span>
-                    </div>
-                    <Progress value={45} className="h-3" />
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">Uptime</span>
                       <span className="font-bold text-green-600">{systemMetrics.uptime}</span>
                     </div>
                     <Progress value={99.97} className="h-3" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">API Calls</span>
-                      <span className="font-bold text-primary">{systemMetrics.apiCalls.toLocaleString()}</span>
-                    </div>
-                    <Progress value={82} className="h-3" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Bandwidth</span>
-                      <span className="font-bold text-green-600">{systemMetrics.bandwidthUsed}</span>
-                    </div>
-                    <Progress value={68} className="h-3" />
                   </div>
                 </div>
               </div>
@@ -251,7 +221,13 @@ export const AdminOverview = () => {
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={engagementData}>
+                <AreaChart data={engagementData}>
+                  <defs>
+                    <linearGradient id="colorTestCompletions" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis 
                     dataKey="date" 
@@ -270,12 +246,15 @@ export const AdminOverview = () => {
                       color: 'hsl(var(--foreground))'
                     }}
                   />
-                  <Bar 
+                  <Area 
+                    type="monotone" 
                     dataKey="testsCompleted" 
-                    fill="#10b981"
-                    radius={[4, 4, 0, 0]}
+                    stroke="#10b981" 
+                    fillOpacity={1} 
+                    fill="url(#colorTestCompletions)"
+                    strokeWidth={2}
                   />
-                </BarChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -295,7 +274,7 @@ export const AdminOverview = () => {
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={userGrowthData}>
+                <LineChart data={userGrowthData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis 
                     dataKey="date" 
@@ -314,21 +293,23 @@ export const AdminOverview = () => {
                       color: 'hsl(var(--foreground))'
                     }}
                   />
-                  <Bar 
+                  <Line 
+                    type="monotone" 
                     dataKey="manuallyAdded" 
-                    stackId="a"
-                    fill="#3b82f6"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
                     name="Manually Added"
-                    radius={[0, 0, 0, 0]}
+                    dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
                   />
-                  <Bar 
+                  <Line 
+                    type="monotone" 
                     dataKey="selfRegistered" 
-                    stackId="a"
-                    fill="#10b981"
+                    stroke="#10b981"
+                    strokeWidth={2}
                     name="Self-Registered"
-                    radius={[4, 4, 0, 0]}
+                    dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
                   />
-                </BarChart>
+                </LineChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -353,6 +334,11 @@ export const AdminOverview = () => {
                       borderRadius: '8px',
                       color: 'hsl(var(--foreground))'
                     }}
+                    formatter={(value, name) => {
+                      const total = userTypeData.reduce((sum, entry) => sum + entry.value, 0);
+                      const percentage = ((Number(value) / total) * 100).toFixed(1);
+                      return [`${Number(value).toLocaleString()} (${percentage}%)`, name];
+                    }}
                   />
                   <Pie 
                     data={userTypeData} 
@@ -370,17 +356,21 @@ export const AdminOverview = () => {
               </ResponsiveContainer>
             </div>
             <div className="mt-4 flex justify-center gap-6">
-              {userTypeData.map((entry, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div 
-                    className="w-3 h-3 rounded-full" 
-                    style={{ backgroundColor: entry.color }}
-                  />
-                  <span className="text-sm text-muted-foreground">
-                    {entry.name}: {entry.value.toLocaleString()}
-                  </span>
-                </div>
-              ))}
+              {userTypeData.map((entry, index) => {
+                const total = userTypeData.reduce((sum, item) => sum + item.value, 0);
+                const percentage = ((entry.value / total) * 100).toFixed(1);
+                return (
+                  <div key={index} className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded-full" 
+                      style={{ backgroundColor: entry.color }}
+                    />
+                    <span className="text-sm text-muted-foreground">
+                      {entry.name}: {entry.value.toLocaleString()} ({percentage}%)
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </CardContent>
         </Card>
