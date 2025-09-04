@@ -147,21 +147,37 @@ export const AnalyticsHub = () => {
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold text-gray-900">User Journey Funnel</h3>
                 </div>
-                <div className="h-80">
+                <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={userJourneyData} layout="horizontal">
+                    <BarChart data={userJourneyData} layout="horizontal" barCategoryGap="10%">
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis type="number" stroke="#6b7280" />
-                      <YAxis dataKey="stage" type="category" width={100} stroke="#6b7280" />
+                      <YAxis 
+                        dataKey="stage" 
+                        type="category" 
+                        width={150} 
+                        stroke="#6b7280"
+                        tick={{ fontSize: 12 }}
+                      />
                       <Tooltip 
-                        formatter={(value, name) => [`${value} users`, 'Users']}
+                        formatter={(value, name) => {
+                          const total = userJourneyData[0]?.users || 1;
+                          const percentage = ((value as number / total) * 100).toFixed(1);
+                          return [`${value} users (${percentage}% conversion)`, 'Users'];
+                        }}
                         contentStyle={{
                           backgroundColor: 'white',
                           border: '1px solid #e5e7eb',
                           borderRadius: '8px'
                         }}
                       />
-                      <Bar dataKey="users" fill="hsl(var(--primary))" />
+                      <Bar 
+                        dataKey="users" 
+                        fill="hsl(var(--primary))" 
+                        stroke="hsl(var(--primary))"
+                        strokeWidth={1}
+                        radius={[0, 4, 4, 0]}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
