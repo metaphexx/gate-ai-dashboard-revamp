@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
-import { AdminHeader } from '@/components/admin/AdminHeader';
 import { AnalyticsHub } from '@/components/admin/AnalyticsHub';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ContentPerformance } from '@/components/admin/ContentPerformance';
@@ -13,15 +12,20 @@ import { TutorInsights } from '@/components/admin/TutorInsights';
 import { DataVisualization } from '@/components/admin/DataVisualization';
 import { AdminOverview } from '@/components/admin/AdminOverview';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ShieldCheck, RefreshCw, Download, Filter, Bell, User } from 'lucide-react';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('overview');
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const isMobile = useIsMobile();
 
   const renderContent = () => {
     switch (activeSection) {
@@ -54,48 +58,94 @@ const AdminDashboard = () => {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex flex-col w-full bg-gray-50">
-        {/* Mobile Header with Menu Button */}
-        {isMobile && (
-          <div className="sticky top-0 z-50 flex items-center justify-between p-4 bg-card border-b border-border">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setMobileOpen(true)}
-                className="h-9 w-9 p-0"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-              <h1 className="font-semibold text-foreground">Admin Dashboard</h1>
-            </div>
-          </div>
-        )}
+      <div className="flex min-h-screen w-full bg-background">
+        {/* Admin Sidebar */}
+        <AdminSidebar 
+          activeSection={activeSection} 
+          onSectionChange={setActiveSection}
+        />
         
-        {/* Desktop Header */}
-        {!isMobile && <AdminHeader />}
-        
-        <div className="flex flex-1 w-full">
-          {/* Desktop Sidebar Trigger */}
-          {!isMobile && (
-            <div className="absolute top-20 left-4 z-10">
+        <div className="flex flex-col flex-1">
+          {/* Header */}
+          <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="flex h-16 items-center gap-4 px-6">
               <SidebarTrigger className="h-8 w-8" />
+              
+              <div className="flex items-center gap-3 flex-1">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-semibold text-foreground">Admin Dashboard</h1>
+                  <p className="text-xs text-muted-foreground">Last updated: {new Date().toLocaleTimeString()}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                {/* Search */}
+                <div className="relative">
+                  <Input
+                    placeholder="Search..."
+                    className="w-64 h-9"
+                  />
+                </div>
+
+                {/* Quick Actions */}
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                    <RefreshCw className="h-4 w-4" />
+                  </Button>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>Export CSV</DropdownMenuItem>
+                      <DropdownMenuItem>Export PDF</DropdownMenuItem>
+                      <DropdownMenuItem>Export Excel</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  
+                  <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                    <Filter className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                {/* Notifications */}
+                <Button variant="ghost" size="sm" className="h-9 w-9 p-0 relative">
+                  <Bell className="h-4 w-4" />
+                  <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center">
+                    3
+                  </Badge>
+                </Button>
+
+                {/* User Menu */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-9 w-9 p-0 rounded-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="/placeholder-avatar.jpg" alt="Admin" />
+                        <AvatarFallback>
+                          <User className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
-          )}
-          
-          {/* Sidebar */}
-          <AdminSidebar 
-            activeSection={activeSection} 
-            onSectionChange={setActiveSection}
-            mobileOpen={mobileOpen}
-            onMobileClose={() => setMobileOpen(false)}
-          />
+          </header>
           
           {/* Main Content */}
-          <main className={cn(
-            "flex-1 overflow-auto",
-            isMobile ? "p-4" : "p-6"
-          )}>
+          <main className="flex-1 overflow-auto p-6 bg-muted/20">
             {renderContent()}
           </main>
         </div>
