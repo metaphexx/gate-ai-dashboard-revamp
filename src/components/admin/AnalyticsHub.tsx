@@ -142,62 +142,6 @@ export const AnalyticsHub = () => {
                 </div>
               </div>
 
-              {/* User Journey Funnel */}
-              <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">User Journey Funnel</h3>
-                  <p className="text-sm text-gray-600">Data points: {userJourneyData.length}</p>
-                </div>
-                <div className="h-96">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart 
-                      data={userJourneyData} 
-                      layout="horizontal" 
-                      barCategoryGap="10%"
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis 
-                        type="number" 
-                        stroke="#6b7280"
-                        domain={[0, 'dataMax + 100']}
-                      />
-                      <YAxis 
-                        dataKey="stage" 
-                        type="category" 
-                        width={150} 
-                        stroke="#6b7280"
-                        tick={{ fontSize: 11 }}
-                        interval={0}
-                      />
-                      <Tooltip 
-                        formatter={(value, name) => {
-                          const total = userJourneyData[0]?.users || 1;
-                          const percentage = ((value as number / total) * 100).toFixed(1);
-                          return [`${value} users (${percentage}% conversion)`, 'Users'];
-                        }}
-                        contentStyle={{
-                          backgroundColor: 'white',
-                          border: '1px solid #e5e7eb',
-                          borderRadius: '8px'
-                        }}
-                      />
-                      <Bar 
-                        dataKey="users" 
-                        fill="hsl(var(--primary))" 
-                        stroke="hsl(var(--primary))"
-                        strokeWidth={1}
-                        radius={[0, 4, 4, 0]}
-                        minPointSize={5}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                {/* Debug info */}
-                <div className="mt-2 text-xs text-gray-500">
-                  Sample data: {JSON.stringify(userJourneyData.slice(0, 2))}
-                </div>
-              </div>
             </div>
 
             {/* Session Duration & Drop-off Analysis */}
