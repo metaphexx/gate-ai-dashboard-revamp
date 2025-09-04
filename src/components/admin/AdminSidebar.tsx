@@ -91,15 +91,15 @@ export const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarPro
 
   return (
     <Sidebar className="border-r border-border" collapsible="icon">
-      <SidebarHeader className="border-b border-border p-4">
+      <SidebarHeader className="border-b border-border h-16 flex items-center px-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
             <ShieldCheck className="w-5 h-5 text-primary-foreground" />
           </div>
           {!collapsed && (
             <div>
-              <h2 className="font-semibold text-foreground">Admin Dashboard</h2>
-              <p className="text-xs text-muted-foreground">GATE AI Management</p>
+              <p className="text-sm font-medium text-foreground">GATE AI Management</p>
+              <p className="text-xs text-muted-foreground">Last updated: {new Date().toLocaleTimeString()}</p>
             </div>
           )}
         </div>

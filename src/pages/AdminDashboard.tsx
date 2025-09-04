@@ -57,13 +57,7 @@ const AdminDashboard = () => {
               <SidebarTrigger className="h-8 w-8" />
               
               <div className="flex items-center gap-3 flex-1">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <h1 className="text-lg font-semibold text-foreground">Admin Dashboard</h1>
-                  <p className="text-xs text-muted-foreground">Last updated: {new Date().toLocaleTimeString()}</p>
-                </div>
+                <h1 className="text-lg font-semibold text-foreground">Admin Dashboard</h1>
               </div>
 
               <div className="flex items-center gap-4">
