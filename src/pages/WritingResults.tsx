@@ -437,53 +437,6 @@ const WritingResults = () => {
               </CardContent>
             </Card>
 
-            {/* Next Steps Action Card */}
-            <Card className="mt-6 bg-gradient-to-br from-[#009dff]/10 to-blue-50 rounded-xl border border-[#009dff]/20 shadow-sm">
-              <CardContent className="p-4 md:p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-[#009dff] rounded-full flex items-center justify-center">
-                    <BookOpen className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 text-base md:text-lg">Next Steps</h4>
-                    <p className="text-xs md:text-sm text-gray-600">Recommended actions to improve</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
-                    <CheckCircle className="h-5 w-5 text-red-500" />
-                    <span className="text-sm text-gray-700">Focus on grammar exercises</span>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
-                    <FileText className="h-5 w-5 text-orange-500" />
-                    <span className="text-sm text-gray-700">Practice essay structuring</span>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
-                    <Lightbulb className="h-5 w-5 text-green-500" />
-                    <span className="text-sm text-gray-700">Read more creative writing samples</span>
-                  </div>
-                </div>
-                <div className="flex gap-3 mt-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 border-[#009dff] text-[#009dff] hover:bg-[#009dff]/10"
-                    onClick={() => navigate('/writing-lessons')}
-                  >
-                    <BookOpen className="h-4 w-4 mr-2" />
-                    Review Lessons
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 bg-[#009dff] hover:bg-[#008ae6] text-white"
-                    onClick={() => navigate('/writing-pre-start')}
-                  >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Try Again
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Detailed Feedback */}
