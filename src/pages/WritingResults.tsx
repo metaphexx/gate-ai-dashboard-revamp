@@ -15,14 +15,18 @@ import {
   Lightbulb,
   FileText,
   CheckCircle,
-  MessageSquare
+  MessageSquare,
+  Target,
+  RefreshCw,
+  BookOpen,
+  TrendingUp
 } from 'lucide-react';
 import { 
   ChartContainer, 
   ChartTooltip, 
   ChartTooltipContent 
 } from '@/components/ui/chart';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import EverestLogo from '@/components/test/EverestLogo';
 
 // Mock data for the writing results
@@ -368,7 +372,118 @@ const WritingResults = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Overall */}
+              <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Target className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-base md:text-lg mb-1">Overall</h4>
+                        <p className="text-xs md:text-sm text-gray-600">
+                          {((writingResults.overall.score / writingResults.overall.total) * 100).toFixed(1)}%
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xl md:text-2xl font-bold text-gray-900">{writingResults.overall.score}</div>
+                      <div className="text-xs md:text-sm text-gray-600">out of {writingResults.overall.total}</div>
+                    </div>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="mt-3 md:mt-4">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-500 h-2 rounded-full" 
+                        style={{ width: `${(writingResults.overall.score / writingResults.overall.total) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
+
+            {/* Performance Comparison Chart */}
+            <Card className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base md:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-[#009dff]" />
+                  Performance Comparison
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="h-48">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      layout="vertical"
+                      data={[
+                        { name: 'Creativity', score: (writingResults.creativity.score / writingResults.creativity.total) * 100, fill: '#22c55e' },
+                        { name: 'Structure', score: (writingResults.structure.score / writingResults.structure.total) * 100, fill: '#f97316' },
+                        { name: 'Grammar', score: (writingResults.grammar.score / writingResults.grammar.total) * 100, fill: '#ef4444' },
+                        { name: 'Overall', score: (writingResults.overall.score / writingResults.overall.total) * 100, fill: '#3b82f6' },
+                      ]}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <XAxis type="number" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
+                      <YAxis type="category" dataKey="name" width={70} />
+                      <Tooltip formatter={(value: number) => [`${value.toFixed(1)}%`, 'Score']} />
+                      <Bar dataKey="score" radius={[0, 4, 4, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Next Steps Action Card */}
+            <Card className="mt-6 bg-gradient-to-br from-[#009dff]/10 to-blue-50 rounded-xl border border-[#009dff]/20 shadow-sm">
+              <CardContent className="p-4 md:p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-[#009dff] rounded-full flex items-center justify-center">
+                    <BookOpen className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 text-base md:text-lg">Next Steps</h4>
+                    <p className="text-xs md:text-sm text-gray-600">Recommended actions to improve</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
+                    <CheckCircle className="h-5 w-5 text-red-500" />
+                    <span className="text-sm text-gray-700">Focus on grammar exercises</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
+                    <FileText className="h-5 w-5 text-orange-500" />
+                    <span className="text-sm text-gray-700">Practice essay structuring</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100">
+                    <Lightbulb className="h-5 w-5 text-green-500" />
+                    <span className="text-sm text-gray-700">Read more creative writing samples</span>
+                  </div>
+                </div>
+                <div className="flex gap-3 mt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 border-[#009dff] text-[#009dff] hover:bg-[#009dff]/10"
+                    onClick={() => navigate('/writing-lessons')}
+                  >
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Review Lessons
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-[#009dff] hover:bg-[#008ae6] text-white"
+                    onClick={() => navigate('/writing-pre-start')}
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Try Again
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Detailed Feedback */}
