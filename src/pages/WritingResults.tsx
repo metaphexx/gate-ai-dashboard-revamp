@@ -128,13 +128,13 @@ const ScoreChart = ({ score, total, color }: { score: number; total: number; col
   );
 };
 
-// Mock historical data for progress chart - simplified to overall only
+// Mock historical data for progress chart - simplified to overall only with dates
 const historicalData = [
-  { attempt: 'Attempt 1', overall: 38 },
-  { attempt: 'Attempt 2', overall: 42 },
-  { attempt: 'Attempt 3', overall: 40 },
-  { attempt: 'Attempt 4', overall: 45 },
-  { attempt: 'Current', overall: 48 },
+  { date: '15 Oct', overall: 38 },
+  { date: '22 Oct', overall: 42 },
+  { date: '1 Nov', overall: 40 },
+  { date: '12 Nov', overall: 45 },
+  { date: '28 Nov', overall: 48 },
 ];
 
 const WritingResults = () => {
@@ -551,7 +551,7 @@ const WritingResults = () => {
                     <LineChart data={historicalData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis 
-                        dataKey="attempt" 
+                        dataKey="date" 
                         fontSize={10}
                         tickMargin={5}
                       />
@@ -608,34 +608,6 @@ const WritingResults = () => {
               </CardContent>
             </Card>
 
-            {/* Action Buttons Card */}
-            <Card className="mt-6 bg-gradient-to-br from-[#009dff]/10 to-blue-50 rounded-xl border border-[#009dff]/20 shadow-sm">
-              <CardContent className="p-4 md:p-6">
-                <div className="text-center mb-4">
-                  <h4 className="font-semibold text-gray-900 text-base">Ready to improve?</h4>
-                  <p className="text-sm text-gray-600">Practice makes perfect</p>
-                </div>
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 border-[#009dff] text-[#009dff] hover:bg-[#009dff]/10"
-                    onClick={() => navigate('/writing-lessons')}
-                  >
-                    <BookOpen className="h-4 w-4 mr-2" />
-                    Lessons
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 bg-[#009dff] hover:bg-[#008ae6] text-white"
-                    onClick={() => navigate('/writing-pre-start')}
-                  >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Try Again
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
 
           </div>
 
