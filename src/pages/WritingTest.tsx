@@ -272,7 +272,23 @@ const WritingTest = () => {
     });
     
     setShowSubmitDialog(false);
-    navigate('/writing-results');
+    
+    // Calculate time spent (total time - remaining time)
+    const totalTime = 1500; // 25 minutes in seconds
+    const timeSpentSeconds = totalTime - time;
+    
+    // Pass writing analytics to results page
+    navigate('/writing-results', {
+      state: {
+        writingAnalytics: {
+          words: writingAnalytics.words,
+          characters: writingAnalytics.characters,
+          sentences: writingAnalytics.sentences,
+          paragraphs: writingAnalytics.paragraphs,
+          timeSpentSeconds
+        }
+      }
+    });
   };
 
   const handleCancel = () => {
