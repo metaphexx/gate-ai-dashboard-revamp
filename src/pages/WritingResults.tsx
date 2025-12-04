@@ -26,7 +26,7 @@ import {
   ChartTooltip, 
   ChartTooltipContent 
 } from '@/components/ui/chart';
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import EverestLogo from '@/components/test/EverestLogo';
 
 // Mock data for the writing results
@@ -406,33 +406,95 @@ const WritingResults = () => {
               </Card>
             </div>
 
-            {/* Performance Comparison Chart */}
+            {/* Modern Performance Comparison */}
             <Card className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-              <CardHeader className="pb-2">
+              <CardHeader className="pb-3">
                 <CardTitle className="text-base md:text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-[#009dff]" />
                   Performance Comparison
                 </CardTitle>
               </CardHeader>
+              <CardContent className="pt-0 space-y-4">
+                {[
+                  { name: 'Creativity', score: writingResults.creativity.score, total: writingResults.creativity.total, gradient: 'from-emerald-400 to-green-500', bg: 'bg-emerald-100' },
+                  { name: 'Structure', score: writingResults.structure.score, total: writingResults.structure.total, gradient: 'from-amber-400 to-orange-500', bg: 'bg-amber-100' },
+                  { name: 'Grammar', score: writingResults.grammar.score, total: writingResults.grammar.total, gradient: 'from-rose-400 to-red-500', bg: 'bg-rose-100' },
+                  { name: 'Overall', score: writingResults.overall.score, total: writingResults.overall.total, gradient: 'from-sky-400 to-blue-500', bg: 'bg-sky-100' },
+                ].map((item) => {
+                  const percentage = (item.score / item.total) * 100;
+                  return (
+                    <div key={item.name} className="space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-700">{item.name}</span>
+                        <span className="text-sm font-semibold text-gray-900">{percentage.toFixed(0)}%</span>
+                      </div>
+                      <div className={`w-full h-3 ${item.bg} rounded-full overflow-hidden`}>
+                        <div 
+                          className={`h-full bg-gradient-to-r ${item.gradient} rounded-full transition-all duration-500 ease-out`}
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            {/* Quick Stats Card */}
+            <Card className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base md:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-[#009dff]" />
+                  Writing Stats
+                </CardTitle>
+              </CardHeader>
               <CardContent className="pt-0">
-                <div className="h-48">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      layout="vertical"
-                      data={[
-                        { name: 'Creativity', score: (writingResults.creativity.score / writingResults.creativity.total) * 100, fill: '#22c55e' },
-                        { name: 'Structure', score: (writingResults.structure.score / writingResults.structure.total) * 100, fill: '#f97316' },
-                        { name: 'Grammar', score: (writingResults.grammar.score / writingResults.grammar.total) * 100, fill: '#ef4444' },
-                        { name: 'Overall', score: (writingResults.overall.score / writingResults.overall.total) * 100, fill: '#3b82f6' },
-                      ]}
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <XAxis type="number" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
-                      <YAxis type="category" dataKey="name" width={70} />
-                      <Tooltip formatter={(value: number) => [`${value.toFixed(1)}%`, 'Score']} />
-                      <Bar dataKey="score" radius={[0, 4, 4, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">245</div>
+                    <div className="text-xs text-gray-600">Words Written</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">12</div>
+                    <div className="text-xs text-gray-600">Avg Sentence Length</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">4</div>
+                    <div className="text-xs text-gray-600">Paragraphs</div>
+                  </div>
+                  <div className="bg-amber-50 rounded-lg p-3 text-center">
+                    <div className="text-lg font-bold text-amber-600">Fair</div>
+                    <div className="text-xs text-gray-600">Time Efficiency</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Action Buttons Card */}
+            <Card className="mt-6 bg-gradient-to-br from-[#009dff]/10 to-blue-50 rounded-xl border border-[#009dff]/20 shadow-sm">
+              <CardContent className="p-4 md:p-6">
+                <div className="text-center mb-4">
+                  <h4 className="font-semibold text-gray-900 text-base">Ready to improve?</h4>
+                  <p className="text-sm text-gray-600">Practice makes perfect</p>
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 border-[#009dff] text-[#009dff] hover:bg-[#009dff]/10"
+                    onClick={() => navigate('/writing-lessons')}
+                  >
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Lessons
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-[#009dff] hover:bg-[#008ae6] text-white"
+                    onClick={() => navigate('/writing-pre-start')}
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Try Again
+                  </Button>
                 </div>
               </CardContent>
             </Card>
