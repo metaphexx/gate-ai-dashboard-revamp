@@ -151,12 +151,8 @@ const WritingResults = () => {
     timeSpentSeconds: 1200
   };
   
-  // Calculate derived stats
-  const avgSentenceLength = analytics.sentences > 0 
-    ? Math.round(analytics.words / analytics.sentences) 
-    : 0;
-  
   // Calculate time efficiency based on words per minute
+
   const wordsPerMinute = analytics.timeSpentSeconds > 0 
     ? (analytics.words / (analytics.timeSpentSeconds / 60))
     : 0;
@@ -512,8 +508,8 @@ const WritingResults = () => {
                     <div className="text-xs text-gray-600">Characters</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">{avgSentenceLength}</div>
-                    <div className="text-xs text-gray-600">Avg Sentence Length</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.sentences}</div>
+                    <div className="text-xs text-gray-600">Sentences</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <div className="text-2xl font-bold text-gray-900">{analytics.paragraphs}</div>
