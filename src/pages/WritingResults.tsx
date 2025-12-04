@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Card, 
   CardContent, 
@@ -19,15 +19,28 @@ import {
   Target,
   RefreshCw,
   BookOpen,
-  TrendingUp
+  TrendingUp,
+  History,
+  Type
 } from 'lucide-react';
 import { 
   ChartContainer, 
   ChartTooltip, 
   ChartTooltipContent 
 } from '@/components/ui/chart';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, XAxis, YAxis, Area, AreaChart } from 'recharts';
 import EverestLogo from '@/components/test/EverestLogo';
+
+// Types for navigation state
+interface WritingAnalyticsState {
+  writingAnalytics?: {
+    words: number;
+    characters: number;
+    sentences: number;
+    paragraphs: number;
+    timeSpentSeconds: number;
+  };
+}
 
 // Mock data for the writing results
 const writingResults = {
@@ -115,8 +128,47 @@ const ScoreChart = ({ score, total, color }: { score: number; total: number; col
   );
 };
 
+// Mock historical data for progress chart
+const historicalData = [
+  { attempt: 'Nov 1', overall: 38, creativity: 45, structure: 35, grammar: 30 },
+  { attempt: 'Nov 8', overall: 42, creativity: 50, structure: 40, grammar: 35 },
+  { attempt: 'Nov 15', overall: 40, creativity: 48, structure: 38, grammar: 32 },
+  { attempt: 'Nov 22', overall: 45, creativity: 55, structure: 42, grammar: 38 },
+  { attempt: 'Current', overall: 48, creativity: 60, structure: 47, grammar: 20 },
+];
+
 const WritingResults = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as WritingAnalyticsState;
+  
+  // Get dynamic analytics from navigation state or use defaults
+  const analytics = state?.writingAnalytics || {
+    words: 245,
+    characters: 1340,
+    sentences: 18,
+    paragraphs: 4,
+    timeSpentSeconds: 1200
+  };
+  
+  // Calculate derived stats
+  const avgSentenceLength = analytics.sentences > 0 
+    ? Math.round(analytics.words / analytics.sentences) 
+    : 0;
+  
+  // Calculate time efficiency based on words per minute
+  const wordsPerMinute = analytics.timeSpentSeconds > 0 
+    ? (analytics.words / (analytics.timeSpentSeconds / 60))
+    : 0;
+  
+  const getTimeEfficiency = (wpm: number) => {
+    if (wpm >= 15) return { label: 'Good', color: 'text-emerald-600', bg: 'bg-emerald-50' };
+    if (wpm >= 8) return { label: 'Fair', color: 'text-amber-600', bg: 'bg-amber-50' };
+    return { label: 'Needs Work', color: 'text-rose-600', bg: 'bg-rose-50' };
+  };
+  
+  const timeEfficiency = getTimeEfficiency(wordsPerMinute);
+  
   const overallPercentage = (writingResults.overall.score / writingResults.overall.total) * 100;
 
   // Generate star rating based on percentage
@@ -440,7 +492,7 @@ const WritingResults = () => {
               </CardContent>
             </Card>
 
-            {/* Quick Stats Card */}
+            {/* Quick Stats Card - Dynamic Data */}
             <Card className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base md:text-lg font-semibold text-gray-900 flex items-center gap-2">
@@ -451,20 +503,132 @@ const WritingResults = () => {
               <CardContent className="pt-0">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">245</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.words}</div>
                     <div className="text-xs text-gray-600">Words Written</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">12</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.characters}</div>
+                    <div className="text-xs text-gray-600">Characters</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-gray-900">{avgSentenceLength}</div>
                     <div className="text-xs text-gray-600">Avg Sentence Length</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-gray-900">4</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.paragraphs}</div>
                     <div className="text-xs text-gray-600">Paragraphs</div>
                   </div>
-                  <div className="bg-amber-50 rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-amber-600">Fair</div>
-                    <div className="text-xs text-gray-600">Time Efficiency</div>
+                  <div className={`${timeEfficiency.bg} rounded-lg p-3 text-center col-span-2`}>
+                    <div className={`text-lg font-bold ${timeEfficiency.color}`}>{timeEfficiency.label}</div>
+                    <div className="text-xs text-gray-600">Time Efficiency ({Math.round(wordsPerMinute)} WPM)</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Historical Progress Chart */}
+            <Card className="mt-6 bg-white rounded-xl border border-gray-200 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base md:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <History className="h-5 w-5 text-[#009dff]" />
+                  Progress Over Time
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="h-48">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={historicalData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorOverall" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#009dff" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#009dff" stopOpacity={0}/>
+                        </linearGradient>
+                        <linearGradient id="colorCreativity" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <XAxis 
+                        dataKey="attempt" 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fontSize: 10, fill: '#6b7280' }}
+                      />
+                      <YAxis 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fontSize: 10, fill: '#6b7280' }}
+                        domain={[0, 100]}
+                      />
+                      <ChartTooltip 
+                        content={({ active, payload, label }) => {
+                          if (active && payload && payload.length) {
+                            return (
+                              <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-lg">
+                                <p className="font-semibold text-gray-900 mb-2">{label}</p>
+                                {payload.map((entry: any, index: number) => (
+                                  <p key={index} className="text-sm" style={{ color: entry.color }}>
+                                    {entry.name}: {entry.value}%
+                                  </p>
+                                ))}
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="overall"
+                        stroke="#009dff"
+                        strokeWidth={2}
+                        fill="url(#colorOverall)"
+                        name="Overall"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="creativity"
+                        stroke="#22c55e"
+                        strokeWidth={2}
+                        fill="url(#colorCreativity)"
+                        name="Creativity"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="structure"
+                        stroke="#f97316"
+                        strokeWidth={2}
+                        dot={{ fill: '#f97316', strokeWidth: 0, r: 3 }}
+                        name="Structure"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="grammar"
+                        stroke="#ef4444"
+                        strokeWidth={2}
+                        dot={{ fill: '#ef4444', strokeWidth: 0, r: 3 }}
+                        name="Grammar"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+                {/* Legend */}
+                <div className="flex flex-wrap justify-center gap-4 mt-3 pt-3 border-t border-gray-100">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-[#009dff]"></div>
+                    <span className="text-xs text-gray-600">Overall</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <span className="text-xs text-gray-600">Creativity</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                    <span className="text-xs text-gray-600">Structure</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <span className="text-xs text-gray-600">Grammar</span>
                   </div>
                 </div>
               </CardContent>
