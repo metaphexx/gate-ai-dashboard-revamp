@@ -35,35 +35,19 @@ const writingResults = {
   feedback: {
     creativity: {
       feedback: "The piece has a hint of originality with the metaphor of the tunnel as a journey of persistence. However, it lacks depth and engagement beyond surface-level reflections.",
-      suggestions: [
-        "Use more vivid imagery and sensory details to bring your metaphors to life",
-        "Explore unexpected angles or perspectives on your chosen topic",
-        "Add personal anecdotes or unique observations to deepen engagement"
-      ]
+      suggestions: "Use more vivid imagery and sensory details to bring your metaphors to life. Explore unexpected angles or perspectives on your chosen topic, and add personal anecdotes or unique observations to deepen engagement."
     },
     structure: {
       feedback: "The response has a basic structure with an introduction and conclusion. However, the flow is disrupted by abrupt transitions and lack of coherence.",
-      suggestions: [
-        "Use transition words and phrases to connect ideas smoothly",
-        "Create a clear thesis statement in your introduction",
-        "Ensure each paragraph focuses on a single main idea"
-      ]
+      suggestions: "Use transition words and phrases to connect ideas smoothly. Create a clear thesis statement in your introduction and ensure each paragraph focuses on a single main idea."
     },
     grammar: {
       feedback: "Numerous grammatical errors detract from readability: 'tunnel' should be 'tunnel', 'stretches' should be 'stretches', and 'energy' should be 'emerge'.",
-      suggestions: [
-        "Proofread your work carefully before submitting",
-        "Use spell-check tools to catch common errors",
-        "Read your writing aloud to identify awkward phrasing"
-      ]
+      suggestions: "Proofread your work carefully before submitting and use spell-check tools to catch common errors. Reading your writing aloud can help identify awkward phrasing and grammatical issues."
     },
     overall: {
       feedback: "The response suffers from a lack of depth and multiple grammatical errors. It barely meets the length requirement, leading to severe penalties.",
-      suggestions: [
-        "Aim to exceed the minimum word count to allow for fuller development",
-        "Focus on quality over quantity in your revisions",
-        "Practice timed writing exercises to improve speed and accuracy"
-      ]
+      suggestions: "Aim to exceed the minimum word count to allow for fuller development of your ideas. Focus on quality over quantity in your revisions, and practice timed writing exercises to improve both speed and accuracy."
     }
   }
 };
@@ -413,19 +397,14 @@ const WritingResults = () => {
                   </div>
                   
                   {/* Suggestions Section */}
-                  <div>
+                  <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Lightbulb className="h-4 w-4 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                      <Lightbulb className="h-5 w-5 text-amber-600" />
+                      <span className="text-sm font-semibold text-amber-700 uppercase tracking-wide">Suggestions</span>
                     </div>
-                    <ul className="space-y-2">
-                      {writingResults.feedback.overall.suggestions.map((suggestion, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
-                          <span className="text-amber-500 mt-1">•</span>
-                          <span>{suggestion}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                      {writingResults.feedback.overall.suggestions}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -452,19 +431,14 @@ const WritingResults = () => {
                   </div>
                   
                   {/* Suggestions Section */}
-                  <div>
+                  <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Lightbulb className="h-4 w-4 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                      <Lightbulb className="h-5 w-5 text-amber-600" />
+                      <span className="text-sm font-semibold text-amber-700 uppercase tracking-wide">Suggestions</span>
                     </div>
-                    <ul className="space-y-2">
-                      {writingResults.feedback.creativity.suggestions.map((suggestion, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
-                          <span className="text-green-500 mt-1">•</span>
-                          <span>{suggestion}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                      {writingResults.feedback.creativity.suggestions}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -491,19 +465,14 @@ const WritingResults = () => {
                   </div>
                   
                   {/* Suggestions Section */}
-                  <div>
+                  <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Lightbulb className="h-4 w-4 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                      <Lightbulb className="h-5 w-5 text-amber-600" />
+                      <span className="text-sm font-semibold text-amber-700 uppercase tracking-wide">Suggestions</span>
                     </div>
-                    <ul className="space-y-2">
-                      {writingResults.feedback.structure.suggestions.map((suggestion, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
-                          <span className="text-orange-500 mt-1">•</span>
-                          <span>{suggestion}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                      {writingResults.feedback.structure.suggestions}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -530,19 +499,14 @@ const WritingResults = () => {
                   </div>
                   
                   {/* Suggestions Section */}
-                  <div>
+                  <div className="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Lightbulb className="h-4 w-4 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                      <Lightbulb className="h-5 w-5 text-amber-600" />
+                      <span className="text-sm font-semibold text-amber-700 uppercase tracking-wide">Suggestions</span>
                     </div>
-                    <ul className="space-y-2">
-                      {writingResults.feedback.grammar.suggestions.map((suggestion, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
-                          <span className="text-red-500 mt-1">•</span>
-                          <span>{suggestion}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                      {writingResults.feedback.grammar.suggestions}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
