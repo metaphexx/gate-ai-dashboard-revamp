@@ -14,7 +14,8 @@ import {
   Star,
   Lightbulb,
   FileText,
-  CheckCircle
+  CheckCircle,
+  MessageSquare
 } from 'lucide-react';
 import { 
   ChartContainer, 
@@ -32,10 +33,38 @@ const writingResults = {
   overall: { score: 24, total: 50 },
   timeSpent: "25 Min 00 Sec",
   feedback: {
-    creativity: "The piece has a hint of originality with the metaphor of the tunnel as a journey of persistence. However, it lacks depth and engagement beyond surface-level reflections.",
-    structure: "The response has a basic structure with an introduction and conclusion. However, the flow is disrupted by abrupt transitions and lack of coherence.",
-    grammar: "Numerous grammatical errors detract from readability: 'tunnel' should be 'tunnel', 'stretches' should be 'stretches', and 'energy' should be 'emerge'.",
-    overall: "The response suffers from a lack of depth and multiple grammatical errors. It barely meets the length requirement, leading to severe penalties."
+    creativity: {
+      feedback: "The piece has a hint of originality with the metaphor of the tunnel as a journey of persistence. However, it lacks depth and engagement beyond surface-level reflections.",
+      suggestions: [
+        "Use more vivid imagery and sensory details to bring your metaphors to life",
+        "Explore unexpected angles or perspectives on your chosen topic",
+        "Add personal anecdotes or unique observations to deepen engagement"
+      ]
+    },
+    structure: {
+      feedback: "The response has a basic structure with an introduction and conclusion. However, the flow is disrupted by abrupt transitions and lack of coherence.",
+      suggestions: [
+        "Use transition words and phrases to connect ideas smoothly",
+        "Create a clear thesis statement in your introduction",
+        "Ensure each paragraph focuses on a single main idea"
+      ]
+    },
+    grammar: {
+      feedback: "Numerous grammatical errors detract from readability: 'tunnel' should be 'tunnel', 'stretches' should be 'stretches', and 'energy' should be 'emerge'.",
+      suggestions: [
+        "Proofread your work carefully before submitting",
+        "Use spell-check tools to catch common errors",
+        "Read your writing aloud to identify awkward phrasing"
+      ]
+    },
+    overall: {
+      feedback: "The response suffers from a lack of depth and multiple grammatical errors. It barely meets the length requirement, leading to severe penalties.",
+      suggestions: [
+        "Aim to exceed the minimum word count to allow for fuller development",
+        "Focus on quality over quantity in your revisions",
+        "Practice timed writing exercises to improve speed and accuracy"
+      ]
+    }
   }
 };
 
@@ -365,52 +394,156 @@ const WritingResults = () => {
               {/* Overall Feedback - Moved to top */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <CardContent className="p-4 md:p-6">
-                  <div className="flex items-center space-x-3 mb-3">
+                  <div className="flex items-center space-x-3 mb-4">
                     <Star className="h-4 w-4 md:h-5 md:w-5 text-[#009dff]" />
                     <h4 className="font-semibold text-gray-900 text-base md:text-lg">Overall</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
-                    {writingResults.feedback.overall}
-                  </p>
+                  
+                  {/* Feedback Section */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MessageSquare className="h-4 w-4 text-gray-500" />
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Feedback</span>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                        {writingResults.feedback.overall.feedback}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Suggestions Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lightbulb className="h-4 w-4 text-amber-500" />
+                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {writingResults.feedback.overall.suggestions.map((suggestion, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
+                          <span className="text-amber-500 mt-1">•</span>
+                          <span>{suggestion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
               {/* Creativity Feedback */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <CardContent className="p-4 md:p-6">
-                  <div className="flex items-center space-x-3 mb-3">
+                  <div className="flex items-center space-x-3 mb-4">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full"></div>
                     <h4 className="font-semibold text-gray-900 text-base md:text-lg">Creativity</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
-                    {writingResults.feedback.creativity}
-                  </p>
+                  
+                  {/* Feedback Section */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MessageSquare className="h-4 w-4 text-gray-500" />
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Feedback</span>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                        {writingResults.feedback.creativity.feedback}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Suggestions Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lightbulb className="h-4 w-4 text-amber-500" />
+                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {writingResults.feedback.creativity.suggestions.map((suggestion, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
+                          <span className="text-green-500 mt-1">•</span>
+                          <span>{suggestion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
               {/* Structure Feedback */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <CardContent className="p-4 md:p-6">
-                  <div className="flex items-center space-x-3 mb-3">
+                  <div className="flex items-center space-x-3 mb-4">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-orange-500 rounded-full"></div>
                     <h4 className="font-semibold text-gray-900 text-base md:text-lg">Structure</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
-                    {writingResults.feedback.structure}
-                  </p>
+                  
+                  {/* Feedback Section */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MessageSquare className="h-4 w-4 text-gray-500" />
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Feedback</span>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                        {writingResults.feedback.structure.feedback}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Suggestions Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lightbulb className="h-4 w-4 text-amber-500" />
+                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {writingResults.feedback.structure.suggestions.map((suggestion, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
+                          <span className="text-orange-500 mt-1">•</span>
+                          <span>{suggestion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
               {/* Grammar Feedback */}
               <Card className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <CardContent className="p-4 md:p-6">
-                  <div className="flex items-center space-x-3 mb-3">
+                  <div className="flex items-center space-x-3 mb-4">
                     <div className="w-3 h-3 md:w-4 md:h-4 bg-red-500 rounded-full"></div>
                     <h4 className="font-semibold text-gray-900 text-base md:text-lg">Grammar</h4>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
-                    {writingResults.feedback.grammar}
-                  </p>
+                  
+                  {/* Feedback Section */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MessageSquare className="h-4 w-4 text-gray-500" />
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Feedback</span>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                        {writingResults.feedback.grammar.feedback}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Suggestions Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lightbulb className="h-4 w-4 text-amber-500" />
+                      <span className="text-xs font-medium text-amber-600 uppercase tracking-wide">Suggestions</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {writingResults.feedback.grammar.suggestions.map((suggestion, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
+                          <span className="text-red-500 mt-1">•</span>
+                          <span>{suggestion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
             </div>
