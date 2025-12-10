@@ -31,8 +31,8 @@ const ReadingComprehensionPreStart = () => {
               onClick={handleBackToPractice}
               className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
-              <ArrowLeft className="h-5 w-5 mr-1" />
-              <span>Back To Practice Tests</span>
+              <ArrowLeft className="h-5 w-5 sm:mr-1" />
+              <span className="hidden sm:inline">Back To Practice Tests</span>
             </button>
           </div>
         </div>

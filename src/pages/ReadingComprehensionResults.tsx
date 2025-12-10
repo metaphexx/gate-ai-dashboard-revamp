@@ -166,8 +166,8 @@ const ReadingComprehensionResults = () => {
               onClick={handleBackToTests}
               className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
             >
-              <ArrowLeft className="h-5 w-5 mr-1" />
-              <span>Back to Practice Tests</span>
+              <ArrowLeft className="h-5 w-5 sm:mr-1" />
+              <span className="hidden sm:inline">Back to Practice Tests</span>
             </button>
           </div>
         </div>
@@ -392,9 +392,9 @@ const ReadingComprehensionResults = () => {
             <CardHeader>
               <CardTitle className="text-xl font-medium">Performance by Question Type</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
+            <CardContent className="p-4 sm:p-6">
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <Table className="min-w-[600px]">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Question Type</TableHead>
