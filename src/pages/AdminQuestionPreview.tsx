@@ -26,6 +26,7 @@ const mockQuestionsData = [
     hasImage: true,
     image: "/abstract-reasoning.jpg",
     options: ["A", "B", "C", "D"],
+    correctAnswer: "C",
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const mockQuestionsData = [
     explanation: "Use algebraic manipulation",
     hasImage: false,
     options: ["12", "15", "18", "21"],
+    correctAnswer: "15",
   },
   {
     id: 3,
@@ -49,6 +51,7 @@ const mockQuestionsData = [
     hasImage: true,
     image: "/abstract-reasoning.jpg",
     options: ["A", "B", "C", "D"],
+    correctAnswer: "B",
   },
   {
     id: 4,
@@ -60,6 +63,7 @@ const mockQuestionsData = [
     explanation: "Direct inference from text",
     hasImage: false,
     options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    correctAnswer: "Option 2",
   },
   {
     id: 5,
@@ -72,6 +76,7 @@ const mockQuestionsData = [
     hasImage: true,
     image: "/abstract-reasoning.jpg",
     options: ["A", "B", "C", "D"],
+    correctAnswer: "D",
   },
 ];
 
@@ -248,7 +253,12 @@ const AdminQuestionPreview = () => {
               
               {/* Answer options */}
               <div className="mb-8">
-                <h3 className="text-sm font-semibold text-gray-600 mb-4">Answer Options:</h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <h3 className="text-sm font-semibold text-gray-600">Answer Options:</h3>
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                    ✓ Correct Answer: {question.correctAnswer}
+                  </span>
+                </div>
                 <RadioGroup 
                   value={selectedAnswer || ""}
                   onValueChange={setSelectedAnswer}
@@ -257,26 +267,38 @@ const AdminQuestionPreview = () => {
                     {question.options.map((option, idx) => {
                       const optionLabels = ['A', 'B', 'C', 'D'];
                       const optionLabel = optionLabels[idx];
+                      const isCorrect = option === question.correctAnswer;
                       return (
                         <div 
                           key={option}
-                          className={`border rounded-xl p-4 transition-all cursor-pointer
-                            ${selectedAnswer === option 
-                              ? 'border-[#009dff] bg-blue-50 shadow-md' 
-                              : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
+                          className={`border-2 rounded-xl p-4 transition-all cursor-pointer relative
+                            ${isCorrect 
+                              ? 'border-green-500 bg-green-50 shadow-md ring-2 ring-green-200' 
+                              : selectedAnswer === option 
+                                ? 'border-[#009dff] bg-blue-50 shadow-md' 
+                                : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
                             }`}
                           onClick={() => setSelectedAnswer(option)}
                         >
+                          {isCorrect && (
+                            <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
+                              ✓ Correct
+                            </div>
+                          )}
                           <div className="flex items-center">
                             <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                              selectedAnswer === option 
-                                ? 'bg-[#009dff] text-white' 
-                                : 'bg-gray-100 text-gray-700'
+                              isCorrect
+                                ? 'bg-green-500 text-white'
+                                : selectedAnswer === option 
+                                  ? 'bg-[#009dff] text-white' 
+                                  : 'bg-gray-100 text-gray-700'
                             }`}>
                               {optionLabel}
                             </div>
                             <div className="flex-1 ml-3">
-                              <p className="text-gray-700 font-medium">Option {optionLabel}: {option}</p>
+                              <p className={`font-medium ${isCorrect ? 'text-green-700' : 'text-gray-700'}`}>
+                                Option {optionLabel}: {option}
+                              </p>
                             </div>
                           </div>
                         </div>
