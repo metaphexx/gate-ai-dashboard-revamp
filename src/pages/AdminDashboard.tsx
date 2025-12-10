@@ -8,7 +8,7 @@ import { RetentionAnalytics } from '@/components/admin/RetentionAnalytics';
 import { AdminOverview } from '@/components/admin/AdminOverview';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { ShieldCheck, RefreshCw, Download, Filter, Bell, User } from 'lucide-react';
+import { ShieldCheck, RefreshCw, Download, Filter, Bell, User, Search } from 'lucide-react';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -18,9 +18,11 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('overview');
+  const isMobile = useIsMobile();
 
   const renderContent = () => {
     switch (activeSection) {
@@ -42,7 +44,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={!isMobile}>
       <div className="flex min-h-screen w-full bg-background">
         {/* Admin Sidebar */}
         <AdminSidebar 
@@ -50,27 +52,32 @@ const AdminDashboard = () => {
           onSectionChange={setActiveSection}
         />
         
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 min-w-0">
           {/* Header */}
           <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="flex h-16 items-center gap-4 px-6">
+            <div className="flex h-14 md:h-16 items-center gap-2 md:gap-4 px-3 md:px-6">
               <SidebarTrigger className="h-8 w-8" />
               
-              <div className="flex items-center gap-3 flex-1">
-                <h1 className="text-lg font-semibold text-foreground">Admin Dashboard</h1>
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <h1 className="text-base md:text-lg font-semibold text-foreground truncate">
+                  {isMobile ? 'Admin' : 'Admin Dashboard'}
+                </h1>
               </div>
 
-              <div className="flex items-center gap-4">
-                {/* Search */}
-                <div className="relative">
+              <div className="flex items-center gap-2 md:gap-4">
+                {/* Search - Hidden on mobile, shown as icon */}
+                <div className="relative hidden md:block">
                   <Input
                     placeholder="Search..."
-                    className="w-64 h-9"
+                    className="w-40 lg:w-64 h-9"
                   />
                 </div>
+                <Button variant="ghost" size="sm" className="h-9 w-9 p-0 md:hidden">
+                  <Search className="h-4 w-4" />
+                </Button>
 
-                {/* Quick Actions */}
-                <div className="flex items-center gap-2">
+                {/* Quick Actions - Hidden on very small screens */}
+                <div className="hidden sm:flex items-center gap-1 md:gap-2">
                   <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
                     <RefreshCw className="h-4 w-4" />
                   </Button>
@@ -88,7 +95,7 @@ const AdminDashboard = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                   
-                  <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                  <Button variant="ghost" size="sm" className="h-9 w-9 p-0 hidden md:flex">
                     <Filter className="h-4 w-4" />
                   </Button>
                 </div>
@@ -96,7 +103,7 @@ const AdminDashboard = () => {
                 {/* Notifications */}
                 <Button variant="ghost" size="sm" className="h-9 w-9 p-0 relative">
                   <Bell className="h-4 w-4" />
-                  <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center">
+                  <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 rounded-full p-0 text-[10px] md:text-xs flex items-center justify-center">
                     3
                   </Badge>
                 </Button>
@@ -105,7 +112,7 @@ const AdminDashboard = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-9 w-9 p-0 rounded-full">
-                      <Avatar className="h-8 w-8">
+                      <Avatar className="h-7 w-7 md:h-8 md:w-8">
                         <AvatarImage src="/placeholder-avatar.jpg" alt="Admin" />
                         <AvatarFallback>
                           <User className="h-4 w-4" />
@@ -124,7 +131,7 @@ const AdminDashboard = () => {
           </header>
           
           {/* Main Content */}
-          <main className="flex-1 overflow-auto p-6 bg-muted/20">
+          <main className="flex-1 overflow-auto p-3 md:p-6 bg-muted/20">
             {renderContent()}
           </main>
         </div>
