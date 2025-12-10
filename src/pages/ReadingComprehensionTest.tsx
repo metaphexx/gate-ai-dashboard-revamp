@@ -268,12 +268,12 @@ const ReadingComprehensionTest = () => {
             </div>
             
             {/* Content area with improved layout - 60% passage, 40% question */}
-            <div className="p-6 md:p-8">
-              <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+            <div className="p-4 sm:p-6 md:p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
                 {/* Left side - Passage (larger area - 3/5) */}
-                <div className="xl:col-span-3 space-y-4">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Passage:</h3>
-                  <ScrollArea className="h-[600px] w-full rounded-lg border border-gray-300 p-6 bg-white shadow-sm">
+                <div className="lg:col-span-3 space-y-4">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Passage:</h3>
+                  <ScrollArea className="h-[350px] sm:h-[400px] lg:h-[600px] w-full rounded-lg border border-gray-300 p-4 sm:p-6 bg-white shadow-sm">
                     <div className="pr-4">
                       {currentQuestion.passage.split('\n\n').map((paragraph, index) => (
                         <p key={index} className="text-gray-800 leading-relaxed text-base mb-6 last:mb-0 font-medium">
@@ -285,7 +285,7 @@ const ReadingComprehensionTest = () => {
                 </div>
 
                 {/* Right side - Question and Options (smaller area - 2/5) */}
-                <div className="xl:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-4 sm:space-y-6">
                   {/* Question */}
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">Question:</h3>

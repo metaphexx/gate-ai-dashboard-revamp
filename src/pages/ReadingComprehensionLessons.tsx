@@ -339,23 +339,23 @@ const ReadingComprehensionLessons = () => {
           {/* Smart Prompt */}
           {showSmartPrompt && (
             <Card className="mb-4 border-blue-200 bg-blue-50">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#009dff] to-[#33a9ff] flex items-center justify-center flex-shrink-0">
                       <img src="/lovable-uploads/e877c1c5-3f7c-4632-bdba-61ea2da5ff08.png" alt="Elliot" className="w-6 h-6 rounded-full" />
                     </div>
-                    <div>
-                      <h4 className="font-medium text-blue-900">Need help with this lesson?</h4>
-                      <p className="text-sm text-blue-700">
+                    <div className="min-w-0">
+                      <h4 className="font-medium text-blue-900 text-sm sm:text-base">Need help with this lesson?</h4>
+                      <p className="text-xs sm:text-sm text-blue-700 line-clamp-2">
                         {pauseCount >= 3 ? "I noticed you've paused several times. Let me help explain this concept!" : 
                          getVideoProgress('reading-comprehension', lesson.id)?.completed ? "Great job completing this lesson! Ready for practice recommendations?" :
                          "I'm here to help you understand reading comprehension concepts better!"}
                       </p>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button onClick={activateElliotChat} size="sm" className="bg-blue-600 hover:bg-blue-700">
+                  <div className="flex gap-2 self-end sm:self-auto">
+                    <Button onClick={activateElliotChat} size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm">
                       Ask Elliot
                     </Button>
                     <Button onClick={() => setShowSmartPrompt(false)} variant="ghost" size="sm">
