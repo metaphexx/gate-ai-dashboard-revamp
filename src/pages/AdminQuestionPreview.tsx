@@ -10,6 +10,7 @@ import {
   ImageIcon,
   ZoomIn,
   ZoomOut,
+  CheckCircle,
 } from 'lucide-react';
 import EverestLogo from '@/components/test/EverestLogo';
 
@@ -271,35 +272,38 @@ const AdminQuestionPreview = () => {
                       return (
                         <div 
                           key={option}
-                          className={`border-2 rounded-xl p-4 transition-all cursor-pointer relative
+                          className={`border-2 rounded-xl p-4 transition-all cursor-pointer
                             ${isCorrect 
-                              ? 'border-green-500 bg-green-50 shadow-md ring-2 ring-green-200' 
+                              ? 'border-green-500 bg-green-50' 
                               : selectedAnswer === option 
                                 ? 'border-[#009dff] bg-blue-50 shadow-md' 
                                 : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
                             }`}
                           onClick={() => setSelectedAnswer(option)}
                         >
-                          {isCorrect && (
-                            <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
-                              ✓ Correct
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                                isCorrect
+                                  ? 'bg-green-500 text-white'
+                                  : selectedAnswer === option 
+                                    ? 'bg-[#009dff] text-white' 
+                                    : 'bg-gray-100 text-gray-700'
+                              }`}>
+                                {optionLabel}
+                              </div>
+                              <div className="flex-1 ml-3">
+                                <p className={`font-medium ${isCorrect ? 'text-green-700' : 'text-gray-700'}`}>
+                                  Option {optionLabel}: {option}
+                                </p>
+                              </div>
                             </div>
-                          )}
-                          <div className="flex items-center">
-                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                              isCorrect
-                                ? 'bg-green-500 text-white'
-                                : selectedAnswer === option 
-                                  ? 'bg-[#009dff] text-white' 
-                                  : 'bg-gray-100 text-gray-700'
-                            }`}>
-                              {optionLabel}
-                            </div>
-                            <div className="flex-1 ml-3">
-                              <p className={`font-medium ${isCorrect ? 'text-green-700' : 'text-gray-700'}`}>
-                                Option {optionLabel}: {option}
-                              </p>
-                            </div>
+                            {isCorrect && (
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle className="h-5 w-5 text-green-500" />
+                                <span className="text-xs font-medium text-green-600">Correct Answer</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       );
