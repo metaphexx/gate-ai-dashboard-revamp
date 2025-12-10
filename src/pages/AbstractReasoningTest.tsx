@@ -200,18 +200,19 @@ const AbstractReasoningTest = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
       <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="container mx-auto px-3 md:px-4 py-2 md:py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <EverestLogo />
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <button 
               onClick={() => navigate(-1)}
-              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
+              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors text-sm md:text-base"
             >
-              <ChevronLeft className="h-5 w-5 mr-1" />
-              <span>Back to Tests</span>
+              <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+              <span className="hidden sm:inline">Back to Tests</span>
+              <span className="sm:hidden">Back</span>
             </button>
             
             <QuestionTimer 
@@ -223,16 +224,19 @@ const AbstractReasoningTest = () => {
       </div>
       
       {/* Main content with top padding to account for fixed header */}
-      <div className="container mx-auto pt-20 px-4 pb-24">
+      <div className="container mx-auto pt-16 md:pt-20 px-3 md:px-4 pb-20 md:pb-24">
         {/* Test title and progress */}
-        <div className="w-full px-4 mb-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-            <h1 className="text-2xl font-bold text-blue-900">
-              Abstract Reasoning Test <span className="text-base font-medium text-[#009dff]">• Question {currentQuestionIndex + 1} of {mockQuestions.length}</span>
+        <div className="w-full mb-4 md:mb-6">
+          <div className="flex flex-col mb-2">
+            <h1 className="text-lg md:text-2xl font-bold text-blue-900">
+              Abstract Reasoning Test
             </h1>
+            <span className="text-sm md:text-base font-medium text-[#009dff]">
+              Question {currentQuestionIndex + 1} of {mockQuestions.length}
+            </span>
           </div>
           
-          <div className="relative h-2 bg-blue-100 rounded-full overflow-hidden w-full">
+          <div className="relative h-1.5 md:h-2 bg-blue-100 rounded-full overflow-hidden w-full">
             <div 
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#009dff] to-[#80dfff] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
@@ -249,63 +253,63 @@ const AbstractReasoningTest = () => {
         </div>
         
         {/* Main question card */}
-        <Card className="bg-white rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
+        <Card className="bg-white rounded-xl md:rounded-2xl overflow-hidden border-none shadow-xl shadow-blue-100">
           <CardContent className="p-0">
-            {/* Category banner - Updated to use solid color instead of gradient */}
-            <div className="bg-[#009dff] py-3 px-6 text-white shadow-sm rounded-t-lg">
-              <p className="text-sm font-medium">{currentQuestion.category}</p>
+            {/* Category banner */}
+            <div className="bg-[#009dff] py-2 md:py-3 px-4 md:px-6 text-white shadow-sm rounded-t-lg">
+              <p className="text-xs md:text-sm font-medium">{currentQuestion.category}</p>
             </div>
             
             {/* Question content */}
-            <div className="p-6 md:p-8">
+            <div className="p-4 md:p-6 lg:p-8">
               {/* Question prompt */}
-              <h2 className="text-xl font-semibold text-gray-800 mb-8">
+              <h2 className="text-base md:text-xl font-semibold text-gray-800 mb-4 md:mb-8">
                 {currentQuestion.prompt}
               </h2>
               
               {/* Image section */}
-              <div className="mb-8">
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <div className="mb-4 md:mb-8">
+                <div className="bg-gray-50 p-2 md:p-4 rounded-xl border border-gray-100">
                   <div className="relative">
                     <img 
                       src={currentQuestion.image}
                       alt="Abstract reasoning question" 
-                      className="max-h-[300px] w-auto mx-auto rounded object-contain question-image hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer"
+                      className="max-h-[200px] md:max-h-[300px] w-auto mx-auto rounded object-contain question-image hover:scale-105 md:hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer"
                     />
                   </div>
                 </div>
               </div>
               
               {/* Answer options */}
-              <div className="mb-8">
+              <div className="mb-4 md:mb-8">
                 <RadioGroup 
                   value={answers[currentQuestionIndex] || ""}
                   onValueChange={handleAnswerChange}
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-4">
                     {currentQuestion.options.map((option, idx) => {
                       const optionLabels = ['A', 'B', 'C', 'D'];
                       const optionLabel = optionLabels[idx];
                       return (
                         <div 
                           key={option}
-                          className={`border rounded-xl p-4 transition-all cursor-pointer
+                          className={`border rounded-lg md:rounded-xl p-3 md:p-4 transition-all cursor-pointer min-h-[60px] md:min-h-[72px] flex items-center
                             ${answers[currentQuestionIndex] === option 
                               ? 'border-[#009dff] bg-blue-50 shadow-md' 
                               : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'
                             }`}
                           onClick={() => handleAnswerChange(option)}
                         >
-                          <div className="flex items-center">
-                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                          <div className="flex items-center w-full">
+                            <div className={`flex-shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium ${
                               answers[currentQuestionIndex] === option 
                                 ? 'bg-[#009dff] text-white' 
                                 : 'bg-gray-100 text-gray-700'
                             }`}>
                               {optionLabel}
                             </div>
-                            <div className="flex-1 ml-3">
-                              <p className="text-gray-700 font-medium">Option {optionLabel}</p>
+                            <div className="flex-1 ml-2 md:ml-3">
+                              <p className="text-gray-700 font-medium text-sm md:text-base">Option {optionLabel}</p>
                             </div>
                           </div>
                         </div>
@@ -316,23 +320,27 @@ const AbstractReasoningTest = () => {
               </div>
               
               {/* Flag button */}
-              <div className="flex items-center justify-start mb-4">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Button 
                   variant="outline"
                   onClick={toggleFlagQuestion}
-                  className={`border ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
+                  size="sm"
+                  className={`border text-xs md:text-sm ${flaggedQuestions[currentQuestionIndex] ? 'border-orange-200 bg-orange-50 text-orange-600' : 'border-blue-100 text-[#009dff] hover:bg-blue-50'}`}
                 >
-                  <Flag className={`mr-2 h-4 w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
-                  {flaggedQuestions[currentQuestionIndex] ? 'Flagged for Review' : 'Flag for Review'}
+                  <Flag className={`mr-1 md:mr-2 h-3.5 w-3.5 md:h-4 md:w-4 ${flaggedQuestions[currentQuestionIndex] ? 'fill-orange-200' : ''}`} />
+                  <span className="hidden sm:inline">{flaggedQuestions[currentQuestionIndex] ? 'Flagged for Review' : 'Flag for Review'}</span>
+                  <span className="sm:hidden">{flaggedQuestions[currentQuestionIndex] ? 'Flagged' : 'Flag'}</span>
                 </Button>
                 
                 <Button 
                   variant="outline" 
                   onClick={clearCurrentAnswer}
-                  className="ml-2 border-gray-200 text-gray-600 hover:bg-gray-50"
+                  size="sm"
+                  className="border-gray-200 text-gray-600 hover:bg-gray-50 text-xs md:text-sm"
                   disabled={answers[currentQuestionIndex] === null}
                 >
-                  Clear Answer
+                  <span className="hidden sm:inline">Clear Answer</span>
+                  <span className="sm:hidden">Clear</span>
                 </Button>
               </div>
             </div>
@@ -340,7 +348,7 @@ const AbstractReasoningTest = () => {
         </Card>
         
         {/* Keyboard shortcuts info */}
-        <div className="mt-6 text-center hidden sm:block">
+        <div className="mt-4 md:mt-6 text-center hidden md:block">
           <p className="text-sm text-gray-500">
             Keyboard shortcuts: <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">←/→</span> to navigate, 
             <span className="bg-gray-100 px-2 py-1 mx-1 rounded text-xs font-mono">F</span> to flag, 
@@ -350,32 +358,36 @@ const AbstractReasoningTest = () => {
         
         {/* Fixed bottom navigation */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-10">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="container mx-auto px-3 md:px-4 py-2 md:py-3 flex items-center justify-between">
             <Button 
               variant="outline"
               onClick={goToPreviousQuestion}
               disabled={currentQuestionIndex === 0}
-              className="border-gray-200 hover:bg-gray-50"
+              size="sm"
+              className="border-gray-200 hover:bg-gray-50 text-xs md:text-sm h-9 md:h-10"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Previous
+              <ArrowLeft className="mr-1 md:mr-2 h-3.5 w-3.5 md:h-4 md:w-4" />
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden">Prev</span>
             </Button>
             
             <div className="flex items-center space-x-2">
               {currentQuestionIndex < mockQuestions.length - 1 ? (
                 <Button
                   onClick={goToNextQuestion}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+                  size="sm"
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white text-xs md:text-sm h-9 md:h-10"
                 >
                   Next
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-1 md:ml-2 h-3.5 w-3.5 md:h-4 md:w-4" />
                 </Button>
               ) : (
                 <Button
                   onClick={checkForUnansweredQuestions}
-                  className="bg-[#009dff] hover:bg-[#008ae6] text-white"
+                  size="sm"
+                  className="bg-[#009dff] hover:bg-[#008ae6] text-white text-xs md:text-sm h-9 md:h-10"
                 >
-                  Submit Test
+                  Submit
                 </Button>
               )}
             </div>

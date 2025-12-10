@@ -161,71 +161,72 @@ const AbstractReasoningResults = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Fixed top navigation bar */}
       <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="container mx-auto px-3 md:px-4 py-2 md:py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <EverestLogo />
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <button 
               onClick={handleBackToTests}
-              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors"
+              className="flex items-center text-[#009dff] hover:text-blue-400 transition-colors text-sm md:text-base"
             >
-              <ArrowLeft className="h-5 w-5 mr-1" />
-              <span>Back to Practice Tests</span>
+              <ArrowLeft className="h-4 w-4 md:h-5 md:w-5 mr-1" />
+              <span className="hidden sm:inline">Back to Practice Tests</span>
+              <span className="sm:hidden">Back</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="container mx-auto pt-24 px-4 pb-8">
+      <div className="container mx-auto pt-16 md:pt-24 px-3 md:px-4 pb-6 md:pb-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+          <div className="text-center mb-4 md:mb-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-900 mb-2 md:mb-4">
               Abstract Reasoning Test Results
             </h1>
-            <div className="bg-blue-50 border-l-4 border-[#009dff] p-4 rounded-r-lg inline-block">
-              <div className="flex items-center">
-                <div className="text-[#009dff] mr-2">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <div className="bg-blue-50 border-l-4 border-[#009dff] p-3 md:p-4 rounded-r-lg inline-block text-left">
+              <div className="flex items-start md:items-center">
+                <div className="text-[#009dff] mr-2 flex-shrink-0 mt-0.5 md:mt-0">
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-[#009dff]">Performance Summary</p>
-                  <p className="text-sm text-gray-600">Focus on improving Matrix Reasoning and Series Completion and Analogies</p>
+                  <p className="font-medium text-[#009dff] text-sm md:text-base">Performance Summary</p>
+                  <p className="text-xs md:text-sm text-gray-600">Focus on improving Matrix Reasoning and Series Completion</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Score Overview with Action Buttons */}
-          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-8 mb-4 md:mb-8">
             {/* Your Score Card */}
-            <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none">
-              <CardContent className="p-8">
+            <Card className="bg-white rounded-xl md:rounded-2xl shadow-xl shadow-blue-100 border-none">
+              <CardContent className="p-4 md:p-8">
                 <div className="text-center">
-                  <h3 className="text-xl font-medium mb-4">Your Score</h3>
-                  <div className="text-6xl font-bold text-[#009dff] mb-2">16</div>
-                  <p className="text-lg text-gray-600 mb-4">Out of 37</p>
+                  <h3 className="text-lg md:text-xl font-medium mb-2 md:mb-4">Your Score</h3>
+                  <div className="text-4xl md:text-6xl font-bold text-[#009dff] mb-1 md:mb-2">16</div>
+                  <p className="text-base md:text-lg text-gray-600 mb-3 md:mb-4">Out of 37</p>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-xl font-medium">
+                    <div className="flex justify-between text-base md:text-xl font-medium">
                       <span>Accuracy</span>
                       <span className="font-bold">43.2%</span>
                     </div>
-                    <div className="flex justify-between text-xl font-medium">
+                    <div className="flex justify-between text-base md:text-xl font-medium">
                       <span>Time Taken</span>
                       <span className="font-bold flex items-center">
-                         <Clock className="h-5 w-5 mr-1" />
+                         <Clock className="h-4 w-4 md:h-5 md:w-5 mr-1" />
                         00h 20m 0s
                       </span>
                     </div>
-                    <div className="flex justify-between text-lg font-medium text-gray-600">
+                    <div className="flex flex-col sm:flex-row sm:justify-between text-sm md:text-lg font-medium text-gray-600 gap-1">
                       <span>Completed</span>
-                      <span className="flex items-center">
-                        <Calendar className="h-5 w-5 mr-1" />
+                      <span className="flex items-center text-xs md:text-base">
+                        <Calendar className="h-4 w-4 md:h-5 md:w-5 mr-1" />
                         {formatCompletionDate(completionDate)}
                       </span>
                     </div>
@@ -235,25 +236,25 @@ const AbstractReasoningResults = () => {
             </Card>
 
             {/* Performance Overview Card */}
-            <Card className="bg-white rounded-2xl shadow-xl shadow-blue-100 border-none">
-              <CardContent className="p-8">
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-medium mb-4">Performance Overview</h3>
-                  <div className="text-sm text-gray-600 mb-4">Performance Level: <span className="font-medium text-orange-600">Developing (43.2%)</span></div>
+            <Card className="bg-white rounded-xl md:rounded-2xl shadow-xl shadow-blue-100 border-none">
+              <CardContent className="p-4 md:p-8">
+                <div className="text-center mb-4 md:mb-6">
+                  <h3 className="text-lg md:text-xl font-medium mb-2 md:mb-4">Performance Overview</h3>
+                  <div className="text-xs md:text-sm text-gray-600 mb-2 md:mb-4">Performance Level: <span className="font-medium text-orange-600">Developing (43.2%)</span></div>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="p-3 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600 mb-1">16</div>
-                    <div className="text-xs text-gray-600">Correct</div>
+                <div className="grid grid-cols-3 gap-2 md:gap-4 text-center">
+                  <div className="p-2 md:p-3 bg-green-50 rounded-lg">
+                    <div className="text-xl md:text-2xl font-bold text-green-600 mb-0.5 md:mb-1">16</div>
+                    <div className="text-[10px] md:text-xs text-gray-600">Correct</div>
                   </div>
-                  <div className="p-3 bg-red-50 rounded-lg">
-                    <div className="text-2xl font-bold text-red-600 mb-1">5</div>
-                    <div className="text-xs text-gray-600">Incorrect</div>
+                  <div className="p-2 md:p-3 bg-red-50 rounded-lg">
+                    <div className="text-xl md:text-2xl font-bold text-red-600 mb-0.5 md:mb-1">5</div>
+                    <div className="text-[10px] md:text-xs text-gray-600">Incorrect</div>
                   </div>
-                  <div className="p-3 bg-orange-50 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-600 mb-1">16</div>
-                    <div className="text-xs text-gray-600">Skipped</div>
+                  <div className="p-2 md:p-3 bg-orange-50 rounded-lg">
+                    <div className="text-xl md:text-2xl font-bold text-orange-600 mb-0.5 md:mb-1">16</div>
+                    <div className="text-[10px] md:text-xs text-gray-600">Skipped</div>
                   </div>
                 </div>
               </CardContent>
