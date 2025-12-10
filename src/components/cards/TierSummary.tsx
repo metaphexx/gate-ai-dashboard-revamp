@@ -23,49 +23,49 @@ const TierSummary = () => {
   const lockedPercentage = 100 - correctPercentage - incorrectPercentage - unattemptedPercentage;
   
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-      <div className="flex flex-col md:flex-row gap-6">
+    <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
         {/* Left Section - Stats Overview (60% width) */}
-        <div className="md:w-3/5">
+        <div className="lg:w-3/5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Your Progress</h3>
-            <Badge variant="outline" className="bg-[#009dff]/10 text-[#009dff] px-3 py-1">Free Tier</Badge>
+            <h3 className="text-base sm:text-lg font-semibold">Your Progress</h3>
+            <Badge variant="outline" className="bg-[#009dff]/10 text-[#009dff] px-2 sm:px-3 py-1 text-xs sm:text-sm">Free Tier</Badge>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="flex flex-col">
-              <span className="text-gray-500 text-sm">Questions Attempted</span>
-              <span className="text-2xl font-bold">{stats.totalAttempted}</span>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="flex flex-col min-w-0">
+              <span className="text-gray-500 text-xs sm:text-sm truncate">Questions Attempted</span>
+              <span className="text-xl sm:text-2xl font-bold">{stats.totalAttempted}</span>
             </div>
             
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-accent rounded-full"></div>
-                <span className="text-gray-500 text-sm">Correct</span>
+                <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-accent rounded-full flex-shrink-0"></div>
+                <span className="text-gray-500 text-xs sm:text-sm truncate">Correct</span>
               </div>
-              <span className="text-2xl font-bold text-accent">{stats.correct}</span>
+              <span className="text-xl sm:text-2xl font-bold text-accent">{stats.correct}</span>
             </div>
             
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-destructive rounded-full"></div>
-                <span className="text-gray-500 text-sm">Incorrect</span>
+                <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-destructive rounded-full flex-shrink-0"></div>
+                <span className="text-gray-500 text-xs sm:text-sm truncate">Incorrect</span>
               </div>
-              <span className="text-2xl font-bold text-destructive">{stats.incorrect}</span>
+              <span className="text-xl sm:text-2xl font-bold text-destructive">{stats.incorrect}</span>
             </div>
             
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1">
-                <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-                <span className="text-gray-500 text-sm">Unattempted</span>
+                <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-gray-300 rounded-full flex-shrink-0"></div>
+                <span className="text-gray-500 text-xs sm:text-sm truncate">Unattempted</span>
               </div>
-              <span className="text-2xl font-bold text-gray-400">{stats.unattempted}</span>
+              <span className="text-xl sm:text-2xl font-bold text-gray-400">{stats.unattempted}</span>
             </div>
           </div>
         </div>
         
         {/* Right Section - Progress + Upsell (40% width) */}
-        <div className="md:w-2/5 flex flex-col justify-between">
+        <div className="lg:w-2/5 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex justify-between items-center text-sm mb-1">
               <div className="flex items-center gap-1.5">
@@ -156,20 +156,20 @@ const TierSummary = () => {
             </div>
             
             {/* Feature preview icons under CTA */}
-            <div className="flex items-center justify-center mt-2 text-xs text-gray-500 gap-2">
+            <div className="flex items-center justify-center flex-wrap mt-2 text-xs text-gray-500 gap-x-2 gap-y-1">
               <div className="flex items-center gap-1">
-                <FileQuestion size={12} />
-                <span>Full-length mocks</span>
+                <FileQuestion size={12} className="flex-shrink-0" />
+                <span className="whitespace-nowrap">Full-length mocks</span>
               </div>
-              <span className="text-gray-300">•</span>
+              <span className="text-gray-300 hidden sm:inline">•</span>
               <div className="flex items-center gap-1">
-                <Clock size={12} />
-                <span>Timed exams</span>
+                <Clock size={12} className="flex-shrink-0" />
+                <span className="whitespace-nowrap">Timed exams</span>
               </div>
-              <span className="text-gray-300">•</span>
+              <span className="text-gray-300 hidden sm:inline">•</span>
               <div className="flex items-center gap-1">
-                <BarChart size={12} />
-                <span>2000+ Qs</span>
+                <BarChart size={12} className="flex-shrink-0" />
+                <span className="whitespace-nowrap">2000+ Qs</span>
               </div>
             </div>
           </div>

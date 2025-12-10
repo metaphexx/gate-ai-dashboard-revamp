@@ -124,12 +124,12 @@ const AccuracyTrendChart = () => {
 
   return (
     <Card className="animate-fade-in">
-      <CardContent className="p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
-          <h3 className="text-lg font-semibold">Performance Trend</h3>
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2 sm:gap-3">
+          <h3 className="text-base sm:text-lg font-semibold">Performance Trend</h3>
           
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <div className="w-full sm:w-40">
+          <div className="flex flex-row items-center gap-2 sm:gap-3 flex-wrap">
+            <div className="w-32 sm:w-40">
               <Select 
                 defaultValue="All" 
                 onValueChange={(value) => setSubject(value)}
@@ -147,13 +147,13 @@ const AccuracyTrendChart = () => {
               </Select>
             </div>
             
-            <Badge className={cn("w-fit", trend.isPositive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")}>
+            <Badge className={cn("w-fit text-xs whitespace-nowrap", trend.isPositive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")}>
               {trend.isPositive ? (
                 <ArrowUp className="h-3 w-3 mr-1" />
               ) : (
                 <ArrowDown className="h-3 w-3 mr-1" />
               )}
-              {trend.value}% since last week
+              {trend.value}% <span className="hidden sm:inline">since last week</span><span className="sm:hidden">vs last wk</span>
             </Badge>
           </div>
         </div>

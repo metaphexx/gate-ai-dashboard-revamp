@@ -90,7 +90,7 @@ const SkillsTrainer = () => {
             <p className="text-gray-500">Enhance your preparation with interactive exercises</p>
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Arithmetic Game Card */}
             <Card className="border border-gray-100 shadow-sm bg-white">
               <CardContent className="p-6">

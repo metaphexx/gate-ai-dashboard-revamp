@@ -29,11 +29,11 @@ const Index = () => {
           </header>
           
           {/* Welcome Banner and Video Tutorial - At the top */}
-          <section className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
-            <div className="lg:col-span-3">
+          <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+            <div className="md:col-span-2 lg:col-span-3">
               <WelcomeBanner />
             </div>
-            <div className="lg:col-span-1">
+            <div className="md:col-span-1 lg:col-span-1">
               <VideoTutorialCard />
             </div>
           </section>
@@ -49,11 +49,11 @@ const Index = () => {
           </section>
           
           {/* Performance Overview & Study Progress Section */}
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
-            <div className="lg:col-span-2">
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
+            <div className="md:col-span-1 lg:col-span-2">
               <PerformanceOverview />
             </div>
-            <div>
+            <div className="md:col-span-1">
               <StudyStreakCard />
             </div>
           </section>
