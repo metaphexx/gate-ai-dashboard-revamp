@@ -33,9 +33,9 @@ const StudyStreakCard = () => {
   };
   
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Study Progress</h3>
+    <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 h-full">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-base sm:text-lg font-semibold">Study Progress</h3>
         <Dialog open={isGoalDialogOpen} onOpenChange={setIsGoalDialogOpen}>
           <DialogTrigger asChild>
             <Button
@@ -96,12 +96,12 @@ const StudyStreakCard = () => {
       </div>
       
       {/* Tab Navigation */}
-      <div className="mb-4">
-        <div className="flex">
+      <div className="mb-3 sm:mb-4">
+        <div className="flex gap-0.5 sm:gap-1">
           <Button
             variant={activeTab === 'calendar' ? 'default' : 'ghost'}
             size="sm"
-            className={`flex-1 mr-1 ${activeTab === 'calendar' ? 'bg-[#009dff] hover:bg-[#009dff]/90' : 'hover:bg-[#009dff]/10 hover:text-[#009dff]'}`}
+            className={`flex-1 text-xs sm:text-sm px-1 sm:px-3 h-8 ${activeTab === 'calendar' ? 'bg-[#009dff] hover:bg-[#009dff]/90' : 'hover:bg-[#009dff]/10 hover:text-[#009dff]'}`}
             onClick={() => setActiveTab('calendar')}
           >
             Calendar
@@ -109,7 +109,7 @@ const StudyStreakCard = () => {
           <Button
             variant={activeTab === 'streak' ? 'default' : 'ghost'}
             size="sm"
-            className={`flex-1 mx-1 ${activeTab === 'streak' ? 'bg-[#009dff] hover:bg-[#009dff]/90' : 'hover:bg-[#009dff]/10 hover:text-[#009dff]'}`}
+            className={`flex-1 text-xs sm:text-sm px-1 sm:px-3 h-8 ${activeTab === 'streak' ? 'bg-[#009dff] hover:bg-[#009dff]/90' : 'hover:bg-[#009dff]/10 hover:text-[#009dff]'}`}
             onClick={() => setActiveTab('streak')}
           >
             Streak
@@ -117,7 +117,7 @@ const StudyStreakCard = () => {
           <Button
             variant={activeTab === 'achievements' ? 'default' : 'ghost'}
             size="sm"
-            className={`flex-1 ml-1 ${activeTab === 'achievements' ? 'bg-[#009dff] hover:bg-[#009dff]/90' : 'hover:bg-[#009dff]/10 hover:text-[#009dff]'}`}
+            className={`flex-1 text-xs sm:text-sm px-1 sm:px-3 h-8 ${activeTab === 'achievements' ? 'bg-[#009dff] hover:bg-[#009dff]/90' : 'hover:bg-[#009dff]/10 hover:text-[#009dff]'}`}
             onClick={() => setActiveTab('achievements')}
           >
             Achievements

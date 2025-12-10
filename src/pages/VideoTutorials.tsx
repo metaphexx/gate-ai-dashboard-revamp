@@ -106,7 +106,7 @@ const VideoTutorials = () => {
           </div>
           
           {/* Video Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
             {filteredVideos.map(video => (
               <div key={video.id} className="group relative bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition border border-gray-100">
                 <div className="relative">

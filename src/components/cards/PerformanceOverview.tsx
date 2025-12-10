@@ -48,15 +48,15 @@ const PerformanceOverview = () => {
   };
   
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
-        <h3 className="text-lg font-semibold">Performance by Subject</h3>
-        <div className="flex items-center gap-2">
+    <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 h-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2 sm:gap-3">
+        <h3 className="text-base sm:text-lg font-semibold">Performance by Subject</h3>
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <Button 
             size="sm" 
             variant={timeRange === 'allTime' ? 'default' : 'outline'}
             onClick={() => setTimeRange('allTime')}
-            className={`h-8 text-xs ${
+            className={`h-7 sm:h-8 text-xs px-2 sm:px-3 ${
               timeRange === 'allTime' 
                 ? 'bg-[#009dff] hover:bg-[#009dff]/90' 
                 : 'hover:bg-[#009dff]/10 hover:text-[#009dff] hover:border-[#009dff]/20'
@@ -68,7 +68,7 @@ const PerformanceOverview = () => {
             size="sm" 
             variant={timeRange === 'lastWeek' ? 'default' : 'outline'}
             onClick={() => setTimeRange('lastWeek')}
-            className={`h-8 text-xs ${
+            className={`h-7 sm:h-8 text-xs px-2 sm:px-3 ${
               timeRange === 'lastWeek' 
                 ? 'bg-[#009dff] hover:bg-[#009dff]/90' 
                 : 'hover:bg-[#009dff]/10 hover:text-[#009dff] hover:border-[#009dff]/20'

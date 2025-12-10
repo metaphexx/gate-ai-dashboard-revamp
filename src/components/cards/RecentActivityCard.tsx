@@ -54,9 +54,9 @@ const getIcon = (type: string) => {
 
 const RecentActivityCard = () => {
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 h-full">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Recent Activity</h3>
+    <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 h-full">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-base sm:text-lg font-semibold">Recent Activity</h3>
         <button className="text-primary hover:text-primary/80 text-xs">View All</button>
       </div>
       
@@ -72,10 +72,10 @@ const RecentActivityCard = () => {
               {getIcon(activity.type)}
             </div>
             
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <p className="font-medium text-sm">{activity.title}</p>
-                <span className="text-xs text-gray-500">{activity.timestamp}</span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-medium text-sm truncate">{activity.title}</p>
+                <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0">{activity.timestamp}</span>
               </div>
               
               <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
