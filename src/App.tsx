@@ -43,6 +43,8 @@ import StudyNotes from './pages/StudyNotes';
 import StudyNotesSubject from './pages/StudyNotesSubject';
 import StudyNotesTopic from './pages/StudyNotesTopic';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminQuestions from './pages/AdminQuestions';
+import AdminQuestionPreview from './pages/AdminQuestionPreview';
 
 const queryClient = new QueryClient();
 
@@ -90,6 +92,8 @@ function App() {
                 <Route path="/study-notes/:subjectId" element={<StudyNotesSubject />} />
                 <Route path="/study-notes/:subjectId/:topicId" element={<StudyNotesTopic />} />
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/questions" element={<AdminQuestions />} />
+                <Route path="/admin/questions/preview/:questionId" element={<AdminQuestionPreview />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
